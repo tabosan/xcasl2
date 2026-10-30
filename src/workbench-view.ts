@@ -1,0 +1,214 @@
+import { parseTab, tabKey, type EditorGroup, type TabKey } from './tab-layout';
+import { basename, type Workbench, type SourceDocument } from './workbench';
+import type { Settings } from './types';
+import type { SourceEditor } from './editor';
+
+interface Callbacks {
+  editor(doc: SourceDocument): SourceEditor;
+  simulator(id: string): HTMLElement;
+  renderSimulator(id: string, root: HTMLElement): void;
+  select(key: TabKey, focus?: boolean): void;
+  focus(key: TabKey | null): void;
+  close(key: TabKey): void;
+  build(id: string): void;
+  action(name: string): void;
+  changed(): void;
+  blocked(): boolean;
+}
+interface GroupView { root: HTMLElement; strip: HTMLElement; breadcrumb: HTMLElement; split: HTMLButtonElement; preview: HTMLButtonElement; buffers: HTMLElement; welcome: HTMLElement }
+interface DropTarget { group: string; index: number; side?: 'left' | 'right' }
+const splitIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16"/></svg>';
+const previewIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16m3 5 3 3-3 3"/></svg>';
+
+export class WorkbenchView {
+  private groups = new Map<string, GroupView>();
+  private tabs = new Map<TabKey, HTMLElement>();
+  private separators = new Map<string, HTMLElement>();
+  private drag: { key: TabKey; x: number; y: number; pointer: number; started: boolean; target?: DropTarget } | null = null;
+  private ghost = document.createElement('div');
+  private overlay = document.createElement('div');
+  constructor(private host: HTMLElement, private wb: Workbench, private callbacks: Callbacks) {
+    this.ghost.className = 'tab-drag-ghost'; this.ghost.hidden = true;
+    this.overlay.className = 'tab-drop-overlay'; this.overlay.hidden = true;
+    document.body.append(this.ghost, this.overlay);
+    host.addEventListener('pointermove', event => this.dragMove(event));
+    host.addEventListener('pointerup', event => this.dragEnd(event));
+    host.addEventListener('pointercancel', () => this.cancelDrag());
+    host.addEventListener('lostpointercapture', () => this.cancelDrag());
+    window.addEventListener('blur', () => this.cancelDrag());
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') this.cancelDrag(); }, true);
+  }
+  render(settings: Settings, blocked: boolean, canBuild = true) {
+    const activeElement = document.activeElement;
+    const ordered: HTMLElement[] = [];
+    // Hide buffers without replacing textareas or their native edit histories.
+    for (const [id, view] of this.groups) {
+      const active = this.wb.layout.group(id)?.active;
+      for (const child of view.buffers.children) (child as HTMLElement).hidden = (child as HTMLElement).dataset.bufferKey !== active;
+    }
+    for (const [index, group] of this.wb.layout.groups.entries()) {
+      let view = this.groups.get(group.id);
+      if (!view) { view = this.makeGroup(group); this.groups.set(group.id, view); }
+      if (index > 0) ordered.push(this.placeSeparator(this.wb.layout.groups[index - 1], group));
+      ordered.push(view.root);
+      view.root.style.flexGrow = String(100 * group.weight / this.wb.layout.groups.reduce((sum, item) => sum + item.weight, 0));
+      view.root.setAttribute('aria-label', `エディターグループ ${index + 1}`);
+      const tab = group.active ? parseTab(group.active) : null, doc = tab ? this.wb.source(tab.id) : null;
+      view.root.classList.toggle('simulator-group', tab?.kind === 'simulator');
+      view.breadcrumb.textContent = doc ? `${doc.name}${tab?.kind === 'simulator' ? ' › シミュレーター' : ''}` : 'xCASL2';
+      view.breadcrumb.title = doc?.path ?? '';
+      view.preview.hidden = tab?.kind !== 'source'; view.preview.disabled = blocked || !canBuild;
+      view.split.disabled = !group.active || blocked;
+      view.welcome.hidden = !!tab;
+      view.buffers.hidden = !tab;
+      if (tab && doc) {
+        const buffer = tab.kind === 'source' ? this.callbacks.editor(doc).root : this.callbacks.simulator(tab.id);
+        buffer.dataset.bufferKey = group.active!;
+        if (buffer.parentElement !== view.buffers) view.buffers.append(buffer);
+        buffer.hidden = false;
+        if (tab.kind === 'source') this.callbacks.editor(doc).render();
+      }
+    }
+    for (const [index, node] of ordered.entries()) if (this.host.children[index] !== node) this.host.insertBefore(node, this.host.children[index] ?? null);
+    // Remove empty groups only after their buffers have been reparented.
+    for (const [id, view] of this.groups) if (!this.wb.layout.groups.some(group => group.id === id)) { view.root.remove(); this.groups.delete(id); }
+    const boundaries = new Set(this.wb.layout.groups.slice(1).map((group, i) => `${this.wb.layout.groups[i].id}/${group.id}`));
+    for (const [key, separator] of this.separators) if (!boundaries.has(key)) { separator.remove(); this.separators.delete(key); }
+    this.renderTabs(settings); this.updateFocus();
+    // Moving the same DOM node can blur its textarea; restore focus without
+    // changing its selection, scroll offsets, value, or undo stack.
+    if (activeElement instanceof HTMLElement && activeElement !== document.activeElement && activeElement.isConnected && activeElement.closest('.editor-buffer:not([hidden]), .simulation-buffer:not([hidden])')) activeElement.focus({ preventScroll: true });
+    this.renderSimulators();
+  }
+  renderTabs(settings: Settings) {
+    const open = new Set(this.wb.layout.groups.flatMap(group => group.tabs));
+    for (const [key, node] of this.tabs) if (!open.has(key)) { node.remove(); this.tabs.delete(key); }
+    for (const group of this.wb.layout.groups) {
+      const strip = this.groups.get(group.id)?.strip; if (!strip) continue;
+      for (const [index, key] of group.tabs.entries()) {
+        const { kind, id } = parseTab(key), doc = this.wb.source(id)!;
+        let node = this.tabs.get(key);
+        if (!node) {
+          node = document.createElement('div'); node.className = 'workbench-tab'; node.dataset.tabKey = key;
+          const select = document.createElement('button'); select.type = 'button'; select.className = 'tab-select'; select.setAttribute('role', 'tab');
+          select.innerHTML = `<span class="tab-icon">${kind === 'source' ? 'Ⅱ' : '▷'}</span><span class="tab-title"></span><span class="tab-description"></span><span class="tab-state" aria-hidden="true"></span>`;
+          select.onclick = event => { if (this.suppressClick) { event.preventDefault(); return; } this.callbacks.select(key); };
+          select.onpointerdown = event => this.dragStart(event, key);
+          const close = document.createElement('button'); close.type = 'button'; close.className = 'tab-close'; close.textContent = '×'; close.tabIndex = -1;
+          close.onclick = () => this.callbacks.close(key);
+          node.append(select, close); this.tabs.set(key, node);
+          node.addEventListener('auxclick', event => { if (event.button === 1) { event.preventDefault(); this.callbacks.close(key); } });
+        }
+        if (strip.children[index] !== node) strip.insertBefore(node, strip.children[index] ?? null);
+        const button = node.querySelector<HTMLButtonElement>('[role=tab]')!, sim = this.wb.simulation(id), dirty = doc.source !== doc.saved;
+        node.classList.toggle('active', group.active === key); node.classList.toggle('source-tab', kind === 'source'); node.classList.toggle('sim-tab', kind === 'simulator');
+        node.classList.toggle('dirty', kind === 'source' && dirty); node.classList.toggle('running', kind === 'simulator' && !!sim?.running);
+        node.classList.toggle('waiting', kind === 'simulator' && sim?.snapshot?.status === 'waiting_input'); node.classList.toggle('stale', kind === 'simulator' && !!sim && this.wb.stale(sim, settings));
+        button.setAttribute('aria-selected', String(group.active === key)); button.tabIndex = group.active === key ? 0 : -1;
+        button.setAttribute('aria-label', `${doc.name}${kind === 'simulator' ? ' のシミュレーター' : dirty ? '、未保存' : ''}`);
+        button.title = `${doc.path ?? doc.name}${kind === 'simulator' ? '\nシミュレーター' : ''}\nドラッグで並べ替え・グループ移動。端へドロップで左右に分割。`;
+        node.querySelector('.tab-title')!.textContent = doc.name;
+        const duplicate = group.tabs.some(other => other !== key && this.wb.source(parseTab(other).id)?.name === doc.name && parseTab(other).kind === kind);
+        node.querySelector('.tab-description')!.textContent = kind === 'simulator' ? 'シミュレーター' : duplicate && doc.path ? basename(doc.path.replace(/\\/g, '/').split('/').slice(0, -1).join('/')) : '';
+        node.querySelector('.tab-close')!.setAttribute('aria-label', `${doc.name}${kind === 'simulator' ? ' のシミュレーター' : ''}を閉じる`);
+      }
+    }
+  }
+  renderSimulators() {
+    for (const group of this.wb.layout.groups) if (group.active) {
+      const { kind, id } = parseTab(group.active);
+      if (kind === 'simulator') this.callbacks.renderSimulator(id, this.callbacks.simulator(id));
+    }
+  }
+  updateFocus() { for (const [id, view] of this.groups) view.root.classList.toggle('focused', this.wb.layout.focused === id); }
+  focusTab(key: TabKey) {
+    const { kind, id } = parseTab(key);
+    if (kind === 'source') this.callbacks.editor(this.wb.source(id)!).textarea.focus({ preventScroll: true });
+    else this.tabs.get(key)?.querySelector<HTMLButtonElement>('[role=tab]')?.focus({ preventScroll: true });
+    this.groups.get(this.wb.layout.focused)?.root.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+  }
+  private makeGroup(group: EditorGroup): GroupView {
+    const root = document.createElement('section'); root.className = 'editor-group'; root.dataset.groupId = group.id;
+    root.innerHTML = `<div class="tab-strip" role="tablist" aria-label="ファイルとシミュレーターのタブ"></div><div class="group-breadcrumb"><span></span><div class="group-actions"><button class="icon-button split-source" title="タブを右に分割して移動 (Ctrl+\\)" aria-label="タブを右に分割して移動">${splitIcon}</button><button class="icon-button source-preview" title="アセンブルしてシミュレーターを右に開く (F5)" aria-label="アセンブルしてシミュレーターを右に開く">${previewIcon}</button></div></div><div class="editor-buffers"></div><div class="welcome"><div class="welcome-logo">x<span>CASL2</span></div><p>CASL II ワークスペース</p><div class="welcome-actions"><button data-action="new">新しいファイル<span>Ctrl+N</span></button><button data-action="open">ファイルを開く…<span>Ctrl+O</span></button><button data-action="sample-hello">Hello, CASL II を開く<span>サンプル</span></button><button data-action="sample-sum">1〜10の合計を開く<span>サンプル</span></button></div><p class="welcome-note">タブを端へドラッグすると左右に並べられます。</p></div>`;
+    const view: GroupView = { root, strip: root.querySelector('.tab-strip')!, breadcrumb: root.querySelector('.group-breadcrumb>span')!, split: root.querySelector('.split-source')!, preview: root.querySelector('.source-preview')!, buffers: root.querySelector('.editor-buffers')!, welcome: root.querySelector('.welcome')! };
+    const focused = () => { this.wb.layout.focused = group.id; this.callbacks.focus(group.active); this.updateFocus(); };
+    root.addEventListener('focusin', focused);
+    view.preview.onclick = () => { focused(); if (group.active) this.callbacks.build(parseTab(group.active).id); };
+    view.split.onclick = () => { if (group.active) { this.wb.layout.split(group.active, group.id, 'right'); this.callbacks.changed(); } };
+    for (const button of root.querySelectorAll<HTMLButtonElement>('[data-action]')) button.onclick = () => { focused(); this.callbacks.action(button.dataset.action!); };
+    view.strip.addEventListener('keydown', event => {
+      let index = group.tabs.indexOf(group.active!);
+      if (event.key === 'ArrowLeft') index = (index - 1 + group.tabs.length) % group.tabs.length;
+      else if (event.key === 'ArrowRight') index = (index + 1) % group.tabs.length;
+      else if (event.key === 'Home') index = 0; else if (event.key === 'End') index = group.tabs.length - 1; else return;
+      event.preventDefault(); if (group.tabs[index]) { this.callbacks.select(group.tabs[index]); this.tabs.get(group.tabs[index])?.querySelector<HTMLButtonElement>('[role=tab]')?.focus(); }
+    });
+    return view;
+  }
+  private placeSeparator(left: EditorGroup, right: EditorGroup) {
+    const key = `${left.id}/${right.id}`; let separator = this.separators.get(key);
+    if (!separator) {
+      separator = document.createElement('div'); separator.className = 'group-divider'; separator.tabIndex = 0; separator.setAttribute('role', 'separator'); separator.setAttribute('aria-orientation', 'vertical'); separator.setAttribute('aria-label', '左右のエディターグループの幅');
+      let resize: { pointer: number; x: number; width: number; left: number; right: number } | null = null;
+      const update = (delta: number) => { if (!resize) return; const total = resize.left + resize.right; const next = Math.max(total * .15, Math.min(total * .85, resize.left + delta / resize.width * total)); left.weight = next; right.weight = total - next; const sum = this.wb.layout.groups.reduce((sum, item) => sum + item.weight, 0); this.groups.get(left.id)!.root.style.flexGrow = String(100 * left.weight / sum); this.groups.get(right.id)!.root.style.flexGrow = String(100 * right.weight / sum); };
+      separator.onpointerdown = event => { const width = this.groups.get(left.id)!.root.clientWidth + this.groups.get(right.id)!.root.clientWidth; resize = { pointer: event.pointerId, x: event.clientX, width, left: left.weight, right: right.weight }; separator!.setPointerCapture(event.pointerId); };
+      separator.onpointermove = event => { if (resize?.pointer === event.pointerId) update(event.clientX - resize.x); };
+      const finish = () => { resize = null; };
+      separator.onpointerup = finish; separator.onpointercancel = finish; separator.onlostpointercapture = finish;
+      separator.onkeydown = event => { if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); resize = { pointer: -1, x: 0, width: 500, left: left.weight, right: right.weight }; update(event.key === 'ArrowLeft' ? -25 : 25); resize = null; } };
+      this.separators.set(key, separator);
+    }
+    return separator;
+  }
+  private suppressClick = false;
+  private dragStart(event: PointerEvent, key: TabKey) {
+    if (event.button !== 0 || this.callbacks.blocked()) return;
+    this.drag = { key, x: event.clientX, y: event.clientY, pointer: event.pointerId, started: false };
+  }
+  private dragMove(event: PointerEvent) {
+    const drag = this.drag; if (!drag || event.pointerId !== drag.pointer) return;
+    if (!drag.started) {
+      if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < 6) return;
+      drag.started = true; this.suppressClick = true; this.host.setPointerCapture(event.pointerId);
+      this.ghost.textContent = this.wb.source(parseTab(drag.key).id)?.name ?? ''; this.ghost.hidden = false; document.body.classList.add('tab-dragging');
+    }
+    event.preventDefault(); this.ghost.style.left = `${event.clientX + 14}px`; this.ghost.style.top = `${event.clientY + 14}px`;
+    this.clearDrop(); drag.target = undefined;
+    const hit = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>('[data-group-id]');
+    const group = hit ? this.wb.layout.group(hit.dataset.groupId) : null; if (!group || !hit) return;
+    const view = this.groups.get(group.id)!, box = hit.getBoundingClientRect(), stripBox = view.strip.getBoundingClientRect();
+    if (event.clientY <= stripBox.bottom) {
+      const tabs = [...view.strip.children] as HTMLElement[];
+      const index = tabs.findIndex(node => event.clientX < node.getBoundingClientRect().left + node.clientWidth / 2);
+      drag.target = { group: group.id, index: index < 0 ? tabs.length : index };
+      const before = tabs[drag.target.index];
+      if (before) before.classList.add('drop-before'); else view.strip.classList.add('drop-at-end');
+      if (event.clientX < stripBox.left + 32) view.strip.scrollLeft -= 15;
+      else if (event.clientX > stripBox.right - 32) view.strip.scrollLeft += 15;
+      return;
+    }
+    const relative = (event.clientX - box.left) / box.width;
+    const side = relative < .23 ? 'left' : relative > .77 ? 'right' : undefined;
+    drag.target = { group: group.id, index: group.tabs.length, side };
+    const width = side ? box.width / 2 : box.width;
+    this.overlay.style.cssText = `left:${box.left + (side === 'right' ? width : 0)}px;top:${stripBox.bottom}px;width:${width}px;height:${box.bottom - stripBox.bottom}px`;
+    this.overlay.textContent = side === 'left' ? '左に分割' : side === 'right' ? '右に分割' : 'このグループへ移動'; this.overlay.hidden = false;
+  }
+  private dragEnd(event: PointerEvent) {
+    const drag = this.drag; if (!drag || event.pointerId !== drag.pointer) return;
+    const target = drag.target;
+    if (drag.started && target && !this.callbacks.blocked()) {
+      if (target.side) this.wb.layout.split(drag.key, target.group, target.side);
+      else this.wb.layout.move(drag.key, target.group, target.index);
+      this.callbacks.changed(); this.focusTab(drag.key);
+    }
+    this.cancelDrag();
+  }
+  private clearDrop() { this.overlay.hidden = true; for (const node of this.tabs.values()) node.classList.remove('drop-before'); for (const view of this.groups.values()) view.strip.classList.remove('drop-at-end'); }
+  private cancelDrag() {
+    const pointer = this.drag?.pointer; this.drag = null; this.ghost.hidden = true; this.clearDrop(); document.body.classList.remove('tab-dragging');
+    if (pointer !== undefined && this.host.hasPointerCapture(pointer)) this.host.releasePointerCapture(pointer);
+    // A browser click follows pointerup; it must not reselect the old position.
+    setTimeout(() => { this.suppressClick = false; }, 0);
+  }
+}

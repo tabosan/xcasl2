@@ -1,0 +1,132 @@
+use crate::{DeviceConfig, StepMode, MEMORY_WORDS};
+use serde::{Deserialize, Serialize};
+use std::{
+    fs::{self, OpenOptions},
+    io::Write,
+    path::Path,
+    sync::atomic::{AtomicU64, Ordering},
+};
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ThemePreference {
+    Light,
+    #[default]
+    Dark,
+    System,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct Settings {
+    pub version: u32,
+    pub theme: ThemePreference,
+    pub base: u16,
+    pub fill: u16,
+    pub interval_ms: u32,
+    pub step_mode: StepMode,
+    pub decimal: bool,
+    pub signed_decimal: bool,
+    pub auto_save: bool,
+    pub recent_files: Vec<String>,
+    pub comet_view: bool,
+    pub memory_start: u16,
+    pub devices: DeviceConfig,
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Self {
+            version: 1,
+            theme: ThemePreference::Dark,
+            base: 32,
+            fill: 65535,
+            interval_ms: 100,
+            step_mode: StepMode::default(),
+            decimal: false,
+            signed_decimal: true,
+            auto_save: false,
+            recent_files: Vec::new(),
+            comet_view: false,
+            memory_start: 32,
+            devices: DeviceConfig::default(),
+        }
+    }
+}
+impl Settings {
+    pub fn validate(&self) -> Result<(), String> {
+        if self.version != 1 {
+            return Err("未対応の設定ファイルのバージョンです。".into());
+        }
+        if self.base as usize >= MEMORY_WORDS || self.memory_start as usize >= MEMORY_WORDS {
+            return Err("番地は0000〜0BB7で指定してください。".into());
+        }
+        if self.fill != 0 && self.fill != 65535 {
+            return Err("初期化値は0000またはFFFFで指定してください。".into());
+        }
+        if self.interval_ms > 60_000 {
+            return Err("実行間隔は0〜60000 msで指定してください。".into());
+        }
+        self.devices.validate()
+    }
+    pub fn load(path: &Path) -> Result<Self, String> {
+        let bytes = match fs::read(path) {
+            Ok(bytes) => bytes,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+                return Ok(Self::default())
+            }
+            Err(error) => return Err(error.to_string()),
+        };
+        let settings: Self =
+            serde_json::from_slice(&bytes).map_err(|e| format!("設定を読み取れません: {e}"))?;
+        settings.validate()?;
+        Ok(settings)
+    }
+    pub fn save(&self, path: &Path) -> Result<(), String> {
+        self.validate()?;
+        let bytes = serde_json::to_vec_pretty(self).map_err(|e| e.to_string())?;
+        // Preserve malformed / newer settings before the first explicit user change.
+        if path.exists() && Self::load(path).is_err() {
+            let backup = path.with_file_name(format!("settings-invalid-{}.json", unique_id()));
+            fs::copy(path, backup).map_err(|e| e.to_string())?;
+        }
+        atomic_write(path, &bytes)
+    }
+}
+
+fn unique_id() -> String {
+    static SERIAL: AtomicU64 = AtomicU64::new(0);
+    format!(
+        "{}-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_nanos(),
+        SERIAL.fetch_add(1, Ordering::Relaxed)
+    )
+}
+
+/// Same-directory replacement: readers see either the old or the complete new file.
+pub fn atomic_write(path: &Path, bytes: &[u8]) -> Result<(), String> {
+    let parent = path
+        .parent()
+        .filter(|p| !p.as_os_str().is_empty())
+        .ok_or("保存先フォルダーがありません。")?;
+    fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+    let temporary = parent.join(format!(".xcasl2-{}.tmp", unique_id()));
+    let result = (|| -> std::io::Result<()> {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(&temporary)?;
+        file.write_all(bytes)?;
+        file.sync_all()?;
+        drop(file);
+        fs::rename(&temporary, path)
+    })();
+    if result.is_err() {
+        let _ = fs::remove_file(temporary);
+    }
+    result.map_err(|e| e.to_string())
+}

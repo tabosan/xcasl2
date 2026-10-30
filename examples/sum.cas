@@ -1,0 +1,9 @@
+; Sum 1 through 10. GR1 = 55 (#0037)
+MAIN     START
+         LAD     GR1,0
+         LAD     GR2,10
+LOOP     ADDL    GR1,GR2
+         SUBL    GR2,=1
+         JNZ     LOOP
+         RET
+         END

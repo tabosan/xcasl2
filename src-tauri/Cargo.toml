@@ -1,0 +1,15 @@
+[package]
+name = "xcasl2-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+default-run = "xcasl2-desktop"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+serde.workspace = true
+wcasl2-core = { path = "../crates/wcasl2-core" }

@@ -1,0 +1,12 @@
+[package]
+name = "wcasl2-core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+encoding_rs.workspace = true
+same-file = "1"
+serde_json.workspace = true
+

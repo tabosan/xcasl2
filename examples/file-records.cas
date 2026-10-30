@@ -1,0 +1,12 @@
+; Select file devices. Read records until EOF.
+MAIN     START
+NEXT     IN      BUF,LEN
+         LD      GR0,LEN
+         CPA     GR0,=0
+         JMI     FIN
+         OUT     BUF,LEN
+         JUMP    NEXT
+FIN      RET
+BUF      DS      256
+LEN      DS      1
+         END
