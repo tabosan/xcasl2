@@ -1,7 +1,6 @@
 analysis/
 analysis/vendor/
 analysis/__pycache__/
-docs/
 target/
 node_modules/
 dist/
