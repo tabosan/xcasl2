@@ -13,6 +13,7 @@ import { WorkbenchView } from './workbench-view';
 import { tabKey, parseTab, type TabKey } from './tab-layout';
 import { scopedMarkup } from './scoped-view';
 import { layout } from './layout';
+import { initializeSidebarResize } from './sidebar';
 import { editDevices } from './devices';
 import { editPreferences } from './preferences';
 import { examples } from './examples';
@@ -23,6 +24,7 @@ import type { Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+initializeSidebarResize($('workbench'), $('sidebar'), $('sidebar-divider'));
 const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
@@ -415,7 +417,7 @@ async function attemptClose() {
 function newDocument(source = 'MAIN     START\n         RET\n         END\n', name?: string) {
   const doc = wb.create(source, name); ensureEditor(doc); selectSource(doc.id, true); return doc;
 }
-function toggleSidebar() { const sidebar = $('sidebar'); sidebar.hidden = !sidebar.hidden; $('activity-explorer').classList.toggle('selected', !sidebar.hidden); $('activity-explorer').setAttribute('aria-expanded', String(!sidebar.hidden)); }
+function toggleSidebar() { const sidebar = $('sidebar'); sidebar.hidden = !sidebar.hidden; $('sidebar-divider').hidden = sidebar.hidden; $('activity-explorer').classList.toggle('selected', !sidebar.hidden); $('activity-explorer').setAttribute('aria-expanded', String(!sidebar.hidden)); }
 function editCommand(command: 'undo' | 'redo') {
   const active = document.activeElement;
   const source = editors.get(wb.activeSource ?? '');

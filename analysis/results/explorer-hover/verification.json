@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-30",
+  "build": "npm run tauri -- build --debug --no-bundle -- --offline: passed",
+  "editor_tests": "44 passed",
+  "sidebar_drag": "190px -> 312px; Monaco resized with the editor area",
+  "sidebar_keyboard": "Home=150px; End=600px; ArrowLeft=590px",
+  "sidebar_reset": "Double click=190px",
+  "sidebar_visibility": "Sidebar and separator hide together",
+  "sidebar_persistence": "290px restored after reload",
+  "find_tooltip": "Reproduced clipping above the editor; corrected ancestors; visible and hit-tested at center",
+  "assemble_icon": "Shared run icon, distinct from split editor",
+  "executable_sha256": "E011D23F11105919DB11A71A172EC12F0971885921452B87BDA415E42B5FCFEB"
+}

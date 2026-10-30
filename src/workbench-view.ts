@@ -2,6 +2,7 @@ import { parseTab, tabKey, type EditorGroup, type TabKey } from './tab-layout';
 import { basename, type Workbench, type SourceDocument } from './workbench';
 import type { Settings } from './types';
 import type { SourceEditor } from './editor';
+import { assembleIcon } from './ui-icons';
 
 interface Callbacks {
   editor(doc: SourceDocument): SourceEditor;
@@ -19,7 +20,7 @@ interface Callbacks {
 interface GroupView { root: HTMLElement; strip: HTMLElement; breadcrumb: HTMLElement; split: HTMLButtonElement; preview: HTMLButtonElement; source: HTMLButtonElement; buffers: HTMLElement; welcome: HTMLElement }
 interface DropTarget { group: string; index: number; side?: 'left' | 'right' }
 const splitIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16"/></svg>';
-const previewIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16m3 5 3 3-3 3"/></svg>';
+const previewIcon = assembleIcon;
 const sourceIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16m-3-11-3 3 3 3"/></svg>';
 
 export class WorkbenchView {

@@ -22,7 +22,10 @@ svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .activity svg { width:23px; height:23px; }
 .activity.selected { border-left:2px solid var(--accent); color:var(--strong); }
 .activity-spacer { flex:1; }
-.sidebar { display:flex; flex-direction:column; width:190px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border); overflow:auto; }
+.sidebar { display:flex; flex-direction:column; width:var(--sidebar-width,190px); flex-shrink:0; background:var(--surface); overflow:auto; }
+.sidebar-divider { width:4px; flex:0 0 4px; background:var(--surface); border-left:1px solid var(--border); cursor:col-resize; touch-action:none; }
+.sidebar-divider:hover,.sidebar-divider.dragging,.sidebar-divider:focus-visible { background:var(--accent); outline:none; }
+.sidebar-resizing,.sidebar-resizing * { cursor:col-resize !important; user-select:none !important; }
 .sidebar-heading { height:35px; display:flex; align-items:center; justify-content:space-between; padding:0 10px 0 17px; font-size:11px; letter-spacing:.5px; flex-shrink:0; }
 .tree-heading { height:29px; display:flex; align-items:center; padding:0 12px; background:var(--section); font-size:11px; flex-shrink:0; }
 .tree-list { padding:2px 0 8px; }
@@ -37,7 +40,7 @@ svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .sidebar-hint svg { display:inline-block; width:15px; height:15px; vertical-align:middle; stroke:var(--secondary); fill:none; }
 .editor-groups { flex:1; display:grid; grid-template-columns:minmax(0,1fr); min-width:0; min-height:0; }
 .editor-groups.split { grid-template-columns:minmax(240px,min(var(--source-share,44%),calc(100% - 404px))) 4px minmax(400px,1fr); }
-.editor-group { display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; background:var(--bg); }
+.editor-group { display:flex; flex-direction:column; min-width:0; min-height:0; overflow:visible; background:var(--bg); }
 .group-divider { background:var(--divider); cursor:col-resize; touch-action:none; }
 .group-divider:hover,.group-divider.dragging,.group-divider:focus-visible { background:#007acc; }
 .group-titlebar { display:flex; align-items:stretch; height:36px; min-height:36px; background:var(--surface); border-bottom:1px solid var(--border-subtle); }
@@ -63,9 +66,11 @@ svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .group-breadcrumb { height:31px; min-height:31px; display:flex; gap:8px; align-items:center; padding:0 9px 0 16px; border-bottom:1px solid var(--border-subtle); color:var(--secondary); font-size:12px; }
 .group-breadcrumb>span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
 .group-actions { margin-left:auto; align-items:center; flex-shrink:0; padding:0 6px; background:var(--surface); }
-.editor-buffers { display:flex; flex:1; min-height:0; overflow:hidden; }
+.editor-buffers { display:flex; flex:1; min-height:0; overflow:visible; }
 .editor-wrap { display:flex; flex:1; min-height:0; min-width:0; background:var(--bg); position:relative; }
-.monaco-host { position:absolute; inset:0; overflow:hidden;
+/* Monaco's button tooltips can sit above the editor, over the breadcrumb.
+   Keep these ancestors open; Monaco's own overflow-guard clips source text. */
+.monaco-host { position:absolute; inset:0; overflow:visible;
   --vscode-cornerRadius-large:var(--context-menu-radius);
   --vscode-cornerRadius-medium:var(--context-menu-item-radius);
   --vscode-strokeThickness:1px;
@@ -205,7 +210,7 @@ dialog form button { border-color:var(--outline); }
 ::-webkit-scrollbar-track { background:transparent; }
 ::-webkit-scrollbar-thumb { background:var(--scrollbar); }
 ::-webkit-scrollbar-thumb:hover { background:var(--scrollbar-hover); }
-@media(max-width:1100px) { .sidebar { width:165px; } .sim-toolbar { gap:2px; } .sim-toolbar select { max-width:76px; } .tab-description { display:none; } .status-bar { gap:10px; } }
+@media(max-width:1100px) { .sim-toolbar { gap:2px; } .sim-toolbar select { max-width:76px; } .tab-description { display:none; } .status-bar { gap:10px; } }
 /* COMET pipeline view */
 .program-panel[hidden], .comet-panel[hidden], .register-panel[hidden] { display: none; }
 .execution-heading { flex-wrap: wrap; height: auto; min-height: 26px; flex-shrink: 0; gap: 9px; }
