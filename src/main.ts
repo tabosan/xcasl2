@@ -29,7 +29,7 @@ const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
 const simulationViews = new Map<string, { root: HTMLElement; render: ReturnType<typeof createSimulatorRenderer> }>();
-let settings: Settings = { version: 1, theme: 'dark', base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
+let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, auto_switch_step_mode: true, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
 const themeController = createThemeController(document.documentElement, window.matchMedia('(prefers-color-scheme: dark)'));
 async function applyTheme() {
   themeController.setPreference(settings.theme);
@@ -91,7 +91,7 @@ function ensureEditor(doc: SourceDocument) {
     editor = new SourceEditor(doc, () => { invalidateChanged(); scheduleAutoSave(doc); render(); }, updatePosition);
     editors.set(doc.id, editor);
   }
-  return editor;
+  editor.applyPreferences(settings); return editor;
 }
 function focusGroup(index: number) {
   const group = wb.layout.groups[index]; if (group?.active) selectTab(group.active, true);
@@ -116,7 +116,7 @@ function ensureSimulationView(id: string): HTMLElement {
   el('sim-rebuild').onclick = () => buildPreview(id);
   el('binary-registers').onchange = () => { const current = sim(); if (current) { current.binaryRegisters = el<HTMLInputElement>('binary-registers').checked; persistSettings(current); renderSim(); } };
   el('speed').onchange = () => { const current = sim(); if (current) { current.interval = Number(el<HTMLSelectElement>('speed').value); persistSettings(current); } };
-  for (const [name, value] of [['view-program', false], ['view-comet', true]] as const) el(name).onclick = () => { const current = sim(); if (current) { current.cometView = value; persistSettings(current); renderSim(); } };
+  for (const [name, value] of [['view-program', false], ['view-comet', true]] as const) el(name).onclick = () => { const current = sim(); if (current) void switchSimulatorView(current, value); };
   el('step-mode').onchange = async () => { const current = sim(); if (!current) return; const mode = el<HTMLSelectElement>('step-mode').value as StepMode; if (mode !== 'instruction') current.cometView = true; await control(current, 'mode', { mode }); persistSettings(current); renderSim(); };
   el('memory-address').onchange = () => { const current = sim(), value = el<HTMLInputElement>('memory-address').value; if (!current) return; if (!/^[0-9a-fA-F]{1,4}$/.test(value) || parseInt(value, 16) >= 3000) { message('メモリ番地は0000〜0BB7で指定してください。', true); return; } current.memoryStart = parseInt(value, 16); persistSettings(current); renderSim(); };
   el('comet-follow').onclick = () => {
@@ -148,6 +148,23 @@ function selectSimulator(id: string, focus = false) {
 }
 function stop(sim: SimulatorTab | null) { if (!sim) return; sim.running = false; sim.epoch++; renderTabs(); renderSim(); }
 function stopAll() { for (const sim of wb.simulators.values()) stop(sim); }
+async function switchSimulatorView(sim: SimulatorTab, comet: boolean) {
+  if (sim.cometView === comet || sim.busy || ioBusy || closing) return;
+  if (settings.auto_switch_step_mode) {
+    if (sim.snapshot?.input || sim.snapshot?.replay_target != null) {
+      message('入力待ち・戻りの再実行中はSTEP単位を切り替えられません。', true); return;
+    }
+    if (sim.running) stop(sim);
+    await sim.pending;
+    if (wb.simulators.get(sim.id) !== sim) return;
+    const mode: StepMode = comet ? 'micro' : 'instruction';
+    if (sim.snapshot && !wb.stale(sim, settings)) {
+      await control(sim, 'mode', { mode });
+      if (sim.mode !== mode) return;
+    } else sim.mode = mode;
+  }
+  sim.cometView = comet; persistSettings(sim); renderSim();
+}
 function invalidateChanged() { for (const sim of wb.simulators.values()) if (wb.stale(sim, settings)) stop(sim); }
 const view = new WorkbenchView($('editor-groups'), wb, {
   editor: ensureEditor, simulator: ensureSimulationView, source: id => selectSource(id, true),
@@ -283,7 +300,7 @@ async function stepBack() {
 async function closeSimulator(id: string) {
   const sim = wb.simulation(id); if (!sim) return;
   stop(sim); await sim.pending; if (desktop) await invoke('discard_session', { id });
-  wb.closeSimulator(id); simulationViews.get(id)?.root.remove(); simulationViews.delete(id); wb.prune().forEach(id => { editors.get(id)?.dispose(); editors.delete(id); });
+  wb.closeSimulator(id); simulationViews.get(id)?.render.dispose(); simulationViews.get(id)?.root.remove(); simulationViews.delete(id); wb.prune().forEach(id => { editors.get(id)?.dispose(); editors.delete(id); });
   await syncBackend(); render();
 }
 async function confirm(title: string, text: string): Promise<string> {
@@ -386,7 +403,8 @@ async function preferences() {
   const sim = wb.simulation();
   const next = await editPreferences({ ...settings, interval_ms: sim?.interval ?? settings.interval_ms }, settingsPath); if (!next) return;
   if (sim) sim.interval = next.interval_ms;
-  settings = next; await applyTheme(); invalidateChanged(); render(); message('設定を保存しました。テーマと符号表示は即時反映し、配置・初期化の変更は再アセンブルで反映します。');
+  settings = next; for (const editor of editors.values()) editor.applyPreferences(settings);
+  await applyTheme(); invalidateChanged(); render(); message('設定を保存しました。テーマ・フォント・符号表示は即時反映し、配置・初期化の変更は再アセンブルで反映します。');
 }
 async function devices() {
   const sim = wb.simulation(); if (sim?.running || sim?.busy) return;

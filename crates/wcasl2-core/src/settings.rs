@@ -21,6 +21,9 @@ pub enum ThemePreference {
 pub struct Settings {
     pub version: u32,
     pub theme: ThemePreference,
+    pub editor_font_family: String,
+    pub editor_font_size: u16,
+    pub auto_switch_step_mode: bool,
     pub base: u16,
     pub fill: u16,
     pub interval_ms: u32,
@@ -39,6 +42,9 @@ impl Default for Settings {
         Self {
             version: 1,
             theme: ThemePreference::Dark,
+            editor_font_family: "\"Cascadia Code\", Consolas, \"BIZ UDGothic\", monospace".into(),
+            editor_font_size: 14,
+            auto_switch_step_mode: true,
             base: 32,
             fill: 65535,
             interval_ms: 100,
@@ -66,6 +72,15 @@ impl Settings {
         }
         if self.interval_ms > 60_000 {
             return Err("実行間隔は0〜60000 msで指定してください。".into());
+        }
+        if self.editor_font_family.trim().is_empty()
+            || self.editor_font_family.chars().count() > 1024
+            || self.editor_font_family.chars().any(char::is_control)
+        {
+            return Err("フォントファミリーは1〜1024文字で指定してください。".into());
+        }
+        if !(8..=72).contains(&self.editor_font_size) {
+            return Err("フォントサイズは8〜72の整数で指定してください。".into());
         }
         self.devices.validate()
     }

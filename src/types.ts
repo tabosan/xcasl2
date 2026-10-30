@@ -6,6 +6,8 @@ export interface Settings {
   binary_registers: boolean; signed_decimal: boolean; comet_view: boolean; memory_start: number; devices: DeviceConfig;
   auto_save: boolean; recent_files: string[];
   theme: ThemePreference;
+  editor_font_family: string; editor_font_size: number;
+  auto_switch_step_mode: boolean;
 }
 export interface OpenedSource { path: string; source: string }
 export interface DeviceSnapshot {

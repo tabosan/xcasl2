@@ -2,6 +2,7 @@ import { cometMarkup, renderComet } from './comet';
 import type { Row, Snapshot } from './types';
 import type { SimulatorTab } from './workbench';
 import { labelValues, labelSourceRow, stackValues, registerValues } from './inspection';
+import { initializeCometViewport } from './comet-viewport';
 
 export const hex = (value: number) => value.toString(16).toUpperCase().padStart(4, '0');
 export function simulatorMarkup(): string {
@@ -36,6 +37,7 @@ export function simulatorMarkup(): string {
 }
 
 export function createSimulatorRenderer(root: HTMLElement) {
+const viewport = initializeCometViewport(root);
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => root.querySelector(`[data-view="${id}"]`) as T;
 let lastId: string | null = null;
 let wasWaiting = false;
@@ -46,6 +48,7 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
   $('sim-content').classList.toggle('comet-view', tab.cometView);
   $('register-panel').hidden = tab.cometView; $('program-panel').hidden = tab.cometView; $('comet-panel').hidden = !tab.cometView;
   $('comet-memory-panel').hidden = !tab.cometView;
+  $('comet-divider').hidden = !tab.cometView;
   $('casl-inspection').hidden = tab.cometView;
   $('view-program').classList.toggle('selected', !tab.cometView); $('view-comet').classList.toggle('selected', tab.cometView);
   $<HTMLSelectElement>('step-mode').value = tab.mode;
@@ -98,6 +101,7 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
   const address = $<HTMLInputElement>('memory-address');
   if (switched || document.activeElement !== address) address.value = hex(tab.memoryStart);
   renderComet(snapshot, previous, root, {start:tab.memoryStart, follow:tab.cometFollow, sourceFiles:tab.sourceFiles, onRow});
+  viewport.render(tab);
   const device = snapshot?.devices, outputPath = device?.config.output_path ?? null;
   $('output').textContent = snapshot?.output.join('\n') ?? '';
   $('output').hidden = !!outputPath; $('file-output').hidden = !outputPath;
@@ -187,5 +191,5 @@ function renderMemory(snapshot: Snapshot | null, previous: Snapshot | null, star
   }
 }
 
-return renderSimulator;
+return Object.assign(renderSimulator, { dispose: () => viewport.dispose() });
 }

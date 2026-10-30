@@ -1,5 +1,5 @@
 import { initializeMonaco, monaco } from './monaco';
-import type { Diagnostic } from './types';
+import type { Diagnostic, Settings } from './types';
 import type { SourceDocument } from './workbench';
 
 export class SourceEditor {
@@ -10,6 +10,7 @@ export class SourceEditor {
   private replacing = false;
   private label = '';
   private markers = '';
+  private fontKey = '';
   private disposables: monaco.IDisposable[] = [];
   constructor(readonly document: SourceDocument, private onChange: () => void, private onPosition: () => void) {
     initializeMonaco();
@@ -47,6 +48,13 @@ export class SourceEditor {
     this.render();
   }
   focus() { this.editor.focus(); }
+  applyPreferences(settings: Pick<Settings, 'editor_font_family' | 'editor_font_size'>) {
+    const key = JSON.stringify([settings.editor_font_family, settings.editor_font_size]);
+    if (key === this.fontKey) return;
+    this.fontKey = key;
+    this.editor.updateOptions({ fontFamily: settings.editor_font_family, fontSize: settings.editor_font_size,
+      lineHeight: Math.round(settings.editor_font_size * 23 / 14) });
+  }
   hasTextFocus() { return this.editor.hasTextFocus(); }
   position() { return this.editor.getPosition(); }
   editCommand(command: 'undo' | 'redo') { this.focus(); this.editor.trigger('menu', command, null); }

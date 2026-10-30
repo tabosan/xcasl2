@@ -30,6 +30,7 @@
   --subtle: #858585;
   --strong: #dddddd;
   --active-tab-fg: #ffffff;
+  --tab-hover-bg: #2d2d2d;
   --active-bg: #37373d;
   --state-bg: #2d2d30;
   --accent: #4daafc;
@@ -87,6 +88,7 @@
   --subtle: #6e6e6e;
   --strong: #222222;
   --active-tab-fg: #222222;
+  --tab-hover-bg: #e8e8e8;
   --active-bg: #e4e6e9;
   --state-bg: #ececec;
   --accent: #006fba;

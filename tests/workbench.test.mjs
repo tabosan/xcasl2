@@ -23,6 +23,10 @@ test('each source has exactly one simulator and tab selection preserves snapshot
   sa.running=true; assert.equal(sb.running,false);
   sa.binaryRegisters=true;assert.equal(wb.ensureSimulator(a.id,settings).binaryRegisters,true);assert.equal(sb.binaryRegisters,false);
   sa.cometFollow=false;assert.equal(wb.ensureSimulator(a.id,settings).cometFollow,false);assert.equal(sb.cometFollow,true);
+  sa.cometZoom=175;sa.cometShare=65;
+  assert.equal(wb.ensureSimulator(a.id,settings).cometZoom,175);
+  assert.equal(wb.ensureSimulator(a.id,settings).cometShare,65);
+  assert.equal(sb.cometZoom,100);assert.equal(sb.cometShare,52.38);
   sa.stackStart=42;sa.labelScrollTop=120;sa.stackScrollTop=240;
   assert.equal(sb.stackStart,null);
   assert.equal(sb.labelScrollTop,0);assert.equal(sb.stackScrollTop,0);

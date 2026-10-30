@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-30",
+  "build": "Tauri debug build with TypeScript/Vite: passed",
+  "css": "Shared tab container handles hover; inner file-name button stays transparent",
+  "dark_active": "Hovered tab background rgb(45,45,45), including close-button area",
+  "dark_inactive": "Inactive hello.cas hovered rgb(45,45,45); active unhovered tab rgb(31,31,31)",
+  "light_hover_color": "#e8e8e8",
+  "executable_sha256": "2342E8F7D8D586CFC7724467A679FEC0588B793E162CA4112A9157464D196134"
+}

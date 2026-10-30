@@ -249,6 +249,9 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     settings.binary_registers = true;
     settings.signed_decimal = false;
     settings.theme = wcasl2_core::settings::ThemePreference::Light;
+    settings.editor_font_family = "Consolas, 'Courier New', monospace".into();
+    settings.editor_font_size = 20;
+    settings.auto_switch_step_mode = false;
     settings.auto_save = true;
     settings.recent_files = vec![temp.0.join("日本語.cas").to_string_lossy().into()];
     settings.comet_view = true;
@@ -268,6 +271,12 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     assert!(!old.binary_registers && old.signed_decimal);
     assert!(!old.auto_save && old.recent_files.is_empty());
     assert_eq!(old.theme, wcasl2_core::settings::ThemePreference::Dark);
+    assert_eq!(
+        old.editor_font_family,
+        Settings::default().editor_font_family
+    );
+    assert_eq!(old.editor_font_size, 14);
+    assert!(old.auto_switch_step_mode);
     for theme in [
         wcasl2_core::settings::ThemePreference::Light,
         wcasl2_core::settings::ThemePreference::Dark,
@@ -307,6 +316,10 @@ fn settings_invalid_input_preserves_original_and_backs_up_on_change() {
         r#"{"fill":1}"#,
         r#"{"interval_ms":60001}"#,
         r#"{"memory_start":3000}"#,
+        r#"{"editor_font_size":7}"#,
+        r#"{"editor_font_size":73}"#,
+        r#"{"editor_font_family":"   "}"#,
+        r#"{"editor_font_family":"Consolas\nmonospace"}"#,
     ] {
         let invalid: Settings = serde_json::from_str(patch).unwrap();
         assert!(invalid.save(&path).is_err());

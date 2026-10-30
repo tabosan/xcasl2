@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-30",
+  "frontend_build": "npm run build: passed",
+  "desktop_build": "cargo build --manifest-path src-tauri/Cargo.toml --offline --features tauri/custom-protocol: passed",
+  "editor_tests": "44 passed",
+  "project_settings_tests": "9 passed",
+  "legacy_settings": "Old profile loaded with 14px and automatic STEP switching enabled",
+  "font": "Consolas, 'Courier New', monospace; 20px then 18px; active editor resized immediately and source remained intact",
+  "persisted_settings": "editor_font_family, editor_font_size and auto_switch_step_mode confirmed in isolated settings.json",
+  "comet_zoom": "100% -> Fit 55% -> 80% -> 55%; modes and instruction step preserved zoom",
+  "comet_split": "Dragged from 52% to 67%; CPU and output share the same boundary; mode round trips retained 67%",
+  "automatic_step": "Enabled: CASL instruction -> COMET micro -> CASL instruction; 0 steps and PR #0020 unchanged",
+  "manual_step": "Disabled: CASL instruction -> COMET instruction; F10 then 1 step / 1 instruction / 13 microsteps, PR #0022",
+  "executable_sha256": "18264923D94EF47865E6D5908E17B63619D8066AB5C1EDD35B2ADB638F3F397A"
+}

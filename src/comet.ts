@@ -4,14 +4,15 @@ import { cometDiagramState, cometMemoryRows, cometWireActive, hexWord as hex, in
 
 export function cometMarkup(): string {
   return `<section id="comet-panel" class="comet-panel panel" hidden>
-    <div class="panel-heading"><h2>COMET CPU</h2><span id="cycle-count">0 microsteps</span></div>
+    <div class="panel-heading comet-heading"><h2>COMET CPU</h2><span id="cycle-count">0 microsteps</span><div class="comet-zoom-controls" role="group" aria-label="CPUブロック図の拡大率"><button id="comet-zoom-out" title="ブロック図を縮小" aria-label="ブロック図を縮小">−</button><button id="comet-zoom-reset" title="等倍（100%）に戻す" aria-label="ブロック図を等倍に戻す">100%</button><button id="comet-zoom-in" title="ブロック図を拡大" aria-label="ブロック図を拡大">＋</button><button id="comet-zoom-fit" title="ブロック図全体を表示領域に合わせる">全体</button></div></div>
     <div class="phase-strip" aria-label="次に実行するフェーズ">${phaseNames.map((name,i)=>`<span id="phase-${i}"><b>0${i+1}</b> ${name}</span>`).join('')}</div>
-    <div class="datapath-scroll" tabindex="0" aria-label="CPUブロック図をスクロール">
-      ${cometDiagramMarkup()}
+    <div class="datapath-scroll" tabindex="0" aria-label="CPUブロック図をスクロール" title="Ctrl＋ホイールで拡大・縮小">
+      <div class="datapath-canvas">${cometDiagramMarkup()}</div>
     </div>
     <div class="transfer-line"><span id="phase-position">次: 取出 / STEP 0</span><strong id="transfer">ロード待ち</strong></div>
     <div class="decoder-line"><span>直前の転送経路を強調表示</span><span id="comet-flags">O 0 / S 0 / Z 0 · DEPTH 0</span></div>
   </section>
+  <div id="comet-divider" class="comet-divider" role="separator" tabindex="0" aria-label="COMET CPU・出力とメモリ・ソースの幅" aria-orientation="vertical" title="ドラッグで左右の比率を変更、ダブルクリックで元の比率に戻す" hidden></div>
   <section id="comet-memory-panel" class="comet-memory-panel panel" hidden>
     <div class="panel-heading"><h2>メモリ / ソース</h2><button id="comet-follow" aria-pressed="true" title="現在の命令へ追従">PR追従</button></div>
     <div class="comet-address-bar"><label class="memory-address"># <input id="comet-memory-address" maxlength="4" aria-label="COMETメモリ表示の先頭番地"></label><span id="comet-memory-info"></span></div>

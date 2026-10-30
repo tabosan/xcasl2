@@ -10,6 +10,7 @@ export interface SimulatorTab {
   id: string; snapshot: Snapshot | null; previous: Snapshot | null; buildKey: string | null;
   sourceIds: string[]; sourceFiles: Map<string, string>; mode: StepMode;
   cometView: boolean; cometFollow: boolean; binaryRegisters: boolean; memoryStart: number; interval: number;
+  cometZoom: number; cometShare: number;
   stackStart: number | null; labelScrollTop: number; stackScrollTop: number;
   running: boolean; busy: boolean; epoch: number; pending: Promise<void>; inputText: string;
 }
@@ -55,6 +56,7 @@ export class Workbench {
     if (!sim) {
       sim = { id, snapshot: null, previous: null, buildKey: null, sourceIds: [], sourceFiles: new Map(), mode: settings.step_mode,
         cometView: settings.comet_view, cometFollow: true, binaryRegisters: settings.binary_registers, memoryStart: settings.memory_start, interval: settings.interval_ms,
+        cometZoom: 100, cometShare: 52.38,
         stackStart: null, labelScrollTop: 0, stackScrollTop: 0,
         running: false, busy: false, epoch: 0, pending: Promise.resolve(), inputText: '' };
       this.simulators.set(id, sim);
