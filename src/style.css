@@ -65,7 +65,12 @@ svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .group-actions { margin-left:auto; align-items:center; flex-shrink:0; padding:0 6px; background:var(--surface); }
 .editor-buffers { display:flex; flex:1; min-height:0; overflow:hidden; }
 .editor-wrap { display:flex; flex:1; min-height:0; min-width:0; background:var(--bg); position:relative; }
-.monaco-host { position:absolute; inset:0; overflow:hidden; }
+.monaco-host { position:absolute; inset:0; overflow:hidden;
+  --vscode-cornerRadius-large:var(--context-menu-radius);
+  --vscode-cornerRadius-medium:var(--context-menu-item-radius);
+  --vscode-strokeThickness:1px;
+  --vscode-shadow-lg:var(--context-menu-shadow);
+}
 .syntax-instruction { color:var(--syntax-instruction); }
 .syntax-directive,.syntax-macro { color:var(--syntax-directive); }
 .syntax-register { color:var(--syntax-register); }
@@ -307,9 +312,10 @@ dialog form button { border-color:var(--outline); }
 .tab-strip.drop-at-end { box-shadow:inset -3px 0 var(--accent); }
 
 /* Workbench menus live outside Monaco and follow the application theme. */
-.app-context-menu { position:fixed; z-index:11000; min-width:230px; max-width:calc(100vw - 8px); max-height:calc(100vh - 8px); overflow-y:auto; padding:5px; color:var(--fg); background:var(--raised); border:1px solid var(--border-strong); border-radius:6px; box-shadow:0 5px 20px #0005; font:13px "Segoe UI","Yu Gothic UI",sans-serif; }
-.app-context-menu .context-menu-item { display:flex; align-items:center; justify-content:space-between; gap:28px; width:100%; padding:6px 10px; min-height:29px; border:0; border-radius:3px; text-align:left; white-space:nowrap; }
-.app-context-menu .context-menu-item:hover:enabled,.app-context-menu .context-menu-item:focus-visible { color:var(--selection-fg); background:var(--selection-bg); outline:none; }
-.app-context-menu .context-menu-item:disabled { color:var(--muted); opacity:.55; }
-.context-menu-shortcut { margin-left:auto; color:var(--muted); font-size:11px; }
-.context-menu-separator { height:1px; margin:5px 7px; background:var(--border); }
+.app-context-menu { position:fixed; z-index:11000; min-width:230px; max-width:calc(100vw - 8px); max-height:calc(100vh - 8px); overflow-y:auto; padding:4px; color:var(--context-menu-fg); background:var(--context-menu-bg); border:1px solid var(--context-menu-border); border-radius:var(--context-menu-radius); box-shadow:var(--context-menu-shadow); font:13px "Segoe UI","Yu Gothic UI",sans-serif; }
+.app-context-menu .context-menu-item { display:flex; align-items:center; justify-content:space-between; gap:28px; width:100%; padding:0 2em; height:24px; border:0; border-radius:var(--context-menu-item-radius); text-align:left; white-space:nowrap; }
+.app-context-menu .context-menu-item:hover:enabled,.app-context-menu .context-menu-item:focus-visible { color:var(--context-menu-selection-fg); background:var(--context-menu-selection-bg); outline:none; }
+.app-context-menu .context-menu-item:disabled { color:var(--muted); opacity:1; }
+.context-menu-shortcut { margin-left:auto; color:inherit; font-size:inherit; opacity:.7; }
+.context-menu-item:hover:enabled .context-menu-shortcut,.context-menu-item:focus-visible .context-menu-shortcut { opacity:1; }
+.context-menu-separator { height:1px; margin:5px 0; background:var(--context-menu-separator); }

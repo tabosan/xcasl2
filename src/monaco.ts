@@ -38,7 +38,13 @@ function applyEditorTheme() {
       { token: 'punctuation.casl2', foreground: color('editor-fg').slice(1) }],
     colors: { 'editor.background': color('bg'), 'editor.foreground': color('editor-fg'),
       'editorLineNumber.foreground': color('subtle'), 'editorCursor.foreground': color('caret'),
-      'editorWidget.background': color('raised'), 'editorWidget.border': color('border-strong') },
+      'editorWidget.background': color('raised'), 'editorWidget.border': color('border-strong'),
+      'menu.background': color('context-menu-bg'), 'menu.foreground': color('context-menu-fg'),
+      'menu.border': color('context-menu-border'), 'menu.separatorBackground': color('context-menu-separator'),
+      'menu.selectionBackground': color('context-menu-selection-bg'), 'menu.selectionForeground': color('context-menu-selection-fg'),
+      'menu.selectionBorder': '#00000000', 'disabledForeground': color('muted'),
+      // Monaco's menu implementation also reads the shared list hover colors.
+      'list.hoverBackground': color('context-menu-selection-bg'), 'list.hoverForeground': color('context-menu-selection-fg') },
   });
   monaco.editor.setTheme('xcasl2');
 }

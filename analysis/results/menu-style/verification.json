@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-30",
+  "frontend_build": "tsc --noEmit && vite build: passed",
+  "desktop_build": "cargo build --manifest-path src-tauri/Cargo.toml --offline --features tauri/custom-protocol: passed",
+  "dark_computed_styles_match": true,
+  "shared_dark_styles": {
+    "foreground": "rgb(204, 204, 204)",
+    "shadow": "0 5px 20px #0005",
+    "radius": "6px",
+    "item_radius": "3px",
+    "row_height": "24px",
+    "border_color": "rgb(69, 69, 69)",
+    "background": "rgb(37, 37, 38)"
+  },
+  "light_native_visual_check": "Editor and workbench context menus verified in isolated light-theme configuration",
+  "executable_sha256": "EE0C49D75DB2DCC225FE00560A38A81DC62381B5B63BAE397AC5DDF29513BE09"
+}

@@ -1,5 +1,15 @@
 /* Shared color tokens for the workbench, syntax highlighting and COMET SVG. */
 :root {
+  /* One menu surface for the workbench and Monaco's floating/shadow menus. */
+  --context-menu-bg: var(--raised);
+  --context-menu-fg: var(--fg);
+  --context-menu-border: var(--border-strong);
+  --context-menu-separator: var(--border);
+  --context-menu-selection-bg: var(--selection-bg);
+  --context-menu-selection-fg: var(--selection-fg);
+  --context-menu-radius: 6px;
+  --context-menu-item-radius: 3px;
+  --context-menu-shadow: 0 5px 20px #0005;
   --mono: "Cascadia Code","Consolas","BIZ UDGothic",monospace;
   color-scheme: dark;
   --bus: #6a91ef;
