@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-30",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "19D16B40A03C11026F13F79B5C48CA74F8B0588899E7464951BF1DDB33CE6FFA",
+  "profile": "analysis/results/register-columns/profile",
+  "initial_settings": { "version": 1, "theme": "light", "decimal": true },
+  "checks": {
+    "legacy_default": "old decimal=true opens with GR hex and signed decimal columns together",
+    "dual_columns": "GR0-GR7 show FFFF and -1 simultaneously in narrow split pane",
+    "binary_toggle": "2進のみ checkbox switches GR0-GR7 to 1111 1111 1111 1111 without clipping",
+    "step": "F10 updates GR1 to 0000 0000 0000 0001; PR remains 0022 and SP remains 00C3",
+    "toggle_back": "GR1 shows 0001 and 1; GR0 shows FFFF and -1; 1 STEP / 1 instructions retained",
+    "persistence": "settings.json contained binary_registers=true after checking and false after unchecking",
+    "shutdown": "verification process exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "33 passed, including binary padding, signed/unsigned dual columns, PR/SP hex invariant and tab isolation",
+    "settings_tests": "9 passed, including binary_registers roundtrip and old decimal preference migration",
+    "typescript_vite_build": "passed",
+    "cargo_clippy": "passed (-D warnings)",
+    "cargo_fmt": "passed",
+    "tauri_debug_build": "passed"
+  }
+}

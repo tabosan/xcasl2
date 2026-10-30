@@ -1,6 +1,8 @@
 /* Shared color tokens for the workbench, syntax highlighting and COMET SVG. */
 :root {
   color-scheme: dark;
+  --bus: #6a91ef;
+  --bus-active: #ffbf69;
   --fg: #cccccc;
   --bg: #1f1f1f;
   --surface: #181818;
@@ -56,6 +58,8 @@
 
 :root[data-theme="light"] {
   color-scheme: light;
+  --bus: #4169d8;
+  --bus-active: #b45a00;
   --fg: #333333;
   --bg: #ffffff;
   --surface: #f3f3f3;

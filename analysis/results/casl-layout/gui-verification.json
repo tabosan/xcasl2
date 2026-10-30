@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-30",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "D6008677E82218F20A4CF8D9398CD6CCCE6FD2EF18064360B77EB84CB6864271",
+  "profile": "analysis/results/casl-layout/profile",
+  "checks": {
+    "split_view": "left registers above labels, right program spanning both; stack left and output right below",
+    "wide_view": "joined editor groups; same panel arrangement with readable full program listing",
+    "registers": "PR/SP first row, GR0-GR7 vertical rows, IR and call depth retained",
+    "execution": "hello.cas halted normally at 10 STEP / 10 instructions, GR1=0003, SP=00C3",
+    "output": "HELLO, CASL II! visible in lower right output panel",
+    "independent_scroll": "label entries scrolled while other panels retained position",
+    "outer_scroll": "lower stack and output visible together; memory accessible full width beneath",
+    "stack": "SP marker at 00C3, retained popped value 0003 at 00C2",
+    "comet": "datapath and side-by-side output/memory retained; return to CASL preserves state and label scroll",
+    "theme": "light color tokens retained",
+    "shutdown": "verification process exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "32 passed",
+    "typescript_vite_build": "passed",
+    "tauri_debug_build": "passed"
+  }
+}

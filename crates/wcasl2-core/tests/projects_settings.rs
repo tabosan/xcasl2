@@ -246,7 +246,7 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     settings.fill = 0;
     settings.interval_ms = 2345;
     settings.step_mode = StepMode::Micro;
-    settings.decimal = true;
+    settings.binary_registers = true;
     settings.signed_decimal = false;
     settings.theme = wcasl2_core::settings::ThemePreference::Light;
     settings.auto_save = true;
@@ -263,9 +263,9 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
         serde_json::from_str::<Settings>("{}").unwrap(),
         Settings::default()
     );
-    // Older files with decimal display enabled adopt signed display by default.
+    // Older decimal-only preferences adopt hex/decimal columns and signed display.
     let old: Settings = serde_json::from_str(r#"{"version":1,"decimal":true}"#).unwrap();
-    assert!(old.decimal && old.signed_decimal);
+    assert!(!old.binary_registers && old.signed_decimal);
     assert!(!old.auto_save && old.recent_files.is_empty());
     assert_eq!(old.theme, wcasl2_core::settings::ThemePreference::Dark);
     for theme in [

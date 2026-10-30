@@ -1,7 +1,7 @@
 import { cometMarkup, renderComet } from './comet';
 import type { Row, Snapshot } from './types';
 import type { SimulatorTab } from './workbench';
-import { labelValues, labelSourceRow, stackValues, formatRegisterValue } from './inspection';
+import { labelValues, labelSourceRow, stackValues, registerValues } from './inspection';
 
 export const hex = (value: number) => value.toString(16).toUpperCase().padStart(4, '0');
 export function simulatorMarkup(): string {
@@ -17,7 +17,7 @@ export function simulatorMarkup(): string {
   <div id="sim-runtime-error" class="runtime-error" role="status" hidden></div>
   <div id="sim-content" class="sim-content">
     <section id="register-panel" class="register-panel panel" aria-label="レジスタ">
-      <div class="panel-heading"><h2>レジスタ</h2><label class="compact-label"><input id="decimal" type="checkbox">10進</label><span class="flag-label">FR <b id="flags">O 0　S 0　Z 0</b></span></div>
+      <div class="panel-heading"><h2>レジスタ</h2><label class="compact-label"><input id="binary-registers" type="checkbox" title="GR0〜GR7を2進のみで表示。オフは16進・10進を同時表示。PR・SPは常に16進。">2進のみ</label><span class="flag-label">FR <b id="flags">O 0　S 0　Z 0</b></span></div>
       <div id="registers" class="registers"></div><div class="cpu-detail"><span>IR <b id="ir">—</b></span><span>CALL DEPTH <b id="depth">0</b></span></div>
     </section>
     <section id="program-panel" class="program-panel panel"><div class="panel-heading"><h2>プログラム</h2><span id="program-info"></span></div><div class="table-scroll"><table class="program-table"><thead><tr><th>行</th><th>番地</th><th>機械語</th><th>ソース</th></tr></thead><tbody id="program"></tbody></table></div></section>
@@ -45,14 +45,15 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
   const switched = lastId !== tab.id; lastId = tab.id;
   $('sim-content').classList.toggle('comet-view', tab.cometView);
   $('register-panel').hidden = tab.cometView; $('program-panel').hidden = tab.cometView; $('comet-panel').hidden = !tab.cometView;
+  $('comet-memory-panel').hidden = !tab.cometView;
   $('casl-inspection').hidden = tab.cometView;
   $('view-program').classList.toggle('selected', !tab.cometView); $('view-comet').classList.toggle('selected', tab.cometView);
   $<HTMLSelectElement>('step-mode').value = tab.mode;
   const speed = $<HTMLSelectElement>('speed');
   if (!Array.from(speed.options).some(option => Number(option.value) === tab.interval)) { const option = document.createElement('option'); option.value = String(tab.interval); option.textContent = `${tab.interval} ms`; speed.append(option); }
   speed.value = String(tab.interval);
-  $<HTMLInputElement>('decimal').checked = tab.decimal;
-  $<HTMLInputElement>('decimal').title = signedDecimal ? '符号付き10進（2の補数）。設定で変更できます。' : '符号なし10進。設定で変更できます。';
+  $<HTMLInputElement>('binary-registers').checked = tab.binaryRegisters;
+  $('registers').classList.toggle('binary-registers', tab.binaryRegisters);
   $('sim-stale').hidden = !stale;
   const ready = !!snapshot && !stale && snapshot.status === 'ready';
   for (const id of ['step', 'run']) $<HTMLButtonElement>(id).disabled = !ready || tab.busy || tab.running || blocked;
@@ -69,11 +70,24 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
   $('sim-runtime-error').textContent = snapshot?.error ?? ''; $('sim-runtime-error').hidden = !snapshot?.error;
   const values = cpu ? [...cpu.gr, cpu.pr, cpu.sp] : Array(10).fill(null), old = previous?.cpu;
   const oldValues = old ? [...old.gr, old.pr, old.sp] : [];
-  $('registers').replaceChildren(...values.map((value, i) => {
+  const columns = document.createElement('div'); columns.className = 'register-columns';
+  const grHeading = document.createElement('span'); grHeading.textContent = 'GR';
+  const valueHeadings = document.createElement('div'); valueHeadings.className = 'register-values';
+  for (const text of tab.binaryRegisters ? ['2進'] : ['16進', '10進']) {
+    const heading = document.createElement('span'); heading.textContent = text; valueHeadings.append(heading);
+  }
+  columns.append(grHeading, valueHeadings);
+  $('registers').replaceChildren(columns, ...values.map((value, i) => {
     const cell = document.createElement('div'); cell.className = `register ${i > 7 ? 'special' : ''} ${value !== null && oldValues[i] !== undefined && oldValues[i] !== value ? 'changed' : ''}`;
     const label = document.createElement('span'); label.textContent = i < 8 ? `GR${i}` : i === 8 ? 'PR' : 'SP';
-    const content = document.createElement('b'); content.textContent = value === null ? '—' : formatRegisterValue(value, tab.decimal, signedDecimal);
-    content.title = value === null ? '' : `符号なし: ${value} / 符号付き: ${value > 32767 ? value - 65536 : value}`;
+    const content = document.createElement('div'); content.className = 'register-values';
+    const formatted = value === null ? Array(i > 7 || tab.binaryRegisters ? 1 : 2).fill('—') : registerValues(value, tab.binaryRegisters, signedDecimal, i > 7);
+    for (const [column, text] of formatted.entries()) {
+      const number = document.createElement('b'); number.textContent = text;
+      const radix = i > 7 || !tab.binaryRegisters && column === 0 ? '16進' : tab.binaryRegisters ? '2進' : '10進';
+      number.title = `${label.textContent} ${radix}: ${text}`;
+      content.append(number);
+    }
     cell.append(label, content); return cell;
   }));
   $('flags').textContent = `O ${(cpu?.fr ?? 0) >> 2 & 1}　S ${(cpu?.fr ?? 0) >> 1 & 1}　Z ${(cpu?.fr ?? 0) & 1}`;
@@ -83,7 +97,7 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
   renderMemory(snapshot, previous, tab.memoryStart);
   const address = $<HTMLInputElement>('memory-address');
   if (switched || document.activeElement !== address) address.value = hex(tab.memoryStart);
-  renderComet(snapshot, previous, root);
+  renderComet(snapshot, previous, root, {start:tab.memoryStart, follow:tab.cometFollow, sourceFiles:tab.sourceFiles, onRow});
   const device = snapshot?.devices, outputPath = device?.config.output_path ?? null;
   $('output').textContent = snapshot?.output.join('\n') ?? '';
   $('output').hidden = !!outputPath; $('file-output').hidden = !outputPath;

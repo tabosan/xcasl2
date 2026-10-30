@@ -3,7 +3,7 @@ export type ThemePreference = 'light' | 'dark' | 'system';
 export interface DeviceConfig { input_path: string | null; output_path: string | null }
 export interface Settings {
   version: number; base: number; fill: number; interval_ms: number; step_mode: StepMode;
-  decimal: boolean; signed_decimal: boolean; comet_view: boolean; memory_start: number; devices: DeviceConfig;
+  binary_registers: boolean; signed_decimal: boolean; comet_view: boolean; memory_start: number; devices: DeviceConfig;
   auto_save: boolean; recent_files: string[];
   theme: ThemePreference;
 }

@@ -23,7 +23,7 @@ const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
 const simulationViews = new Map<string, { root: HTMLElement; render: ReturnType<typeof createSimulatorRenderer> }>();
-let settings: Settings = { version: 1, theme: 'dark', base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', decimal: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
+let settings: Settings = { version: 1, theme: 'dark', base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
 const themeController = createThemeController(document.documentElement, window.matchMedia('(prefers-color-scheme: dark)'));
 async function applyTheme() {
   themeController.setPreference(settings.theme);
@@ -108,11 +108,23 @@ function ensureSimulationView(id: string): HTMLElement {
   for (const name of ['run', 'step', 'stop', 'back', 'reset', 'devices']) el(name).onclick = () => { selectSimulator(id); action(name); };
   el('sim-source').onclick = () => selectSource(id, true);
   el('sim-rebuild').onclick = () => buildPreview(id);
-  el('decimal').onchange = () => { const current = sim(); if (current) { current.decimal = el<HTMLInputElement>('decimal').checked; persistSettings(current); renderSim(); } };
+  el('binary-registers').onchange = () => { const current = sim(); if (current) { current.binaryRegisters = el<HTMLInputElement>('binary-registers').checked; persistSettings(current); renderSim(); } };
   el('speed').onchange = () => { const current = sim(); if (current) { current.interval = Number(el<HTMLSelectElement>('speed').value); persistSettings(current); } };
   for (const [name, value] of [['view-program', false], ['view-comet', true]] as const) el(name).onclick = () => { const current = sim(); if (current) { current.cometView = value; persistSettings(current); renderSim(); } };
   el('step-mode').onchange = async () => { const current = sim(); if (!current) return; const mode = el<HTMLSelectElement>('step-mode').value as StepMode; if (mode !== 'instruction') current.cometView = true; await control(current, 'mode', { mode }); persistSettings(current); renderSim(); };
   el('memory-address').onchange = () => { const current = sim(), value = el<HTMLInputElement>('memory-address').value; if (!current) return; if (!/^[0-9a-fA-F]{1,4}$/.test(value) || parseInt(value, 16) >= 3000) { message('メモリ番地は0000〜0BB7で指定してください。', true); return; } current.memoryStart = parseInt(value, 16); persistSettings(current); renderSim(); };
+  el('comet-follow').onclick = () => {
+    const current = sim(); if (!current) return;
+    const start = parseInt(el<HTMLInputElement>('comet-memory-address').value,16);
+    if (current.cometFollow && Number.isFinite(start)) current.memoryStart = start;
+    current.cometFollow = !current.cometFollow; persistSettings(current); renderSim();
+  };
+  el('comet-memory-address').onchange = () => {
+    const current = sim(), value = el<HTMLInputElement>('comet-memory-address').value;
+    if (!current) return;
+    if (!/^[0-9a-fA-F]{1,4}$/.test(value) || parseInt(value,16) >= 3000) { message('メモリ番地は0000〜0BB7で指定してください。',true); return; }
+    current.memoryStart = parseInt(value,16); current.cometFollow = false; persistSettings(current); renderSim();
+  };
   el('stack-follow').onclick = () => { const current = sim(); if (current) { current.stackStart = current.stackStart === null ? parseInt(el<HTMLInputElement>('stack-address').value, 16) : null; current.stackScrollTop = 0; renderSim(); } };
   el('stack-address').onchange = () => { const current = sim(), value = el<HTMLInputElement>('stack-address').value; if (!current) return; if (!/^[0-9a-fA-F]{1,4}$/.test(value) || parseInt(value, 16) >= 3000) { message('スタック番地は0000〜0BB7で指定してください。', true); return; } current.stackStart = parseInt(value, 16); current.stackScrollTop = 0; renderSim(); };
   el('input-text').oninput = () => { const current = sim(); if (current) current.inputText = el<HTMLInputElement>('input-text').value; };
@@ -355,7 +367,7 @@ async function changeProject(action: string) {
 }
 function persistSettings(sim: SimulatorTab | null = wb.simulation()) {
   if (!desktop || !settingsReady) return;
-  if (sim) settings = { ...settings, step_mode: sim.mode, comet_view: sim.cometView, decimal: sim.decimal, memory_start: sim.memoryStart, interval_ms: sim.interval };
+  if (sim) settings = { ...settings, step_mode: sim.mode, comet_view: sim.cometView, binary_registers: sim.binaryRegisters, memory_start: sim.memoryStart, interval_ms: sim.interval };
   const next = { ...settings };
   settingsQueue = settingsQueue.then(() => invoke<void>('set_settings', { settings: next })).catch(error => showError(error));
 }

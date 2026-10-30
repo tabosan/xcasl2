@@ -1,6 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { labelValues, labelSourceRow, stackValues, formatRegisterValue } from '../src/inspection.ts';
+import { labelValues, labelSourceRow, stackValues, formatRegisterValue, registerValues } from '../src/inspection.ts';
+
+test('GR values show hex/decimal together or all 16 bits; address registers always stay hex',()=>{
+  assert.deepEqual(registerValues(0xffff,false),['FFFF','-1']);
+  assert.deepEqual(registerValues(0x8000,false,false),['8000','32768']);
+  assert.deepEqual(registerValues(1,true),['0000 0000 0000 0001']);
+  assert.deepEqual(registerValues(0xffff,true),['1111 1111 1111 1111']);
+  assert.deepEqual(registerValues(0x8000,true,false),['1000 0000 0000 0000']);
+  for(const binary of [true,false])for(const signed of [true,false]) {
+    assert.deepEqual(registerValues(0xffff,binary,signed,true),['FFFF']);
+    assert.deepEqual(registerValues(0x20,binary,signed,true),['0020']);
+  }
+});
 
 test('register decimal display defaults to signed two’s complement and can switch to unsigned',()=>{
   const values=[0x0000,0x0001,0x7fff,0x8000,0xfffe,0xffff];

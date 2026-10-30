@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-30",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "86937166983F8C9C5BA681D8064F332627905ACFF63FA2A037BC061BEB7E8E8B",
+  "profile": "analysis/results/comet-layout/profile",
+  "checks": {
+    "layout": "left CPU diagram above output, right word-aligned memory/source listing; checked split and joined groups",
+    "diagram": "IR1/IR2, Decoder r/x and OP/ADR, Controller, PR/SP, all eight GRs, MAR, Adder/EA, MDR, ALU and FR connected by orthogonal buses",
+    "light_theme": "diagram readable with green values, blue buses and active transfer emphasis",
+    "micro_fetch": "PR→MAR set MAR=0020; memory read set MDR=1210 and PR=0021; next transfer set IR1=1210 while IR2 retained FFFF",
+    "dark_theme_final": "complete CPU diagram and lower output fit the joined pane after closing assembler diagnostics",
+    "manual_memory": "entered 0030; listing began with RET at 0030 and string words from 0031; PR follow disabled",
+    "source_navigation": "clicked RET row, editor selected source line 6; returned to simulator with manual memory start retained",
+    "pr_follow": "reenabled and window returned to 0020",
+    "execution": "micro mode completed normally at 128 STEP / 10 instructions; GR1=0003, SP=00C3; HELLO, CASL II! visible in lower-left output",
+    "casl_switch": "existing CASL arrangement, dual register columns and output retained after switch",
+    "shutdown": "both verification processes exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "36 passed, including real diagram values, read direction gating, memory/source alignment, physical bounds and independent SVG IDs",
+    "typescript_vite_build": "passed",
+    "css_theme_tokens": "all referenced color tokens defined",
+    "tauri_debug_build": "passed"
+  }
+}

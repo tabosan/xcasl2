@@ -4,6 +4,11 @@ export const signedWord = (value: number): number => value >= 0x8000 ? value - 0
 export function formatRegisterValue(value: number, decimal: boolean, signed = true): string {
   return decimal ? String(signed ? signedWord(value) : value) : value.toString(16).toUpperCase().padStart(4, '0');
 }
+export function registerValues(value: number, binary: boolean, signed = true, special = false): string[] {
+  if (special) return [formatRegisterValue(value, false)];
+  if (binary) return [value.toString(2).padStart(16, '0').match(/.{4}/g)!.join(' ')];
+  return [formatRegisterValue(value, false), formatRegisterValue(value, true, signed)];
+}
 export function labelValues(snapshot: Snapshot, signed = true) {
   return snapshot.symbols.flatMap(symbol => Array.from({ length: symbol.words }, (_, offset) => {
     const address = symbol.address + offset, value = snapshot.memory[address];

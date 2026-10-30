@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Workbench, pathKey } from '../src/workbench.ts';
-const settings = { base:32, fill:65535, step_mode:'instruction', interval_ms:100, comet_view:false, decimal:false, memory_start:32 };
+const settings = { base:32, fill:65535, step_mode:'instruction', interval_ms:100, comet_view:false, binary_registers:false, memory_start:32 };
 
 test('opening an existing path focuses its tab and preserves unsaved text', () => {
   const workbench = new Workbench();
@@ -21,6 +21,8 @@ test('each source has exactly one simulator and tab selection preserves snapshot
   assert.equal(wb.ensureSimulator(a.id,settings),sa);
   assert.equal(wb.simulators.size,2); assert.equal(sa.snapshot.steps,12); assert.equal(sb.snapshot.cpu.gr[0],42);
   sa.running=true; assert.equal(sb.running,false);
+  sa.binaryRegisters=true;assert.equal(wb.ensureSimulator(a.id,settings).binaryRegisters,true);assert.equal(sb.binaryRegisters,false);
+  sa.cometFollow=false;assert.equal(wb.ensureSimulator(a.id,settings).cometFollow,false);assert.equal(sb.cometFollow,true);
   sa.stackStart=42;sa.labelScrollTop=120;sa.stackScrollTop=240;
   assert.equal(sb.stackStart,null);
   assert.equal(sb.labelScrollTop,0);assert.equal(sb.stackScrollTop,0);
