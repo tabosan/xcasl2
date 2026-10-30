@@ -1,66 +1,84 @@
-import { attachHighlight } from './highlight';
+import { initializeMonaco, monaco } from './monaco';
+import type { Diagnostic } from './types';
 import type { SourceDocument } from './workbench';
-import { EditHistory, type EditState } from './edit-history';
 
 export class SourceEditor {
   readonly root = document.createElement('div');
-  readonly textarea: HTMLTextAreaElement;
-  readonly gutter: HTMLPreElement;
-  readonly renderHighlight: ReturnType<typeof attachHighlight>;
-  private history: EditHistory;
+  readonly model: monaco.editor.ITextModel;
+  readonly editor: monaco.editor.IStandaloneCodeEditor;
   composing = false;
+  private replacing = false;
+  private label = '';
+  private markers = '';
+  private disposables: monaco.IDisposable[] = [];
   constructor(readonly document: SourceDocument, private onChange: () => void, private onPosition: () => void) {
-    this.root.className = 'editor-wrap editor-buffer';
-    this.root.innerHTML = '<pre class="gutter" aria-hidden="true"></pre><div class="source-editor"><pre class="source-highlight" aria-hidden="true"></pre><textarea wrap="off" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea></div>';
-    this.textarea = this.root.querySelector('textarea')!;
-    this.gutter = this.root.querySelector('.gutter')!;
-    this.textarea.value = document.source;
-    this.history = new EditHistory(this.editState());
-    this.renderHighlight = attachHighlight(this.textarea, this.root.querySelector('.source-highlight')!, this.gutter);
-    this.textarea.addEventListener('beforeinput', () => this.history.before(this.editState()));
-    this.textarea.addEventListener('compositionstart', () => { this.composing = true; });
-    this.textarea.addEventListener('compositionend', () => { this.composing = false; onChange(); });
-    this.textarea.addEventListener('input', event => { this.history.record(this.editState(), /history/i.test((event as InputEvent).inputType)); document.source = this.textarea.value; this.render(); onChange(); onPosition(); });
-    for (const event of ['click', 'keyup', 'select', 'focus']) this.textarea.addEventListener(event, onPosition);
-    this.textarea.addEventListener('keydown', event => {
-      if (event.ctrlKey && !event.altKey && !event.isComposing && ['z', 'y'].includes(event.key.toLowerCase())) {
-        event.preventDefault(); event.stopPropagation(); this.editCommand(event.key.toLowerCase() === 'y' || event.shiftKey ? 'redo' : 'undo'); return;
-      }
-      if (event.key === 'Tab' && !event.ctrlKey && !event.altKey && !event.isComposing) {
-        event.preventDefault();
-        // insertText participates in the textarea's native undo history.
-        if (!window.document.execCommand('insertText', false, '    ')) {
-          this.history.before(this.editState());
-          this.textarea.setRangeText('    ', this.textarea.selectionStart, this.textarea.selectionEnd, 'end');
-          this.history.record(this.editState());
-          document.source = this.textarea.value; this.render(); onChange();
-        }
-      }
+    initializeMonaco();
+    this.root.className = 'editor-wrap editor-buffer monaco-source';
+    const host = window.document.createElement('div'); host.className = 'monaco-host'; this.root.append(host);
+    this.model = monaco.editor.createModel(document.source, 'casl2', monaco.Uri.from({ scheme: 'inmemory', authority: 'xcasl2', path: `/${document.id}/${document.name}` }));
+    this.model.setEOL(monaco.editor.EndOfLineSequence.LF);
+    this.model.updateOptions({ tabSize: 4, insertSpaces: true });
+    this.editor = monaco.editor.create(host, {
+      model: this.model, theme: 'xcasl2', automaticLayout: true,
+      fontFamily: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', fontSize: 14, lineHeight: 23,
+      tabSize: 4, insertSpaces: true, detectIndentation: false,
+      minimap: { enabled: true }, folding: true, showFoldingControls: 'mouseover',
+      lineNumbers: 'on', glyphMargin: true, scrollBeyondLastLine: true,
+      wordWrap: 'off', padding: { top: 16, bottom: 16 }, contextmenu: true,
+      fixedOverflowWidgets: true, accessibilitySupport: 'auto',
+      // Use Monaco's established input path for WebView IME/native edit menus.
+      editContext: false,
+      // These are part of WCASL2's source syntax; do not flag Japanese strings.
+      unicodeHighlight: { ambiguousCharacters: false, nonBasicASCII: false },
+      quickSuggestions: { other: true, comments: false, strings: false },
     });
+    this.disposables.push(
+      this.model.onDidChangeContent(() => {
+        if (this.replacing) return;
+        document.source = this.model.getValue(); this.onChange(); this.onPosition();
+      }),
+      this.editor.onDidChangeCursorPosition(onPosition),
+      this.editor.onDidFocusEditorText(onPosition),
+      this.editor.onDidCompositionStart(() => { this.composing = true; }),
+      this.editor.onDidCompositionEnd(() => { this.composing = false; onChange(); }),
+    );
     this.render();
   }
-  private editState(): EditState { const field = this.textarea; return { value: field.value, start: field.selectionStart, end: field.selectionEnd, top: field.scrollTop, left: field.scrollLeft }; }
-  editCommand(command: 'undo' | 'redo') {
-    this.textarea.focus({ preventScroll: true });
-    // Keep native coalescing/IME behavior while its history is available.
-    const before = this.textarea.value;
-    window.document.execCommand(command);
-    if (this.textarea.value !== before) return;
-    const state = this.history.move(command === 'undo' ? -1 : 1); if (!state) return;
-    this.textarea.value = state.value; this.textarea.setSelectionRange(state.start, state.end);
-    this.textarea.scrollTop = state.top; this.textarea.scrollLeft = state.left;
-    this.document.source = state.value; this.render(); this.onChange(); this.onPosition();
+  focus() { this.editor.focus(); }
+  hasTextFocus() { return this.editor.hasTextFocus(); }
+  position() { return this.editor.getPosition(); }
+  editCommand(command: 'undo' | 'redo') { this.focus(); this.editor.trigger('menu', command, null); }
+  find(replace = false) {
+    this.focus(); void this.editor.getAction(replace ? 'editor.action.startFindReplaceAction' : 'actions.find')?.run();
+  }
+  commandPalette() { this.focus(); void this.editor.getAction('editor.action.quickCommand')?.run(); }
+  replaceSource(source: string) {
+    if (this.model.getValue() === source) return;
+    this.replacing = true;
+    try { this.model.setValue(source); } finally { this.replacing = false; }
+  }
+  setDiagnostics(diagnostics: Diagnostic[]) {
+    const key = JSON.stringify(diagnostics); if (key === this.markers) return; this.markers = key;
+    monaco.editor.setModelMarkers(this.model, 'xcasl2-assembler', diagnostics.filter(d => d.line > 0).map(d => {
+      const line = Math.min(d.line, this.model.getLineCount());
+      return { severity: monaco.MarkerSeverity.Error, message: d.message, code: String(d.code), startLineNumber: line, endLineNumber: line,
+        startColumn: 1, endColumn: Math.max(2, this.model.getLineMaxColumn(line)) };
+    }));
   }
   render() {
-    this.textarea.setAttribute('aria-label', `${this.document.name} — CASL II ソースコード`);
-    this.gutter.textContent = Array.from({ length: this.document.source.split('\n').length }, (_, i) => String(i + 1)).join('\n');
-    this.renderHighlight();
+    // The model/editor live as long as this file. Rendering or moving tabs never
+    // recreates them, so Monaco retains undo, selections and find state.
+    this.replaceSource(this.document.source);
+    const label = `${this.document.name} — CASL II ソースコード`;
+    if (label !== this.label) { this.label = label; this.editor.updateOptions({ ariaLabel: label }); }
+    this.editor.layout();
   }
   reveal(line: number, length: number) {
-    const start = this.textarea.value.split('\n').slice(0, line - 1).join('\n').length + (line > 1 ? 1 : 0);
-    this.textarea.focus(); this.textarea.setSelectionRange(start, start + length);
-    this.textarea.scrollTop = Math.max(0, (line - 1) * parseFloat(getComputedStyle(this.textarea).lineHeight) - this.textarea.clientHeight / 3);
-    this.renderHighlight();
+    const target = Math.max(1, Math.min(line, this.model.getLineCount()));
+    this.editor.setSelection(new monaco.Range(target, 1, target, Math.min(length + 1, this.model.getLineMaxColumn(target))));
+    this.editor.revealLineInCenterIfOutsideViewport(target); this.focus();
   }
-  dispose() { this.renderHighlight.dispose(); this.root.remove(); }
+  dispose() {
+    this.disposables.forEach(item => item.dispose()); this.editor.dispose(); this.model.dispose(); this.root.remove();
+  }
 }

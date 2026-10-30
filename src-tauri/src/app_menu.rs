@@ -73,7 +73,7 @@ pub fn create(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
         ],
     )?;
     // Undo/redo predefined items are unsupported on Windows. Route them to the
-    // focused native textarea's edit history instead of maintaining a second history.
+    // focused Monaco editor (or native form input) instead of a second history.
     let edit = Submenu::with_items(
         app,
         "編集(&E)",
@@ -88,6 +88,8 @@ pub fn create(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
             &PredefinedMenuItem::select_all(app, Some("すべて選択(&A)"))?,
             &PredefinedMenuItem::separator(app)?,
             &item(app, "find", "検索(&F)…", Some("Ctrl+F"))?,
+            &item(app, "replace", "置換(&H)…", Some("Ctrl+H"))?,
+            &item(app, "command-palette", "コマンドパレット…", Some("F1"))?,
         ],
     )?;
     let view = Submenu::with_items(

@@ -1,0 +1,5 @@
+; “ú–{Œê MonacoŠm”F
+MAIN     START
+         LAD GR1,7
+         RET
+         END

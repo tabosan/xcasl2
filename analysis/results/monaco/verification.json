@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-30",
+  "monaco_version": "0.57.0",
+  "entry_point": "monaco-editor (full standard editor contributions)",
+  "frontend_tests": {
+    "passed": 44,
+    "failed": 0
+  },
+  "browser_checks": [
+    "Existing CASL categories retain their CSS theme colors in Monaco tokens",
+    "Typing updates the source document, cursor position and dirty tab indicator",
+    "Undo/redo, native find/replace and replace-all modify the active model",
+    "Two source files can be displayed side by side and retain independent edit histories",
+    "F1 command palette displays 131 editor actions",
+    "CASL completion displays LAD and LD candidates",
+    "No observed console errors or worker fallback warnings"
+  ],
+  "desktop_checks": [
+    "Hello sample assembles from the Monaco model and halts after 10 instructions with GR1=3 and HELLO, CASL II! output",
+    "Monaco accepts Japanese comments and native Ctrl+Z/Ctrl+Y restore/reapply an entire document replacement",
+    "Editing invalidates the corresponding simulator build",
+    "Native Ctrl+S saves the edited model using CP932 and CRLF; saved bytes were decoded and checked",
+    "Assembler errors are shown with a red underline on the reported source line",
+    "Rebuilt edited program contains 3 words and halts after 2 instructions with GR1=7",
+    "Changing the app theme to light updates Monaco background and CASL token colors",
+    "F5 with the source editor active assembles and opens the corresponding simulator"
+  ],
+  "configuration_directory": "analysis/results/monaco/config",
+  "usual_user_configuration_modified": false,
+  "saved_source": "analysis/results/monaco/edited.cas",
+  "screenshot": "analysis/results/monaco/desktop-light.png",
+  "scope": "CASL definitions/references/rename are local to one file and distinguish START sections. START program-name rename is rejected to avoid changing only one side of cross-file references. VS Code extension hosting and external CASL LSP are not implemented.",
+  "desktop_build": "passed: tauri build --debug --no-bundle -- --offline",
+  "desktop_sha256": "B93A6870A8A991BBE6C8B30D51BC446B6AABB495B45FC97F2429E00FC4E403DB"
+}

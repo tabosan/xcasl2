@@ -1,0 +1,21 @@
+.bus-lines path { fill:none; stroke:var(--bus); stroke-width:1.35; stroke-linejoin:round; }
+.bus-lines path.active { stroke:var(--bus-active); stroke-width:3; }
+[data-view="bus-arrow"] path,[id="bus-arrow"] path { fill:var(--bus); }
+.datapath-node>rect,.datapath-node .logic-shape { fill:var(--bg); stroke:var(--outline); stroke-width:1.5; }
+.datapath-node .node-divider { fill:none; stroke:var(--outline); stroke-width:1; }
+.datapath-node .node-label { fill:var(--fg); font:600 17px "Segoe UI",sans-serif; }
+.datapath-node .node-value { fill:var(--syntax-register); font:20px var(--mono); }
+.datapath-node .small-value { font-size:14px; }
+.datapath-node .node-caption,.memory-port .node-caption { fill:var(--secondary); font:11px var(--mono); }
+.datapath-node .controller-value { fill:var(--secondary); font:12px "Segoe UI",sans-serif; }
+.datapath-node .logic-label { fill:var(--fg); font:600 20px "Segoe UI",sans-serif; }
+.datapath-node.active>rect,.datapath-node.active .logic-shape { fill:var(--selection-bg); stroke:var(--bus-active); stroke-width:2; }
+.datapath-node.active .node-label { fill:var(--selection-fg); }
+.decoder-field { fill:var(--raised); stroke:var(--border-strong); }
+.gr-row rect { fill:var(--bg); stroke:var(--border); stroke-width:1; }
+.gr-row .gr-index { fill:var(--muted); font:14px var(--mono); }
+.gr-row.selected rect { fill:var(--selection-bg); stroke:var(--accent); }
+.gr-row.changed rect { fill:var(--changed-bg); }
+.gr-row.changed .node-value { fill:var(--warning); }
+.memory-port circle { fill:var(--bus); }
+.memory-port.active circle { fill:var(--bus-active); }

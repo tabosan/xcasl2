@@ -3,6 +3,8 @@ import { listen } from '@tauri-apps/api/event';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import './theme.css';
 import './style.css';
+import './comet-diagram.css';
+import { applyCometLayout } from './comet-layout';
 import { createThemeController } from './theme';
 import { Workbench, basename, pathKey, type SourceDocument, type SimulatorTab } from './workbench';
 import { SourceEditor } from './editor';
@@ -15,6 +17,7 @@ import { editDevices } from './devices';
 import { editPreferences } from './preferences';
 import { examples } from './examples';
 import { AutoSave, recentFiles } from './file-features';
+import { workbenchShortcut } from './shortcuts';
 import type { Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
@@ -102,6 +105,7 @@ function ensureSimulationView(id: string): HTMLElement {
   const existing = simulationViews.get(id); if (existing) return existing.root;
   const root = document.createElement('div'); root.className = 'simulation-buffer';
   root.innerHTML = scopedMarkup('<div class="sim-document-actions"><button id="sim-source" title="対応するソースを開く">対応するソースを開く</button></div>' + simulatorMarkup(), id);
+  applyCometLayout(root.querySelector<SVGSVGElement>('.datapath')!);
   const el = <T extends HTMLElement = HTMLElement>(name: string) => root.querySelector(`[data-view="${name}"]`) as T;
   for (const path of root.querySelectorAll('.bus-lines path')) path.setAttribute('marker-end', `url(#${id}-bus-arrow)`);
   const sim = () => wb.simulation(id);
@@ -184,6 +188,12 @@ function renderSidebar() {
 }
 function renderSource() { view.render(settings, ioBusy || !settingsReady, desktop); renderDiagnostics(); updatePosition(); }
 function renderDiagnostics() {
+  const markers = new Map<string, Diagnostic[]>();
+  for (const owner of wb.documents.values()) for (const item of owner.diagnostics) {
+    const id = item.file ?? owner.id;
+    const list = markers.get(id) ?? []; list.push(item); markers.set(id, list);
+  }
+  for (const [id, editor] of editors) editor.setDiagnostics(markers.get(id) ?? []);
   const doc = wb.source(); $('diagnostics-panel').hidden = !outputOpen;
   const diagnostics = $('diagnostics'); diagnostics.replaceChildren();
   if (doc?.diagnostics.length) {
@@ -207,10 +217,8 @@ function updateTitle() {
   if (desktop && title !== lastTitle) { lastTitle = title; getCurrentWindow().setTitle(title).catch(() => {}); }
 }
 function updatePosition() {
-  const doc = wb.source(), editor = doc ? editors.get(doc.id)?.textarea : null;
-  if (!editor) { $('cursor-position').textContent = ''; return; }
-  const prefix = editor.value.slice(0, editor.selectionStart), line = prefix.split('\n').length, column = prefix.length - prefix.lastIndexOf('\n');
-  $('cursor-position').textContent = `行 ${line}、列 ${column}`;
+  const doc = wb.source(), position = doc ? editors.get(doc.id)?.position() : null;
+  $('cursor-position').textContent = position ? `行 ${position.lineNumber}、列 ${position.column}` : '';
 }
 function revealRow(sim: SimulatorTab, row: Row) {
   const id = row.file && wb.documents.has(row.file) ? row.file : sim.id;
@@ -298,7 +306,7 @@ async function confirmDocument(doc: SourceDocument): Promise<boolean> {
   if (answer !== 'discard') return false;
   doc.source = doc.saved;
   autoSave.cancel(doc.id);
-  const editor = editors.get(doc.id); if (editor) { editor.textarea.value = doc.source; editor.render(); }
+  editors.get(doc.id)?.replaceSource(doc.source);
   invalidateChanged(); return true;
 }
 async function closeDocument(id: string) {
@@ -411,21 +419,9 @@ function toggleSidebar() { const sidebar = $('sidebar'); sidebar.hidden = !sideb
 function editCommand(command: 'undo' | 'redo') {
   const active = document.activeElement;
   const source = editors.get(wb.activeSource ?? '');
-  if (source && (active === source.textarea || focusedGroup === 'source' && !(active instanceof HTMLInputElement))) { source.editCommand(command); return; }
-  const editor = active instanceof HTMLTextAreaElement || active instanceof HTMLInputElement ? active : focusedGroup === 'source' ? editors.get(wb.activeSource ?? '')?.textarea : null;
+  if (source && (source.hasTextFocus() || focusedGroup === 'source' && !(active instanceof HTMLInputElement) && !(active instanceof HTMLTextAreaElement))) { source.editCommand(command); return; }
+  const editor = active instanceof HTMLTextAreaElement || active instanceof HTMLInputElement ? active : null;
   if (editor) { editor.focus(); document.execCommand(command); }
-}
-function find(direction = 1) {
-  const doc = wb.source(), editor = doc ? editors.get(doc.id)?.textarea : null; if (!editor) return;
-  const term = $<HTMLInputElement>('find-text').value; if (!term) { $('find-result').textContent = ''; return; }
-  const haystack = editor.value.toLocaleLowerCase(), needle = term.toLocaleLowerCase();
-  let index = direction > 0 ? haystack.indexOf(needle, editor.selectionEnd) : haystack.lastIndexOf(needle, editor.selectionStart - 1);
-  if (index < 0) index = direction > 0 ? haystack.indexOf(needle) : haystack.lastIndexOf(needle);
-  if (index < 0) { $('find-result').textContent = '見つかりません'; return; }
-  editor.focus(); editor.setSelectionRange(index, index + term.length);
-  const line = editor.value.slice(0, index).split('\n').length;
-  editor.scrollTop = Math.max(0, (line - 1) * 23 - editor.clientHeight / 3); editors.get(doc!.id)!.renderHighlight();
-  $('find-result').textContent = `${line}行目`; updatePosition();
 }
 
 async function action(name: string) {
@@ -459,7 +455,8 @@ async function action(name: string) {
     case 'join-groups': wb.layout.join(); render(); if (wb.layout.current()) view.focusTab(wb.layout.current()!); break;
     case 'move-left': case 'move-right': moveToNeighbor(name === 'move-left' ? -1 : 1); break;
     case 'undo': case 'redo': editCommand(name); break;
-    case 'find': if (wb.source()) { selectSource(wb.activeSource!, true); $('find-bar').hidden = false; $<HTMLInputElement>('find-text').focus(); $<HTMLInputElement>('find-text').select(); } break;
+    case 'find': case 'replace': case 'command-palette':
+      if (wb.source()) { selectSource(wb.activeSource!, true); const source = editors.get(wb.activeSource!)!; if (name === 'command-palette') source.commandPalette(); else source.find(name === 'replace'); } break;
     case 'project-open': await withIo(openProject); break;
     case 'project-new': case 'project-main': case 'project-remove': case 'project-close': await withIo(() => changeProject(name)); break;
     case 'project-add': await withIo(() => openSources(true)); break;
@@ -475,36 +472,32 @@ $('activity-explorer').onclick = toggleSidebar; $('status-sidebar').onclick = to
 $('activity-settings').onclick = () => action('settings'); $('sidebar-new').onclick = () => action('new'); $('sidebar-project-open').onclick = () => action('project-open');
 $('diagnostics-close').onclick = () => { outputOpen = false; renderSource(); };
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-action]')) button.onclick = () => action(button.dataset.action!);
-$('find-next').onclick = () => find(1); $('find-previous').onclick = () => find(-1); $('find-close').onclick = () => { $('find-bar').hidden = true; editors.get(wb.activeSource ?? '')?.textarea.focus(); };
-$('find-text').addEventListener('keydown', event => { if (event.key === 'Enter') { event.preventDefault(); find(event.shiftKey ? -1 : 1); } if (event.key === 'Escape') $('find-close').click(); });
 
 document.addEventListener('keydown', event => {
   if (document.querySelector('dialog[open]') || event.isComposing) return;
+  const reserve = () => { event.preventDefault(); event.stopPropagation(); };
   if (event.ctrlKey && event.key === 'Tab') {
-    event.preventDefault(); const group = wb.layout.group(), index = group.tabs.indexOf(group.active!);
+    reserve(); const group = wb.layout.group(), index = group.tabs.indexOf(group.active!);
     const key = group.tabs[(index + (event.shiftKey ? -1 : 1) + group.tabs.length) % group.tabs.length];
     if (key) selectTab(key, true); return;
   }
-  if (event.ctrlKey && event.key === '\\') { event.preventDefault(); action('split-right'); return; }
-  if (event.ctrlKey && !event.altKey && /^[3-9]$/.test(event.key)) { event.preventDefault(); focusGroup(Number(event.key) - 1); return; }
-  if (event.ctrlKey && event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) { event.preventDefault(); action(event.key === 'ArrowLeft' ? 'move-left' : 'move-right'); return; }
-  if (event.ctrlKey && event.shiftKey && event.key === 'Enter') { event.preventDefault(); buildPreview(); return; }
-  if (event.key === 'F5') { event.preventDefault(); action(event.shiftKey ? 'stop' : 'preview'); return; }
-  if (event.key === 'F6' || event.key === 'F10') { event.preventDefault(); action(event.key === 'F6' ? 'run' : 'step'); return; }
-  if (event.ctrlKey && event.key.toLowerCase() === 'q') { event.preventDefault(); action('stop'); return; }
+  if (event.ctrlKey && event.key === '\\') { reserve(); action('split-right'); return; }
+  if (event.ctrlKey && !event.altKey && /^[3-9]$/.test(event.key)) { reserve(); focusGroup(Number(event.key) - 1); return; }
+  if (event.ctrlKey && event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) { reserve(); action(event.key === 'ArrowLeft' ? 'move-left' : 'move-right'); return; }
+  if (event.ctrlKey && event.shiftKey && event.key === 'Enter') { reserve(); buildPreview(); return; }
+  if (event.key === 'F5') { reserve(); action(event.shiftKey ? 'stop' : 'preview'); return; }
+  if (event.key === 'F6' || event.key === 'F10') { reserve(); action(event.key === 'F6' ? 'run' : 'step'); return; }
+  if (event.ctrlKey && event.key.toLowerCase() === 'q') { reserve(); action('stop'); return; }
   // Native menu accelerators do not reach every WebView focus path on Windows.
-  // Handle keys delivered to the editor too; native edit/clipboard keys keep
-  // their normal textarea behavior when the menu did not intercept them.
-  if (event.ctrlKey && !event.altKey) {
-    const command = ({ n: 'new', o: 'open', s: event.shiftKey ? 'save-as' : 'save', w: 'close-tab', f: 'find', b: 'sidebar', j: 'output-panel', '1': 'focus-source', '2': 'focus-simulator', ',': 'settings' } as Record<string, string>)[event.key.toLowerCase()];
-    if (command) { event.preventDefault(); action(command); return; }
-  }
+  // Monaco handles its editing keys; reserve workbench file/group commands here.
+  const command = workbenchShortcut(event);
+  if (command) { reserve(); action(command); return; }
   const editing = event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement;
   if (focusedGroup === 'simulator' && !editing && !ioBusy) {
-    if (event.key === 'Enter') { event.preventDefault(); action('step'); }
-    if (event.key === 'Backspace') { event.preventDefault(); action('back'); }
+    if (event.key === 'Enter') { reserve(); action('step'); }
+    if (event.key === 'Backspace') { reserve(); action('back'); }
   }
-});
+}, true);
 async function initialize() {
   if (!desktop) { settingsReady = true; $('connection').textContent = 'ブラウザプレビュー'; message('実行・ファイル操作はTauriデスクトップ版で利用できます。'); render(); return; }
   ioBusy = true; render();

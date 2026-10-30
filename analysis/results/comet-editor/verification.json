@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-30",
+  "artifact": "tools/comet-layout-editor.html",
+  "build": {
+    "frontend": "passed: TypeScript and Vite production build",
+    "standalone": "passed: bundled inline HTML, CSS and JS",
+    "desktop": "passed: tauri build --debug --no-bundle -- --offline",
+    "desktop_sha256": "DFC134D6D8FB42A021D124BC540526A1955D42A062B88B98D86D09F1D3A62D42",
+    "tests": "40 passed, including 4 layout model tests"
+  },
+  "browser": {
+    "environment": "Chrome, standalone HTML served over loopback HTTP",
+    "checks": [
+      "13 block groups and all 47 text IDs match the exported schema",
+      "drag PR block: translate(25 15)",
+      "undo and redo restore block movement",
+      "individual PR label coordinate: translate(0 -13)",
+      "select PR to MAR route, add bend and drag route handle",
+      "open another tab: block, text and route draft restored",
+      "JSON download on disk validates with parseCometLayout; retains PR offset and label offset",
+      "reset all restores canonical defaults",
+      "light and dark rendering",
+      "SVG download contains embedded styling and excludes editor overlays",
+      "final shared monospace font resolves to 20px for register values",
+      "no browser console errors during observed checks"
+    ],
+    "limitations": [
+      "Browser automation could not select a local file for import because the extension lacks file URL access. No extension permissions were changed. JSON parsing and round trip are covered by model tests.",
+      "Direct file URL navigation is blocked by automation policy; the standalone HTML was tested through a local HTTP server."
+    ],
+    "screenshot": "analysis/results/comet-editor/editor-preview.png"
+  }
+}

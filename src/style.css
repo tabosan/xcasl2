@@ -64,13 +64,7 @@ svg { display:block; }
 .group-actions { margin-left:auto; }
 .editor-buffers { display:flex; flex:1; min-height:0; overflow:hidden; }
 .editor-wrap { display:flex; flex:1; min-height:0; min-width:0; background:var(--bg); position:relative; }
-.editor-wrap .gutter { margin:0; padding:16px 10px 16px 0; width:54px; flex-shrink:0; color:var(--subtle); text-align:right; overflow:hidden; font:14px/23px var(--mono); user-select:none; }
-.source-editor { flex:1; min-width:0; position:relative; overflow:hidden; }
-.source-editor textarea,.source-editor .source-highlight { position:absolute; inset:0; padding:16px 18px 16px 6px; margin:0; width:100%; height:100%; white-space:pre; font:14px/23px var(--mono); font-variant-ligatures:none; tab-size:4; letter-spacing:normal; }
-.source-editor .source-highlight { color:var(--editor-fg); overflow:hidden; pointer-events:none; user-select:none; }
-.source-editor textarea { resize:none; border:0; border-radius:0; outline:none; color:transparent; -webkit-text-fill-color:transparent; background:transparent; overflow:auto; caret-color:var(--caret); }
-.source-editor textarea:focus-visible { outline:none; }
-.source-editor textarea::selection { background:var(--editor-selection); color:transparent; }
+.monaco-host { position:absolute; inset:0; overflow:hidden; }
 .syntax-instruction { color:var(--syntax-instruction); }
 .syntax-directive,.syntax-macro { color:var(--syntax-directive); }
 .syntax-register { color:var(--syntax-register); }
@@ -79,7 +73,6 @@ svg { display:block; }
 .syntax-string { color:var(--syntax-string); }
 .syntax-comment { color:var(--syntax-comment); }
 .syntax-punctuation { color:var(--editor-fg); }
-@media (forced-colors:active) { .source-editor .source-highlight { visibility:hidden; } .source-editor textarea { color:CanvasText; -webkit-text-fill-color:CanvasText; caret-color:CanvasText; } .source-editor textarea::selection { color:HighlightText; -webkit-text-fill-color:HighlightText; background:Highlight; } }
 .welcome { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:0; padding:30px; color:var(--subtle); }
 .welcome-logo { color:var(--logo); font-size:64px; font-weight:600; letter-spacing:-4px; }
 .welcome-logo span { font-size:43px; font-weight:300; letter-spacing:-2px; }
@@ -88,9 +81,6 @@ svg { display:block; }
 .welcome-actions button { display:flex; justify-content:space-between; align-items:center; padding:9px 12px; color:var(--link); font-size:13px; }
 .welcome-actions button span { color:var(--subtle); font:11px var(--mono); }
 .welcome .welcome-note { margin-top:25px; color:var(--subtle); font-size:12px; }
-.find-bar { display:flex; align-items:center; gap:4px; padding:5px 10px; background:var(--raised); border-bottom:1px solid var(--border); }
-.find-bar input { flex:1; min-width:60px; }
-.find-bar>span { color:var(--secondary); font-size:10px; white-space:nowrap; }
 .diagnostics-panel { height:145px; min-height:70px; max-height:50vh; resize:vertical; flex-shrink:0; display:flex; flex-direction:column; border-top:1px solid var(--border-strong); overflow:hidden; }
 .panel-heading { display:flex; align-items:center; gap:8px; min-height:31px; height:31px; padding:0 10px; border-bottom:1px solid var(--border); background:var(--raised); flex-shrink:0; }
 .panel-heading>span { color:var(--muted); font:10px var(--mono); margin-left:auto; }
@@ -236,27 +226,6 @@ dialog form button { border-color:var(--outline); }
 .phase-strip .active { background:var(--selection-bg); color:var(--selection-fg); }
 .datapath-scroll { overflow:auto; flex:1; min-height:250px; }
 .datapath { display:block; width:100%; min-width:430px; height:100%; min-height:250px; }
-.bus-lines path { fill:none; stroke:var(--bus); stroke-width:1.35; stroke-linejoin:round; }
-.bus-lines path.active { stroke:var(--bus-active); stroke-width:3; }
-[data-view="bus-arrow"] path { fill:var(--bus); }
-.datapath-node>rect,.datapath-node .logic-shape { fill:var(--bg); stroke:var(--outline); stroke-width:1.5; }
-.datapath-node .node-divider { fill:none; stroke:var(--outline); stroke-width:1; }
-.datapath-node .node-label { fill:var(--fg); font:600 17px "Segoe UI",sans-serif; }
-.datapath-node .node-value { fill:var(--syntax-register); font:20px var(--mono); }
-.datapath-node .small-value { font-size:14px; }
-.datapath-node .node-caption,.memory-port .node-caption { fill:var(--secondary); font:11px var(--mono); }
-.datapath-node .controller-value { fill:var(--secondary); font:12px "Segoe UI",sans-serif; }
-.datapath-node .logic-label { fill:var(--fg); font:600 20px "Segoe UI",sans-serif; }
-.datapath-node.active>rect,.datapath-node.active .logic-shape { fill:var(--selection-bg); stroke:var(--bus-active); stroke-width:2; }
-.datapath-node.active .node-label { fill:var(--selection-fg); }
-.decoder-field { fill:var(--raised); stroke:var(--border-strong); }
-.gr-row rect { fill:var(--bg); stroke:var(--border); stroke-width:1; }
-.gr-row .gr-index { fill:var(--muted); font:14px var(--mono); }
-.gr-row.selected rect { fill:var(--selection-bg); stroke:var(--accent); }
-.gr-row.changed rect { fill:var(--changed-bg); }
-.gr-row.changed .node-value { fill:var(--warning); }
-.memory-port circle { fill:var(--bus); }
-.memory-port.active circle { fill:var(--bus-active); }
 .transfer-line { display:flex; flex-wrap:wrap; align-items:center; gap:5px 12px; padding:7px 10px; border-top:1px solid var(--border); background:var(--raised); }
 [data-view="phase-position"] { color:var(--secondary); font:10px var(--mono); white-space:nowrap; }
 [data-view="transfer"] { color:var(--strong); font-size:11px; font-weight:400; overflow-wrap:anywhere; }

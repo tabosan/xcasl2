@@ -41,7 +41,7 @@ export class WorkbenchView {
   render(settings: Settings, blocked: boolean, canBuild = true) {
     const activeElement = document.activeElement;
     const ordered: HTMLElement[] = [];
-    // Hide buffers without replacing textareas or their native edit histories.
+    // Keep each file's Monaco instance and model while hiding inactive buffers.
     for (const [id, view] of this.groups) {
       const active = this.wb.layout.group(id)?.active;
       for (const child of view.buffers.children) (child as HTMLElement).hidden = (child as HTMLElement).dataset.bufferKey !== active;
@@ -75,7 +75,7 @@ export class WorkbenchView {
     const boundaries = new Set(this.wb.layout.groups.slice(1).map((group, i) => `${this.wb.layout.groups[i].id}/${group.id}`));
     for (const [key, separator] of this.separators) if (!boundaries.has(key)) { separator.remove(); this.separators.delete(key); }
     this.renderTabs(settings); this.updateFocus();
-    // Moving the same DOM node can blur its textarea; restore focus without
+    // Moving the same DOM node can blur its input; restore focus without
     // changing its selection, scroll offsets, value, or undo stack.
     if (activeElement instanceof HTMLElement && activeElement !== document.activeElement && activeElement.isConnected && activeElement.closest('.editor-buffer:not([hidden]), .simulation-buffer:not([hidden])')) activeElement.focus({ preventScroll: true });
     this.renderSimulators();
@@ -123,7 +123,7 @@ export class WorkbenchView {
   updateFocus() { for (const [id, view] of this.groups) view.root.classList.toggle('focused', this.wb.layout.focused === id); }
   focusTab(key: TabKey) {
     const { kind, id } = parseTab(key);
-    if (kind === 'source') this.callbacks.editor(this.wb.source(id)!).textarea.focus({ preventScroll: true });
+    if (kind === 'source') this.callbacks.editor(this.wb.source(id)!).focus();
     else this.tabs.get(key)?.querySelector<HTMLButtonElement>('[role=tab]')?.focus({ preventScroll: true });
     this.groups.get(this.wb.layout.focused)?.root.scrollIntoView({ inline: 'nearest', block: 'nearest' });
   }
