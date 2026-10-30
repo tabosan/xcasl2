@@ -1,0 +1,102 @@
+Window: "WCASL-II - [Assembler Output ]", App: Wcasl2.exe.
+	0 ウィンドウ WCASL-II - [Assembler Output ] Secondary Actions: Raise
+		1 ウィンドウ 作業領域 ID: 59648
+			469 ウィンドウ Assembler Output Secondary Actions: Raise ID: 65283
+				470 テキスト Assemble Messages ID: 65535
+				471 一覧 Assemble Messages ID: 1006
+					472 一覧項目 (selectable) ｱｾﾝﾌﾞﾙ中...
+					473 一覧項目 (selectable) C:\Users\tabos\ドキュメント\ChatGPT\xcasl2\analysis\fixtures\ui_valid.cas
+					474 一覧項目 (selectable) 1 行目: 命令コードのエラーです．
+					475 一覧項目 (selectable) エラーの数= 1
+					476 一覧項目 (selectable) ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．
+				477 タイトル バー (settable, string) Value: Assembler Output
+			431 ウィンドウ ui_valid.cas Secondary Actions: Raise ID: 65282
+				432 編集 (settable, string) Value: ; header MAIN START ENTRY A_B DC -32769,65536,'あｱ','',+1,'A''B' ENTRY RPUSH 1 RPOP CALL SUB RET END SUB START RET END ID: 59648
+					433 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						434 ボタン (disabled) 1 行上 ID: UpButton
+						435 ボタン (disabled) 1 行下 ID: DownButton
+				436 タイトル バー (settable, string) Value: ui_valid.cas
+					478 メニュー バー システム ID: MenuBar
+						479 メニュー項目 ドキュメント ウィンドウ
+					480 ボタン 最小化
+					481 ボタン 最大化
+					482 ボタン 閉じる
+			102 ウィンドウ Casl Simulater Secondary Actions: Raise ID: 65281
+				103 グループ Registers
+				104 グループ Labels
+				105 グループ Stack Area
+				106 グループ Program
+				107 テキスト Label Address Value (HEX DEC)
+				108 グループ Display
+				109 テキスト  ID: 1037
+				110 スクロール バー (settable, float)  Value: 100 ID: 1072
+					111 ボタン 1 行上 ID: UpButton
+					112 ボタン 上へドラッグ ID: UpPageButton
+					113 縮小 表示位置 ID: ScrollbarThumb
+					114 ボタン 1 行下 ID: DownButton
+				115 イメージ  ID: 1074
+				116 イメージ ID: 1075
+				117 イメージ ID: 1076
+				118 イメージ ID: 1077
+				119 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					120 ボタン 1 行上 ID: UpButton
+					121 縮小 表示位置 ID: ScrollbarThumb
+					122 ボタン 下へドラッグ ID: DownPageButton
+					123 ボタン 1 行下 ID: DownButton
+				124 スクロール バー (settable, float) 水平 Value: 0 ID: NonClientHorizontalScrollBar
+					125 ボタン 1 列左 ID: UpButton
+					126 縮小 表示位置 ID: ScrollbarThumb
+					127 ボタン 右へドラッグ ID: DownPageButton
+					128 ボタン 1 列右 ID: DownButton
+				129 縮小 サイズ ボックス
+				130 タイトル バー (settable, string) Value: Casl Simulater
+					437 メニュー バー システム ID: MenuBar
+						438 メニュー項目 ドキュメント ウィンドウ
+					439 ボタン 最小化
+					440 ボタン 最大化
+					441 ボタン 閉じる
+			36 ウィンドウ Wcasl1 Secondary Actions: Raise ID: 65280
+				37 編集 (settable, string) Value: MAIN START LAD GR1,1 ADDA GR1,=2 OUT MSG,LEN RET MSG DC 'HELLO' LEN DC 5 END ID: 59648
+					38 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						39 ボタン (disabled) 1 行上 ID: UpButton
+						40 ボタン (disabled) 1 行下 ID: DownButton
+				41 タイトル バー (settable, string) Value: Wcasl1
+					42 メニュー バー システム ID: MenuBar
+						43 メニュー項目 ドキュメント ウィンドウ
+					44 ボタン 最小化
+					45 ボタン 最大化
+					46 ボタン 閉じる
+		2 ステータス バー ID: 59393
+			3 テキスト ﾚﾃﾞｨ
+			4 テキスト
+			5 テキスト
+			6 テキスト
+			7 テキスト
+		8 ツール バー ID: 59392
+			9 ボタン
+			10 ボタン
+			11 ボタン
+			12 ボタン (disabled)
+			13 ボタン (disabled)
+			14 ボタン (disabled)
+			15 ボタン (disabled)
+			16 ボタン
+		17 タイトル バー (settable, string) Value: WCASL-II - [Assembler Output ]
+			18 メニュー バー システム ID: MenuBar
+				19 メニュー項目 システム
+			20 ボタン 最小化
+			21 ボタン 最大化
+			22 ボタン 閉じる
+		483 メニュー バー アプリケーション ID: MenuBar
+			484 メニュー項目 ドキュメント ウィンドウ
+			485 メニュー項目 ﾌｧｲﾙ(F)
+			486 メニュー項目 編集(E)
+			487 メニュー項目 表示(V)
+			488 メニュー項目 ﾌﾟﾛｼﾞｪｸﾄ(P)
+			464 メニュー項目 ｳｨﾝﾄﾞｳ(W)
+			465 メニュー項目 ﾍﾙﾌﾟ(H)
+			466 ボタン 最小化
+			467 ボタン 元のサイズに戻す
+			468 ボタン 閉じる
+
+The focused UI element is 471 一覧 Assemble Messages ID: 1006.

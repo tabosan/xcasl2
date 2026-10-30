@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-29",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "DA3D751BA3D8165F3549D29F41BF4E3F08A635ACA165805EDCE46E3E69C44DC6",
+  "profile": "analysis/results/signed-registers/profile",
+  "initial_settings": { "version": 1, "decimal": true },
+  "sample": "hello.cas (built-in)",
+  "checks": {
+    "legacy_settings_default_signed": "GR0-GR7 display -1 after assemble",
+    "settings_default_selection": "signed two's complement",
+    "switch_unsigned_immediate": "GR0-GR7 display 65535; 0 STEP / 0 instructions unchanged",
+    "unsigned_persisted": "settings.json contains signed_decimal=false",
+    "reopen_preferences": "unsigned remains selected",
+    "switch_signed_immediate": "GR0-GR7 return to -1; 0 STEP / 0 instructions unchanged",
+    "signed_persisted": "settings.json contains signed_decimal=true",
+    "close": "verification process exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "27 passed",
+    "rust_projects_settings_tests": "9 passed",
+    "typescript_vite_build": "passed",
+    "cargo_clippy": "passed (-D warnings)",
+    "cargo_fmt_check": "passed",
+    "tauri_debug_build": "passed"
+  }
+}

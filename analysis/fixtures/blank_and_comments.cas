@@ -1,0 +1,7 @@
+;first
+
+MAIN START
+ ;only
+ RET
+ END
+

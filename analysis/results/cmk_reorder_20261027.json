@@ -1,0 +1,24 @@
+{
+  "actual_saved_file": "analysis\\results\\cmk-paths\\old\\project.cmk",
+  "opened_file": "analysis/results/cmk-paths/moved/relative.cmk",
+  "fields": {
+    "document_strings": [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old\\project.cmk",
+      "paththird.cas"
+    ],
+    "files": [
+      [
+        "paththird.cas",
+        "paththird.cas"
+      ],
+      [
+        "pathsub.cas",
+        "pathmain.cas"
+      ],
+      [
+        "pathmain.cas",
+        "pathsub.cas"
+      ]
+    ]
+  }
+}

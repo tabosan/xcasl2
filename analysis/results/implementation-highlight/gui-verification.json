@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-27",
+  "application": "xCASL2 Rust + Tauri",
+  "editor_tests_passed": 6,
+  "hello_highlight_visible": true,
+  "hello_assembled_words": 34,
+  "program_row_selected_source": "         LAD     GR1,1",
+  "native_key_input_highlight_updated": true,
+  "native_undo_restored_source": true,
+  "scroll_fixture": "scroll.cas",
+  "scroll_fixture_lines": 100,
+  "japanese_strings_and_tabs_visible": true,
+  "vertical_scroll_to_final_empty_line_verified": true,
+  "horizontal_scroll_to_right_edge_verified": true
+}

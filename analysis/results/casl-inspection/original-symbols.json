@@ -1,0 +1,26 @@
+{
+  "source": "MAIN START\n LD GR1,NEG\n ST GR1,BUF\n PUSH 0,GR1\n POP GR2\n LAD GR4,=7\n RET\nNEG DC -1,32767,-32768\nBUF DS 2\n END\r\n",
+  "errors": 0,
+  "symbols": [
+    {
+      "name": "MAIN",
+      "address": 32,
+      "words": 0
+    },
+    {
+      "name": "=7",
+      "address": 47,
+      "words": 1
+    },
+    {
+      "name": "NEG",
+      "address": 42,
+      "words": 3
+    },
+    {
+      "name": "BUF",
+      "address": 45,
+      "words": 2
+    }
+  ]
+}

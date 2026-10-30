@@ -1,0 +1,4 @@
+MAIN START
+ RPOP 1
+ RET
+ END

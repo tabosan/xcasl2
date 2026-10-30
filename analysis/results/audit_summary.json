@@ -1,0 +1,28 @@
+{
+  "binary_sha256": "389365c3f036b9c5461d669dafe98d7772b412167d3aee1730fb441e8275f74e",
+  "cpu_probe_count": 1420,
+  "cpu_reference_comparison_count": 980,
+  "cpu_reference_mismatches": [],
+  "files": {
+    "assembler_cases.json": {
+      "cases": 94,
+      "probe_errors": [
+        "line_201",
+        "line_255",
+        "line_256"
+      ]
+    },
+    "build_cases.json": {
+      "cases": 96,
+      "probe_errors": []
+    },
+    "pipeline_cases.json": {
+      "cases": 11,
+      "probe_errors": []
+    },
+    "io_cases.json": {
+      "cases": 10,
+      "probe_errors": []
+    }
+  }
+}

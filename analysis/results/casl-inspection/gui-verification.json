@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-27",
+  "application": "target/debug/xcasl2-desktop.exe",
+  "exe_sha256": "5979807eb0ca002d5de5850a2d9f795cf12c08d05401a2bb555a80846c4d4ca4",
+  "profile": "analysis/results/casl-inspection/profile",
+  "user_settings_modified": false,
+  "fixture": "inspect.cas",
+  "original_label_metadata": "original-symbols.json",
+  "checks": [
+    {
+      "action": "Open inspect.cas, F5, CASL mode",
+      "result": "Label and Stack Area panels appear below the program table. Label columns are label, address, HEX and DEC; stack columns are SP marker, address and HEX.",
+      "initial_labels": [
+        ["MAIN:NEG", "002A", "FFFF", -1],
+        ["+1", "002B", "7FFF", 32767],
+        ["+2", "002C", "8000", -32768],
+        ["MAIN:BUF", "002D", "0000", 0],
+        ["+1", "002E", "0000", 0],
+        ["MAIN:=7", "002F", "0007", 7]
+      ],
+      "initial_sp": "00B1"
+    },
+    {
+      "action": "F10 twice: LD, ST",
+      "result": "BUF at 002D changes from 0000/0 to FFFF/-1 and its row is highlighted. Other label elements remain unchanged."
+    },
+    {
+      "action": "F10: PUSH",
+      "result": "SP changes from 00B1 to 00B0; following stack window moves from 00AD to 00AC. The SP-marked row at 00B0 contains FFFF and is highlighted."
+    },
+    {
+      "action": "Select unsigned decimal",
+      "result": "FFFF becomes 65535 and 8000 becomes 32768. HEX values, CPU and stack position remain unchanged."
+    },
+    {
+      "action": "CASL to COMET to CASL",
+      "result": "Additional panels are hidden in COMET; returning to CASL restores current label/stack values and unsigned selection."
+    },
+    {
+      "action": "F10: POP",
+      "result": "SP returns to 00B1, GR2 becomes FFFF; the popped word at 00B0 remains FFFF in the stack display."
+    }
+  ],
+  "automated_checks": {
+    "rust_workspace_tests": 45,
+    "frontend_tests": 16,
+    "typescript_vite": "passed",
+    "clippy_deny_warnings": "passed (incremental-cache hard links fell back to file copies)",
+    "cargo_fmt_check": "passed",
+    "embedded_exe_build": "passed",
+    "coverage": ["arrays and literals", "duplicate names in distinct scopes", "source line mapping", "live ST/PUSH/POP/reset values", "signed and unsigned conversion", "manual stack address and physical boundaries", "per-tab inspection settings"]
+  },
+  "original_exe_sha256_unchanged": "389365c3f036b9c5461d669dafe98d7772b412167d3aee1730fb441e8275f74e"
+}

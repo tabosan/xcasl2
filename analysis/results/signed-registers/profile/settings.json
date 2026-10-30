@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "base": 32,
+  "fill": 65535,
+  "interval_ms": 100,
+  "step_mode": "instruction",
+  "decimal": true,
+  "signed_decimal": true,
+  "comet_view": false,
+  "memory_start": 32,
+  "devices": {
+    "input_path": null,
+    "output_path": null
+  }
+}

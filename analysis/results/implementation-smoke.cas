@@ -1,0 +1,11 @@
+; Keyboard IN, display OUT, and EOF
+MAIN     START
+         IN      BUF,LEN
+         LD      GR0,LEN
+         CPA     GR0,=0
+         JMI     FIN
+         OUT     BUF,LEN
+FIN      RET
+BUF      DS      128
+LEN      DS      1
+         END

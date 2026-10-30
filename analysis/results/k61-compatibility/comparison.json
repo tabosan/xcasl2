@@ -1,0 +1,32 @@
+{
+  "source_sha256": "d89b2ff90dbeadee6a0ae6885778f0e1c3cff1d3ef5a10e8b23f0e28c978e962",
+  "source_unchanged": true,
+  "before": {
+    "status": "fault",
+    "error": "不正なレジスタ指定: #000A",
+    "instructions": 9,
+    "instruction_address": 136
+  },
+  "after": {
+    "status": "halted",
+    "instructions": 3379,
+    "output": [
+      "1",
+      "1",
+      "2",
+      "6",
+      "24",
+      "120",
+      "720",
+      "5040"
+    ]
+  },
+  "comparison": {
+    "initial_memory": true,
+    "final_cpu": true,
+    "final_memory": true,
+    "output": true,
+    "instructions": true
+  },
+  "rust_tests_passed": 40
+}

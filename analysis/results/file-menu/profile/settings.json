@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "base": 32,
+  "fill": 65535,
+  "interval_ms": 100,
+  "step_mode": "instruction",
+  "decimal": false,
+  "signed_decimal": true,
+  "auto_save": true,
+  "recent_files": [
+    "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\file-menu\\auto.cas"
+  ],
+  "comet_view": false,
+  "memory_start": 32,
+  "devices": {
+    "input_path": null,
+    "output_path": null
+  }
+}

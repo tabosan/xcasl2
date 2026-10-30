@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-26",
+  "method": "Native UI observations and manual transcription; screenshots retained. No process-memory extraction.",
+  "line_test": "The same line_201.cas edit buffer was replaced with comment-line lengths 200, 255 and 256; original on-disk source unchanged.",
+  "observations": [
+    {"id":"line-201-abort","line_bytes":201,"diagnostic":"1行が長すぎます．","image":"ui-followup/line-201-abort.png"},
+    {"id":"line-200-success","line_bytes":200,"assemble_success":true,"image":"ui-followup/line-200-success.png"},
+    {"id":"line-255-abort","line_bytes":255,"diagnostic":"1行が長すぎます．","image":"ui-followup/line-255-abort.png"},
+    {"id":"line-256-abort","line_bytes":256,"diagnostic":"1行が長すぎます．","image":"ui-followup/line-256-abort.png"},
+    {"id":"cmk-native-saved","files":["baseline.cas","副プログラム.cas"],"image":"ui-followup/cmk-native-saved.png"},
+    {"id":"cmk-main-saved","files":["副プログラム.cas","baseline.cas"],"image":"ui-followup/cmk-main-saved.png"},
+    {"id":"cmk-relative-build","build_success":true,"condition":"Opened relative.cmk through the file dialog in the directory containing both CASL files; current-directory changes not tested.","image":"ui-followup/cmk-relative-build.png"},
+    {"id":"in-aa-service-complete","pr":42,"sp":314,"buffer_address":58,"buffer":[65,65],"length_address":186,"length":2,"image":"ui-followup/in-aa-service-complete.png"},
+    {"id":"in-before-back","pr":43,"sp":315,"image":"ui-followup/in-before-back.png"},
+    {"id":"in-back-requests-input","dialog":"Simulation - キー入力 -","image":"ui-followup/in-back-requests-input.png"},
+    {"id":"in-back-bbb-complete","pr":42,"sp":314,"buffer_address":58,"buffer":[66,66,66],"length_address":186,"length":3,"image":"ui-followup/in-back-bbb-complete.png"},
+    {"id":"in-back-before-service","pr":40,"sp":314,"buffer_address":58,"buffer":[65535,65535,65535],"length_address":186,"length":65535,"image":"ui-followup/in-back-before-service.png"}
+  ]
+}

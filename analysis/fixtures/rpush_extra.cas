@@ -1,0 +1,4 @@
+MAIN START
+ RPUSH 1
+ RET
+ END

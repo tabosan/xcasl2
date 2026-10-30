@@ -1,0 +1,117 @@
+Window: "WCASL-II - [COMET Simulater ]", App: Wcasl2.exe.
+	0 ウィンドウ (disabled) WCASL-II - [COMET Simulater ] Secondary Actions: Raise
+		599 ダイアログ 実行ステップの設定 Secondary Actions: Raise
+			600 ボタン OK ID: 1
+			601 ボタン ｷｬﾝｾﾙ ID: 2
+			602 一覧 ID: 1005
+				603 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					604 ボタン 1 行上 ID: UpButton
+					605 縮小 表示位置 ID: ScrollbarThumb
+					606 ボタン 下へドラッグ ID: DownPageButton
+					607 ボタン 1 行下 ID: DownButton
+				608 一覧項目 (selectable) 最小の単位
+				609 一覧項目 (selectable) フェーズごと
+				610 一覧項目 (selectable) 命令ごと
+				611 一覧項目 (selectable) 最後まで実行
+				612 一覧項目 (selectable) 指定アドレス
+			613 テキスト 最小の単位 ID: 1006
+			614 テキスト 最小の単位 ID: 1011
+			615 タイトル バー (settable, string) Value: 実行ステップの設定
+				616 ボタン 閉じる
+		1 ウィンドウ 作業領域 ID: 59648
+			538 ウィンドウ COMET Simulater Secondary Actions: Raise ID: 65283
+				539 ウィンドウ ID: 59648
+				540 タイトル バー (settable, string) Value: COMET Simulater
+			541 ウィンドウ Assembler Output Secondary Actions: Raise ID: 65282
+				542 テキスト Assemble Messages ID: 65535
+				543 一覧 Assemble Messages ID: 1006
+					544 一覧項目 (selectable) ｱｾﾝﾌﾞﾙ中...
+					545 一覧項目 (selectable) noname.cas
+					546 一覧項目 (selectable) アセンブルエラーは ありません．
+					547 一覧項目 (selectable) ﾘﾝｸ中...
+					548 一覧項目 (selectable) ｴﾗｰはありません．
+				549 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					550 ボタン 1 行上 ID: UpButton
+					551 縮小 表示位置 ID: ScrollbarThumb
+					552 ボタン 下へドラッグ ID: DownPageButton
+					553 ボタン 1 行下 ID: DownButton
+				554 タイトル バー (settable, string) Value: Assembler Output
+					555 メニュー バー システム ID: MenuBar
+						556 メニュー項目 ドキュメント ウィンドウ
+					557 ボタン 最小化
+					558 ボタン 最大化
+					559 ボタン 閉じる
+			36 ウィンドウ Wcasl1 Secondary Actions: Raise ID: 65280
+				37 編集 (settable, string) Value: MAIN START LAD GR1,1 ADDA GR1,=2 OUT MSG,LEN RET MSG DC 'HELLO' LEN DC 5 END ID: 59648
+					38 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						39 ボタン (disabled) 1 行上 ID: UpButton
+						40 ボタン (disabled) 1 行下 ID: DownButton
+				41 タイトル バー (settable, string) Value: Wcasl1
+					560 メニュー バー システム ID: MenuBar
+						561 メニュー項目 ドキュメント ウィンドウ
+					562 ボタン 最小化
+					563 ボタン 最大化
+					564 ボタン 閉じる
+			431 ウィンドウ ui_valid.cas Secondary Actions: Raise ID: 65281
+				432 編集 (settable, string) Value: ; header MAIN START ENTRY A_B DC -32769,65536,'あｱ','',+1,'A''B' ENTRY RPUSH 1 RPOP CALL SUB RET END SUB START RET END ID: 59648
+					433 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						434 ボタン (disabled) 1 行上 ID: UpButton
+						435 ボタン (disabled) 1 行下 ID: DownButton
+				436 タイトル バー (settable, string) Value: ui_valid.cas
+					478 メニュー バー システム ID: MenuBar
+						479 メニュー項目 ドキュメント ウィンドウ
+					480 ボタン 最小化
+					481 ボタン 最大化
+					482 ボタン 閉じる
+		2 ステータス バー ID: 59393
+			3 テキスト ﾚﾃﾞｨ
+			4 テキスト
+			5 テキスト
+			6 テキスト
+			7 テキスト
+		8 ツール バー ID: 59392
+			9 ボタン
+			10 ボタン
+			11 ボタン
+			12 ボタン (disabled)
+			13 ボタン (disabled)
+			14 ボタン (disabled)
+			15 ボタン (disabled)
+			16 ボタン
+		17 タイトル バー (settable, string) Value: WCASL-II - [COMET Simulater ]
+			18 メニュー バー システム ID: MenuBar
+				19 メニュー項目 システム
+			20 ボタン 最小化
+			21 ボタン 最大化
+			22 ボタン 閉じる
+		565 メニュー バー アプリケーション ID: MenuBar
+			566 メニュー項目 ドキュメント ウィンドウ
+			567 メニュー項目 ﾌｧｲﾙ(F)
+			568 メニュー項目 編集(E)
+			569 メニュー項目 表示(V)
+			570 メニュー項目 ﾌﾟﾛｼﾞｪｸﾄ(P)
+			571 メニュー項目 ｳｨﾝﾄﾞｳ(W)
+			572 メニュー項目 ﾍﾙﾌﾟ(H)
+			573 ボタン 最小化
+			574 ボタン 元のサイズに戻す
+			575 ボタン 閉じる
+		599 ダイアログ 実行ステップの設定 Secondary Actions: Raise
+			600 ボタン OK ID: 1
+			601 ボタン ｷｬﾝｾﾙ ID: 2
+			602 一覧 ID: 1005
+				603 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					604 ボタン 1 行上 ID: UpButton
+					605 縮小 表示位置 ID: ScrollbarThumb
+					606 ボタン 下へドラッグ ID: DownPageButton
+					607 ボタン 1 行下 ID: DownButton
+				608 一覧項目 (selectable) 最小の単位
+				609 一覧項目 (selectable) フェーズごと
+				610 一覧項目 (selectable) 命令ごと
+				611 一覧項目 (selectable) 最後まで実行
+				612 一覧項目 (selectable) 指定アドレス
+			613 テキスト 最小の単位 ID: 1006
+			614 テキスト 最小の単位 ID: 1011
+			615 タイトル バー (settable, string) Value: 実行ステップの設定
+				616 ボタン 閉じる
+
+The focused UI element is 599 ダイアログ 実行ステップの設定 Secondary Actions: Raise.

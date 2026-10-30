@@ -1,0 +1,94 @@
+Window: "WCASL-II - Assembler Output", App: Wcasl2.exe.
+	0 ウィンドウ WCASL-II - Assembler Output Secondary Actions: Raise
+		1 ウィンドウ 作業領域 ID: 59648
+			1289 ウィンドウ Assembler Output Secondary Actions: Raise ID: 65282
+				1290 テキスト Assemble Messages ID: 65535
+				1291 一覧 Assemble Messages ID: 1006
+					1292 一覧項目 (selectable) ｱｾﾝﾌﾞﾙ中...
+					1293 一覧項目 (selectable) baseline.cas
+					1294 一覧項目 (selectable) 副プログラム.cas
+					1295 一覧項目 (selectable) ﾘﾝｸ中...
+					1296 一覧項目 (selectable) ｴﾗｰはありません．
+				1297 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					1298 ボタン 1 行上 ID: UpButton
+					1299 縮小 表示位置 ID: ScrollbarThumb
+					1300 ボタン 下へドラッグ ID: DownPageButton
+					1301 ボタン 1 行下 ID: DownButton
+				1302 タイトル バー (settable, string) Value: Assembler Output
+					1303 メニュー バー システム ID: MenuBar
+						1304 メニュー項目 ドキュメント ウィンドウ
+					1305 ボタン 最小化
+					1306 ボタン 最大化
+					1307 ボタン 閉じる
+			351 ウィンドウ Make File : C:\Users\tabos\ドキュメント\ChatGPT\xcasl2\analysis\results\cmk-relocated\relative.cmk Secondary Actions: Raise ID: 65281
+				352 一覧 ID: 1000
+					960 一覧項目 (selectable) baseline.cas
+					1073 一覧項目 (selectable) 副プログラム.cas
+				353 ボタン セーブ時に戻す ID: 1005
+				354 ボタン 保存 ID: 1007
+				355 ボタン 削除 ID: 1008
+				356 ボタン ﾒｲｸﾌｧｲﾙに追加 ID: 1009
+				357 ボタン 閉じる ID: 1010
+				358 ボタン 編集 ID: 1011
+				359 テキスト ﾒｲｸﾌｧｲﾙに含まれるCASL2ﾌｧｲﾙ (これらのﾌｧｲﾙをｱｾﾝﾌﾞﾙ・ﾘﾝｸして実行ﾌﾟﾛｸﾞﾗﾑを作ります．) ID: 65535
+				360 ボタン メインに設定 ID: 1012
+				361 テキスト ↑ ID: 65535
+				362 テキスト ← 先頭のﾌｧｲﾙの最初のﾌﾟﾛｸﾞﾗﾑがﾒｲﾝﾌﾟﾛｸﾞﾗﾑ ID: 65535
+				363 テキスト 選択されているﾌｧｲﾙをﾒｲﾝに設定する． (最初に持って行く) ID: 65535
+				364 テキスト 選択されているﾌｧｲﾙを編集する． ID: 65535
+				365 テキスト 選択されているﾌｧｲﾙをﾒｲｸﾌｧｲﾙから削除する． ID: 65535
+				366 テキスト ﾒｲｸﾌｧｲﾙ情報を保存する． ID: 65535
+				367 テキスト ﾒｲｸﾌｧｲﾙ情報を最後に保存した時の情報に戻す． ID: 65535
+				368 テキスト ﾒｲｸﾌｧｲﾙのﾘｽﾄにCASLﾌｧｲﾙを追加する． ID: 65535
+				369 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					370 ボタン 1 行上 ID: UpButton
+					371 縮小 表示位置 ID: ScrollbarThumb
+					372 ボタン 下へドラッグ ID: DownPageButton
+					373 ボタン 1 行下 ID: DownButton
+				374 タイトル バー (settable, string) Value: Make File : C:\Users\tabos\ドキュメント\ChatGPT\xcasl2\analysis\results\cmk-relocated\relative.cmk
+					375 メニュー バー システム ID: MenuBar
+						376 メニュー項目 ドキュメント ウィンドウ
+					377 ボタン 最小化
+					378 ボタン 最大化
+					379 ボタン 閉じる
+			252 ウィンドウ line_201.cas Secondary Actions: Raise ID: 65280
+				253 編集 (settable, string) Value: MAIN START ;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx RET END ID: 59648
+					254 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						255 ボタン (disabled) 1 行上 ID: UpButton
+						256 ボタン (disabled) 1 行下 ID: DownButton
+				257 タイトル バー (settable, string) Value: line_201.cas
+					258 メニュー バー システム ID: MenuBar
+						259 メニュー項目 ドキュメント ウィンドウ
+					260 ボタン 最小化
+					261 ボタン 最大化
+					262 ボタン 閉じる
+		2 ステータス バー ID: 59393
+			3 テキスト ﾚﾃﾞｨ
+			4 テキスト
+			5 テキスト
+			6 テキスト
+			7 テキスト
+		8 ツール バー ID: 59392
+			9 ボタン
+			10 ボタン
+			11 ボタン
+			12 ボタン (disabled)
+			13 ボタン (disabled)
+			14 ボタン (disabled)
+			15 ボタン (disabled)
+			16 ボタン
+		17 タイトル バー (settable, string) Value: WCASL-II - Assembler Output
+			18 メニュー バー システム ID: MenuBar
+				19 メニュー項目 システム
+			20 ボタン 最小化
+			21 ボタン 最大化
+			22 ボタン 閉じる
+		1308 メニュー バー アプリケーション ID: MenuBar
+			1309 メニュー項目 ﾌｧｲﾙ(F)
+			1310 メニュー項目 編集(E)
+			1311 メニュー項目 表示(V)
+			1312 メニュー項目 ﾌﾟﾛｼﾞｪｸﾄ(P)
+			1313 メニュー項目 ｳｨﾝﾄﾞｳ(W)
+			1314 メニュー項目 ﾍﾙﾌﾟ(H)
+
+The focused UI element is 1291 一覧 Assemble Messages ID: 1006.

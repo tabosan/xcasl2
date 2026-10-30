@@ -1,0 +1,5 @@
+MAIN START
+A DC 1
+A DC 2
+ RET
+ END

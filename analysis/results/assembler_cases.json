@@ -1,0 +1,5885 @@
+[
+  {
+    "id": "baseline",
+    "source": "MAIN START\r\n LAD GR1,1\r\n ADDA GR1,=2\r\n OUT MSG,LEN\r\nMSG DC 'HELLO'\r\nLEN DC 5\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 24,
+    "memory": [
+      4624,
+      1,
+      8208,
+      23,
+      28673,
+      0,
+      28674,
+      0,
+      4624,
+      16,
+      4640,
+      21,
+      61440,
+      2,
+      28960,
+      28944,
+      72,
+      69,
+      76,
+      76,
+      79,
+      5,
+      33024,
+      2
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "ADDA",
+        "operand": "GR1,=2"
+      },
+      {
+        "address": 4,
+        "label": "",
+        "op": "OUT",
+        "operand": "MSG,LEN"
+      },
+      {
+        "address": 16,
+        "label": "MSG",
+        "op": "DC",
+        "operand": "'HELLO'"
+      },
+      {
+        "address": 21,
+        "label": "LEN",
+        "op": "DC",
+        "operand": "5"
+      },
+      {
+        "address": 22,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "lowercase_all",
+    "source": "main start\r\n lad gr1,1\r\n ret\r\n end\r\n",
+    "errors": 5,
+    "words": 0,
+    "memory": [],
+    "diagnostics": [
+      "   1 行目: main     start    命令コードのエラーです．  ",
+      "   2 行目:          lad      gr1,1命令コードのエラーです．  ",
+      "   3 行目:          ret      命令コードのエラーです．  ",
+      "   4 行目:          end      命令コードのエラーです．  ",
+      "ENDがありません．",
+      "エラーの数= 5 "
+    ],
+    "rows": [
+      {
+        "address": 0,
+        "label": "main",
+        "op": "start",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "lad",
+        "operand": "gr1,1"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "ret",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "end",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "lowercase_opcode",
+    "source": "MAIN START\r\n lad GR1,1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          lad      GR1,1命令コードのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "lad",
+        "operand": "GR1,1"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "lowercase_register",
+    "source": "MAIN START\r\n LAD gr1,1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4608,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      gr1,1<GR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "gr1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "lowercase_label",
+    "source": "MAIN START\r\nabc DC 1\r\n LD GR1,abc\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 4,
+    "memory": [
+      1,
+      4112,
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: abc      DC       1ラベルに不適切な文字があります．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "abc",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,abc"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_8",
+    "source": "MAIN START\r\nABCDEFGH DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "ABCDEFGH",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_9",
+    "source": "MAIN START\r\nABCDEFGHI DC 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: ABCDEFGHIDC       1ラベルが長すぎます．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "ABCDEFGHI",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_underscore",
+    "source": "MAIN START\r\nA_B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A_B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_digit_first",
+    "source": "MAIN START\r\n1ABC DC 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: 1ABC     DC       1ラベルに不適切な文字があります．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "1ABC",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_register",
+    "source": "MAIN START\r\nGR1 DC 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: GR1      DC       1レジスタ名はラベル名に使用できません．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "GR1",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_mnemonic",
+    "source": "MAIN START\r\nLD DC 1\r\n LAD GR1,LD\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      1,
+      4624,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "LD",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,LD"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "duplicate_label",
+    "source": "MAIN START\r\nA DC 1\r\nA DC 2\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      1,
+      2,
+      33024
+    ],
+    "diagnostics": [
+      "   3 行目: A        DC       2ラベルが重複しています．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "A",
+        "op": "DC",
+        "operand": "2"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "numeric_register",
+    "source": "MAIN START\r\n LAD 1,1\r\n LD 1,2\r\n RET\r\n END\r\n",
+    "errors": 2,
+    "words": 5,
+    "memory": [
+      4608,
+      1,
+      4096,
+      2,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      1,1<GR>レジスタのエラーです．  ",
+      "   3 行目:          LD       1,2<GR>レジスタのエラーです．  ",
+      "エラーの数= 2 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "LD",
+        "operand": "1,2"
+      },
+      {
+        "address": 4,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "register_8",
+    "source": "MAIN START\r\n LAD GR8,1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4608,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR8,1<GR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR8,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "index_0",
+    "source": "MAIN START\r\n LAD GR1,1,GR0\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR1,1,GR0<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1,GR0"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "index_numeric",
+    "source": "MAIN START\r\n LAD GR1,1,2\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR1,1,2<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1,2"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "index_7",
+    "source": "MAIN START\r\n LAD GR1,1,GR7\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4631,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1,GR7"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "reg_reg_third",
+    "source": "MAIN START\r\n LD GR1,GR2,GR3\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      5138,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LD       GR1,GR2,GR32レジスタ指定型の命令では，指標レジスタは使用できません．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,GR2,GR3"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "jump_third",
+    "source": "MAIN START\r\n JUMP 1,GR2,GR3\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      25602,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          JUMP     1,GR2,GR3オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "JUMP",
+        "operand": "1,GR2,GR3"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "ret_extra",
+    "source": "MAIN START\r\n RET 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      33024,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          RET      1オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "nop_extra",
+    "source": "MAIN START\r\n NOP 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          NOP      1オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "NOP",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "rpush_extra",
+    "source": "MAIN START\r\n RPUSH 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 15,
+    "memory": [
+      28673,
+      0,
+      28674,
+      0,
+      28675,
+      0,
+      28676,
+      0,
+      28677,
+      0,
+      28678,
+      0,
+      28679,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RPUSH",
+        "operand": "1"
+      },
+      {
+        "address": 14,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "no_indent",
+    "source": "MAIN START\r\nRET\r\n END\r\n",
+    "errors": 1,
+    "words": 0,
+    "memory": [],
+    "diagnostics": [
+      "   2 行目: RET               命令コードのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "RET",
+        "op": "",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "tab_indent",
+    "source": "MAIN\tSTART\r\n\tLAD\tGR1,1\r\n\tRET\r\n\tEND\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "spaces_operand",
+    "source": "MAIN START\r\n LAD GR1, 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4624,
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR1, 1<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1, 1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "spaces_before_comma",
+    "source": "MAIN START\r\n LAD GR1 ,1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4624,
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR1 ,1<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1 ,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "trailing_text",
+    "source": "MAIN START\r\n LAD GR1,1 junk\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          LAD      GR1,1 junk<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1 junk"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "inline_comment",
+    "source": "MAIN START\r\n LAD GR1,1 ;comment\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "blank_and_comments",
+    "source": ";first\r\n\r\nMAIN START\r\n ;only\r\n RET\r\n END\r\n\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "",
+        "op": "",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "missing_start",
+    "source": " LAD GR1,1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4624,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "start_no_label",
+    "source": " START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   1 行目:          START    ラベルのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "start_entry",
+    "source": "MAIN START BEGIN\r\nA DC 1\r\nBEGIN RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": "BEGIN"
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "BEGIN",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "start_entry_missing",
+    "source": "MAIN START MISSING\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": "MISSING"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "missing_end",
+    "source": "MAIN START\r\n RET\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "ENDがありません．",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "end_operand",
+    "source": "MAIN START\r\n RET\r\n END MAIN\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   3 行目:          END      MAINオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": "MAIN"
+      }
+    ]
+  },
+  {
+    "id": "multiple_programs",
+    "source": "MAIN START\r\n CALL SUB\r\n RET\r\n END\r\nSUB START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 4,
+    "memory": [
+      32768,
+      3,
+      33024,
+      33024
+    ],
+    "diagnostics": [
+      "ENDのエラーです．",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "CALL",
+        "operand": "SUB"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "SUB",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "external_call",
+    "source": "MAIN START\r\n CALL EXTERNAL\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      32768,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "CALL",
+        "operand": "EXTERNAL"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "ds_zero",
+    "source": "MAIN START\r\nA DS 0\r\nB DC 7\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      7,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DS",
+        "operand": "0"
+      },
+      {
+        "address": 0,
+        "label": "B",
+        "op": "DC",
+        "operand": "7"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "ds_negative",
+    "source": "MAIN START\r\nA DS -1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DS       -1オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DS",
+        "operand": "-1"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "ds_hex",
+    "source": "MAIN START\r\nA DS #0002\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DS       #0002オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DS",
+        "operand": "#0002"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "ds_2000",
+    "source": "MAIN START\r\nA DS 2000\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2001,
+    "memory": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DS",
+        "operand": "2000"
+      },
+      {
+        "address": 2000,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_list",
+    "source": "MAIN START\r\nA DC 1,-1,#FFFF,'AB',MAIN\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 7,
+    "memory": [
+      1,
+      65535,
+      65535,
+      65,
+      66,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "1,-1,#FFFF,'AB',MAIN"
+      },
+      {
+        "address": 6,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_empty_string",
+    "source": "MAIN START\r\nA DC ''\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "''"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_apostrophe",
+    "source": "MAIN START\r\nA DC 'A''B'\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      65,
+      39,
+      66,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'A''B'"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_comma_semicolon",
+    "source": "MAIN START\r\nA DC 'A,B;C' ; comment\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       'A,Bオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'A,B"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_space",
+    "source": "MAIN START\r\nA DC 'A B'\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      65,
+      32,
+      66,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'A B'"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_japanese",
+    "source": "MAIN START\r\nA DC 'あｱ'\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      65410,
+      65440,
+      65457,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'あｱ'"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_unclosed",
+    "source": "MAIN START\r\nA DC 'AB\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       'ABオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'AB"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_signed_plus",
+    "source": "MAIN START\r\nA DC +1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "+1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_decimal_junk",
+    "source": "MAIN START\r\nA DC 12X\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      33024,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       12Xオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "12X"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_hex_lower",
+    "source": "MAIN START\r\nA DC #abcd\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       #abcdオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "#abcd"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_hex_1",
+    "source": "MAIN START\r\nA DC #1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       #1オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "#1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_hex_5",
+    "source": "MAIN START\r\nA DC #12345\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       #12345オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "#12345"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "literal_reuse",
+    "source": "MAIN START\r\n LD GR1,=1\r\n LD GR2,=1\r\n LD GR3,=#0001\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 9,
+    "memory": [
+      4112,
+      7,
+      4128,
+      7,
+      4144,
+      8,
+      33024,
+      1,
+      1
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,=1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "LD",
+        "operand": "GR2,=1"
+      },
+      {
+        "address": 4,
+        "label": "",
+        "op": "LD",
+        "operand": "GR3,=#0001"
+      },
+      {
+        "address": 6,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "literal_string",
+    "source": "MAIN START\r\n LD GR1,='AB'\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 5,
+    "memory": [
+      4112,
+      3,
+      33024,
+      65,
+      66
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,='AB'"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "literal_list",
+    "source": "MAIN START\r\n LD GR1,=1,2\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 4,
+    "memory": [
+      4112,
+      3,
+      33024,
+      1
+    ],
+    "diagnostics": [
+      "   2 行目:          LD       GR1,=1,2<XR>レジスタのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,=1,2"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "literal_negative",
+    "source": "MAIN START\r\n LD GR1,=-1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      4112,
+      3,
+      33024,
+      65535
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,=-1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "literal_address",
+    "source": "MAIN START\r\n LD GR1,=MAIN\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4112,
+      3,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LD",
+        "operand": "GR1,=MAIN"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "macro_in",
+    "source": "MAIN START\r\n IN BUF,LEN\r\nBUF DS 256\r\nLEN DS 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 270,
+    "memory": [
+      28673,
+      0,
+      28674,
+      0,
+      4624,
+      12,
+      4640,
+      268,
+      61440,
+      1,
+      28960,
+      28944,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "IN",
+        "operand": "BUF,LEN"
+      },
+      {
+        "address": 12,
+        "label": "BUF",
+        "op": "DS",
+        "operand": "256"
+      },
+      {
+        "address": 268,
+        "label": "LEN",
+        "op": "DS",
+        "operand": "1"
+      },
+      {
+        "address": 269,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "macro_out",
+    "source": "MAIN START\r\n OUT BUF,LEN\r\nBUF DC 'X'\r\nLEN DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 15,
+    "memory": [
+      28673,
+      0,
+      28674,
+      0,
+      4624,
+      12,
+      4640,
+      13,
+      61440,
+      2,
+      28960,
+      28944,
+      88,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "OUT",
+        "operand": "BUF,LEN"
+      },
+      {
+        "address": 12,
+        "label": "BUF",
+        "op": "DC",
+        "operand": "'X'"
+      },
+      {
+        "address": 13,
+        "label": "LEN",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 14,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "macro_rpush_rpop",
+    "source": "MAIN START\r\n RPUSH\r\n RPOP\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 22,
+    "memory": [
+      28673,
+      0,
+      28674,
+      0,
+      28675,
+      0,
+      28676,
+      0,
+      28677,
+      0,
+      28678,
+      0,
+      28679,
+      0,
+      29040,
+      29024,
+      29008,
+      28992,
+      28976,
+      28960,
+      28944,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RPUSH",
+        "operand": ""
+      },
+      {
+        "address": 14,
+        "label": "",
+        "op": "RPOP",
+        "operand": ""
+      },
+      {
+        "address": 21,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "macro_numeric_args",
+    "source": "MAIN START\r\n OUT 1,2\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 13,
+    "memory": [
+      28673,
+      0,
+      28674,
+      0,
+      4624,
+      1,
+      4640,
+      2,
+      61440,
+      2,
+      28960,
+      28944,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:          OUT      1,2オペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "OUT",
+        "operand": "1,2"
+      },
+      {
+        "address": 12,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "svc",
+    "source": "MAIN START\r\n SVC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      61440,
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "SVC",
+        "operand": "1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "cr_only",
+    "source": "MAIN START\r RET\r END\r",
+    "errors": 1,
+    "words": 0,
+    "memory": [],
+    "diagnostics": [
+      "ENDがありません．",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": "RET END"
+      }
+    ]
+  },
+  {
+    "id": "lf_only",
+    "source": "MAIN START\n RET\n END\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "empty",
+    "source": "",
+    "errors": 1,
+    "words": 0,
+    "memory": [],
+    "diagnostics": [
+      "error : ソースプログラムが入力されていません．"
+    ],
+    "rows": []
+  },
+  {
+    "id": "label_leading_underscore",
+    "source": "MAIN START\r\n_ABC DC 1\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: _ABC     DC       1ラベルに不適切な文字があります．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "_ABC",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_at",
+    "source": "MAIN START\r\nA@B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A@B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_bracket",
+    "source": "MAIN START\r\nA[B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A[B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_backslash",
+    "source": "MAIN START\r\nA\\B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A\\B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_caret",
+    "source": "MAIN START\r\nA^B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A^B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_backtick",
+    "source": "MAIN START\r\nA`B DC 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      1,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A`B",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "label_expression",
+    "source": "MAIN START\r\nA DC 1\r\n LAD GR1,A+1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      1,
+      4624,
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "1"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,A+1"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "address_minus1",
+    "source": "MAIN START\r\n LAD GR1,-1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 3,
+    "memory": [
+      4624,
+      65535,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "LAD",
+        "operand": "GR1,-1"
+      },
+      {
+        "address": 2,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_comma",
+    "source": "MAIN START\r\nA DC 'A,B'\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 4,
+    "memory": [
+      65,
+      44,
+      66,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'A,B'"
+      },
+      {
+        "address": 3,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_semicolon",
+    "source": "MAIN START\r\nA DC 'A;B'\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目: A        DC       'Aオペランドのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "'A"
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "rpop_extra",
+    "source": "MAIN START\r\n RPOP 1\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 8,
+    "memory": [
+      29040,
+      29024,
+      29008,
+      28992,
+      28976,
+      28960,
+      28944,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RPOP",
+        "operand": "1"
+      },
+      {
+        "address": 7,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "comment_first",
+    "source": "; header\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "blank_first",
+    "source": "\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "",
+        "op": "",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "blank_middle",
+    "source": "MAIN START\r\n\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 "
+    ],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "comment_after_main",
+    "source": "MAIN START\r\n; header\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "comment_indented",
+    "source": "MAIN START\r\n ; header\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_-32769",
+    "source": "MAIN START\r\nA DC -32769\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      32768,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "-32769"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_-32768",
+    "source": "MAIN START\r\nA DC -32768\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      32768,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "-32768"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_32767",
+    "source": "MAIN START\r\nA DC 32767\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      32767,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "32767"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_32768",
+    "source": "MAIN START\r\nA DC 32768\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      32768,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "32768"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_65535",
+    "source": "MAIN START\r\nA DC 65535\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      65535,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "65535"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_65536",
+    "source": "MAIN START\r\nA DC 65536\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      0,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "65536"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "dc_999999999",
+    "source": "MAIN START\r\nA DC 999999999\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 2,
+    "memory": [
+      51711,
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "A",
+        "op": "DC",
+        "operand": "999999999"
+      },
+      {
+        "address": 1,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "line_199",
+    "source": "MAIN START\r\n;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "line_200",
+    "source": "MAIN START\r\n;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "words": 1,
+    "memory": [
+      33024
+    ],
+    "diagnostics": [],
+    "rows": [
+      {
+        "address": 32767,
+        "label": "MAIN",
+        "op": "START",
+        "operand": ""
+      },
+      {
+        "address": 0,
+        "label": "",
+        "op": "RET",
+        "operand": ""
+      },
+      {
+        "address": 32767,
+        "label": "",
+        "op": "END",
+        "operand": ""
+      }
+    ]
+  },
+  {
+    "id": "line_201",
+    "source": "MAIN START\r\n;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n RET\r\n END\r\n",
+    "probe_error": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED) at EIP=00059d88; trace=406813,40681b,418daa,418dab,418dad,418db0,418db3,418db4,418db5,418db7,418db8,418dbd,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc2,418dc5,418dc8,418dcb,418dce,418dcf,418dd2,418dd5,418dd8"
+  },
+  {
+    "id": "line_255",
+    "source": "MAIN START\r\n;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n RET\r\n END\r\n",
+    "probe_error": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED) at EIP=00059d88; trace=406813,40681b,418daa,418dab,418dad,418db0,418db3,418db4,418db5,418db7,418db8,418dbd,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc2,418dc5,418dc8,418dcb,418dce,418dcf,418dd2,418dd5,418dd8"
+  },
+  {
+    "id": "line_256",
+    "source": "MAIN START\r\n;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n RET\r\n END\r\n",
+    "probe_error": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED) at EIP=00059d88; trace=406813,40681b,418daa,418dab,418dad,418db0,418db3,418db4,418db5,418db7,418db8,418dbd,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc0,418dc2,418dc5,418dc8,418dcb,418dce,418dcf,418dd2,418dd5,418dd8"
+  }
+]

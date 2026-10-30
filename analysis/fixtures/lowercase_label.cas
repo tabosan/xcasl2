@@ -1,0 +1,5 @@
+MAIN START
+abc DC 1
+ LD GR1,abc
+ RET
+ END

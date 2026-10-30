@@ -1,0 +1,20 @@
+{
+  "fields": {
+    "document_strings": [
+      "fixture.cmk",
+      "metadata"
+    ],
+    "files": [
+      [
+        "C:\\fixtures\\main.cas",
+        "main.cas"
+      ],
+      [
+        "C:\\fixtures\\副.cas",
+        "副.cas"
+      ]
+    ]
+  },
+  "hex": "020000000b666978747572652e636d6b086d6574616461746114433a5c66697874757265735c6d61696e2e636173086d61696e2e63617312433a5c66697874757265735c959b2e63617306959b2e636173",
+  "size": 81
+}

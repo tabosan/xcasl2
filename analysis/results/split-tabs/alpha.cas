@@ -1,0 +1,7 @@
+MAIN     START
+         LAD     GR1,1
+         OUT     MSG,LEN
+         RET
+MSG      DC      'ALPHA'
+LEN      DC      5
+         END

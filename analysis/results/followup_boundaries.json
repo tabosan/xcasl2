@@ -1,0 +1,828 @@
+[
+  {
+    "id": "crlf_tail_none",
+    "source": "MAIN START\r\n RET\r\n END",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_tail_one",
+    "source": "MAIN START\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_tail_two",
+    "source": "MAIN START\r\n RET\r\n END\r\n\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_tail_three",
+    "source": "MAIN START\r\n RET\r\n END\r\n\r\n\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_tail_space",
+    "source": "MAIN START\r\n RET\r\n END\r\n ",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_tail_comment",
+    "source": "MAIN START\r\n RET\r\n END\r\n; tail",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_tail_indented_comment",
+    "source": "MAIN START\r\n RET\r\n END\r\n ; tail",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_blank",
+    "source": "\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_space",
+    "source": " \r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_tab",
+    "source": "\t\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_comment",
+    "source": "; test\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_before_indented_comment",
+    "source": " ; test\r\nMAIN START\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_middle_blank",
+    "source": "MAIN START\r\n\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_middle_space",
+    "source": "MAIN START\r\n \r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_middle_tab",
+    "source": "MAIN START\r\n\t\r\n RET\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_middle_comment",
+    "source": "MAIN START\r\n; test\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_middle_indented_comment",
+    "source": "MAIN START\r\n ; test\r\n RET\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_before_end_blank",
+    "source": "MAIN START\r\n RET\r\n\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_end_space",
+    "source": "MAIN START\r\n RET\r\n \r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_end_tab",
+    "source": "MAIN START\r\n RET\r\n\t\r\n END\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_before_end_comment",
+    "source": "MAIN START\r\n RET\r\n; test\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_before_end_indented_comment",
+    "source": "MAIN START\r\n RET\r\n ; test\r\n END\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_after_end_blank",
+    "source": "MAIN START\r\n RET\r\n END\r\n\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_after_end_space",
+    "source": "MAIN START\r\n RET\r\n END\r\n \r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_after_end_tab",
+    "source": "MAIN START\r\n RET\r\n END\r\n\t\r\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "crlf_after_end_comment",
+    "source": "MAIN START\r\n RET\r\n END\r\n; test\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "crlf_after_end_indented_comment",
+    "source": "MAIN START\r\n RET\r\n END\r\n ; test\r\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_tail_none",
+    "source": "MAIN START\n RET\n END",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_tail_one",
+    "source": "MAIN START\n RET\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_tail_two",
+    "source": "MAIN START\n RET\n END\n\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_tail_three",
+    "source": "MAIN START\n RET\n END\n\n\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_tail_space",
+    "source": "MAIN START\n RET\n END\n ",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_tail_comment",
+    "source": "MAIN START\n RET\n END\n; tail",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_tail_indented_comment",
+    "source": "MAIN START\n RET\n END\n ; tail",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_blank",
+    "source": "\nMAIN START\n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_space",
+    "source": " \nMAIN START\n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_tab",
+    "source": "\t\nMAIN START\n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   1 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_comment",
+    "source": "; test\nMAIN START\n RET\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_before_indented_comment",
+    "source": " ; test\nMAIN START\n RET\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_middle_blank",
+    "source": "MAIN START\n\n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_middle_space",
+    "source": "MAIN START\n \n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_middle_tab",
+    "source": "MAIN START\n\t\n RET\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   2 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_middle_comment",
+    "source": "MAIN START\n; test\n RET\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_middle_indented_comment",
+    "source": "MAIN START\n ; test\n RET\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_before_end_blank",
+    "source": "MAIN START\n RET\n\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_end_space",
+    "source": "MAIN START\n RET\n \n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_end_tab",
+    "source": "MAIN START\n RET\n\t\n END\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "   3 行目:                   命令コードのエラーです．  ",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_before_end_comment",
+    "source": "MAIN START\n RET\n; test\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_before_end_indented_comment",
+    "source": "MAIN START\n RET\n ; test\n END\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_after_end_blank",
+    "source": "MAIN START\n RET\n END\n\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_after_end_space",
+    "source": "MAIN START\n RET\n END\n \n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_after_end_tab",
+    "source": "MAIN START\n RET\n END\n\t\n",
+    "errors": 0,
+    "raw_link_counter": 0,
+    "entry": 32,
+    "end": 161,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "ﾘﾝｸ中...",
+      "ｴﾗｰはありません．"
+    ]
+  },
+  {
+    "id": "lf_after_end_comment",
+    "source": "MAIN START\n RET\n END\n; test\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  },
+  {
+    "id": "lf_after_end_indented_comment",
+    "source": "MAIN START\n RET\n END\n ; test\n",
+    "errors": 1,
+    "raw_link_counter": 0,
+    "entry": 0,
+    "end": 0,
+    "diagnostics": [
+      "ｱｾﾝﾌﾞﾙ中...",
+      "probe.cas",
+      "アセンブルエラーは ありません．",
+      "probe.cas",
+      "ENDがありません．",
+      "エラーの数= 1 ",
+      "ｱｾﾝﾌﾞﾙｴﾗｰが生じましたので，ｱｾﾝﾌﾞﾙﾘﾝｸを中止します．"
+    ]
+  }
+]

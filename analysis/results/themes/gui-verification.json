@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-30",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "E23392DB9A292B54D1658E55F71B4517780AE8167FF1A34B9EDAF429A323026A",
+  "profile": "analysis/results/themes/profile",
+  "initial_settings": { "version": 1 },
+  "checks": {
+    "legacy_default": "dark UI and dark option selected with missing theme field",
+    "light": "selected Light and saved; source, syntax, tabs, sidebar, CASL registers/labels/stack and diagnostics became light",
+    "native_chrome": "title bar and menu bar changed to light",
+    "comet": "COMET nodes, buses, phase selection and memory rendered legibly in light theme",
+    "system": "selected OS sync; UI and native chrome matched current OS dark preference (AppsUseLightTheme=0)",
+    "state_preserved": "hello.cas source and simulator at 0 STEP / 0 instructions preserved across changes",
+    "persistence": "settings.json saved light and system values as selected; restarted in light with Light selected in preferences",
+    "shutdown": "both verification processes exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "32 passed, including simulated live OS changes and fixed-theme isolation",
+    "settings_tests": "9 passed, including roundtrip for light/dark/system and legacy dark default",
+    "typescript_vite_build": "passed",
+    "css_color_token_definitions": "passed",
+    "cargo_clippy": "passed (-D warnings)",
+    "cargo_fmt": "passed",
+    "tauri_debug_build": "passed"
+  },
+  "os_settings_modified": false
+}

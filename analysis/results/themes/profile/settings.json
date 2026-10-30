@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "theme": "light",
+  "base": 32,
+  "fill": 65535,
+  "interval_ms": 100,
+  "step_mode": "instruction",
+  "decimal": false,
+  "signed_decimal": true,
+  "auto_save": false,
+  "recent_files": [],
+  "comet_view": true,
+  "memory_start": 32,
+  "devices": {
+    "input_path": null,
+    "output_path": null
+  }
+}

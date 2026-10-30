@@ -1,0 +1,278 @@
+[
+  {
+    "index": 0,
+    "name": "NOP",
+    "words": 1,
+    "opcode": 0
+  },
+  {
+    "index": 1,
+    "name": "LD",
+    "words": 2,
+    "opcode": 16
+  },
+  {
+    "index": 2,
+    "name": "ST",
+    "words": 2,
+    "opcode": 17
+  },
+  {
+    "index": 3,
+    "name": "LAD",
+    "words": 2,
+    "opcode": 18
+  },
+  {
+    "index": 4,
+    "name": "LD",
+    "words": 1,
+    "opcode": 20
+  },
+  {
+    "index": 5,
+    "name": "ADDA",
+    "words": 2,
+    "opcode": 32
+  },
+  {
+    "index": 6,
+    "name": "SUBA",
+    "words": 2,
+    "opcode": 33
+  },
+  {
+    "index": 7,
+    "name": "ADDL",
+    "words": 2,
+    "opcode": 34
+  },
+  {
+    "index": 8,
+    "name": "SUBL",
+    "words": 2,
+    "opcode": 35
+  },
+  {
+    "index": 9,
+    "name": "ADDA",
+    "words": 1,
+    "opcode": 36
+  },
+  {
+    "index": 10,
+    "name": "SUBA",
+    "words": 1,
+    "opcode": 37
+  },
+  {
+    "index": 11,
+    "name": "ADDL",
+    "words": 1,
+    "opcode": 38
+  },
+  {
+    "index": 12,
+    "name": "SUBL",
+    "words": 1,
+    "opcode": 39
+  },
+  {
+    "index": 13,
+    "name": "AND",
+    "words": 2,
+    "opcode": 48
+  },
+  {
+    "index": 14,
+    "name": "OR",
+    "words": 2,
+    "opcode": 49
+  },
+  {
+    "index": 15,
+    "name": "XOR",
+    "words": 2,
+    "opcode": 50
+  },
+  {
+    "index": 16,
+    "name": "AND",
+    "words": 1,
+    "opcode": 52
+  },
+  {
+    "index": 17,
+    "name": "OR",
+    "words": 1,
+    "opcode": 53
+  },
+  {
+    "index": 18,
+    "name": "XOR",
+    "words": 1,
+    "opcode": 54
+  },
+  {
+    "index": 19,
+    "name": "CPA",
+    "words": 2,
+    "opcode": 64
+  },
+  {
+    "index": 20,
+    "name": "CPL",
+    "words": 2,
+    "opcode": 65
+  },
+  {
+    "index": 21,
+    "name": "CPA",
+    "words": 1,
+    "opcode": 68
+  },
+  {
+    "index": 22,
+    "name": "CPL",
+    "words": 1,
+    "opcode": 69
+  },
+  {
+    "index": 23,
+    "name": "SLA",
+    "words": 2,
+    "opcode": 80
+  },
+  {
+    "index": 24,
+    "name": "SRA",
+    "words": 2,
+    "opcode": 81
+  },
+  {
+    "index": 25,
+    "name": "SLL",
+    "words": 2,
+    "opcode": 82
+  },
+  {
+    "index": 26,
+    "name": "SRL",
+    "words": 2,
+    "opcode": 83
+  },
+  {
+    "index": 27,
+    "name": "JMI",
+    "words": 2,
+    "opcode": 97
+  },
+  {
+    "index": 28,
+    "name": "JNZ",
+    "words": 2,
+    "opcode": 98
+  },
+  {
+    "index": 29,
+    "name": "JZE",
+    "words": 2,
+    "opcode": 99
+  },
+  {
+    "index": 30,
+    "name": "JUMP",
+    "words": 2,
+    "opcode": 100
+  },
+  {
+    "index": 31,
+    "name": "JPL",
+    "words": 2,
+    "opcode": 101
+  },
+  {
+    "index": 32,
+    "name": "JOV",
+    "words": 2,
+    "opcode": 102
+  },
+  {
+    "index": 33,
+    "name": "PUSH",
+    "words": 2,
+    "opcode": 112
+  },
+  {
+    "index": 34,
+    "name": "POP",
+    "words": 1,
+    "opcode": 113
+  },
+  {
+    "index": 35,
+    "name": "CALL",
+    "words": 2,
+    "opcode": 128
+  },
+  {
+    "index": 36,
+    "name": "RET",
+    "words": 1,
+    "opcode": 129
+  },
+  {
+    "index": 37,
+    "name": "SVC",
+    "words": 2,
+    "opcode": 240
+  },
+  {
+    "index": 38,
+    "name": "IN",
+    "words": 12,
+    "opcode": 144
+  },
+  {
+    "index": 39,
+    "name": "OUT",
+    "words": 12,
+    "opcode": 145
+  },
+  {
+    "index": 40,
+    "name": "DC",
+    "words": 0,
+    "opcode": 0
+  },
+  {
+    "index": 41,
+    "name": "DS",
+    "words": 0,
+    "opcode": 0
+  },
+  {
+    "index": 42,
+    "name": "START",
+    "words": 0,
+    "opcode": 209
+  },
+  {
+    "index": 43,
+    "name": "END",
+    "words": 0,
+    "opcode": 210
+  },
+  {
+    "index": 44,
+    "name": "RPUSH",
+    "words": 14,
+    "opcode": 146
+  },
+  {
+    "index": 45,
+    "name": "RPOP",
+    "words": 7,
+    "opcode": 147
+  }
+]

@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-27",
+  "method": "Native WCASL2 UI observations manually transcribed from screenshots; disk bytes captured separately by capture_native_file.py. No process-memory extraction.",
+  "input_source": "analysis/fixtures/ui_native_io.cas",
+  "input_cases": [
+    {"id":"native-io-in-read","input_hex":"414220200d0a4e4558540d0a","pr":38,"buffer_address":44,"buffer":[65,66,65535],"length_address":300,"length":2},
+    {"id":"native-in-nul","input_file":"native-io/input-nul.bin","pr":38,"buffer_address":44,"buffer":[65,65535],"length_address":300,"length":1},
+    {"id":"native-in-ctrlz-after-a","input_file":"native-io/input-ctrlz-after-a.bin","pr":38,"buffer_address":44,"buffer":[65,65535],"length_address":300,"length":1},
+    {"id":"native-in-ctrlz-first","input_file":"native-io/input-ctrlz-first.bin","pr":38,"buffer_address":44,"buffer":[65535,65535],"length_address":300,"length":65535},
+    {"id":"native-in-nul-first","input_file":"native-io/input-nul-first.bin","pr":38,"buffer_address":44,"buffer":[65535,65535],"length_address":300,"length":0}
+  ],
+  "input_limitations": ["Only the first IN of each newly opened stream is tested here; post-NUL subsequent stream position remains untested.","Immediate screenshots can precede repaint; the first-NUL and first-Ctrl+Z evidence was refreshed before transcribing values."],
+  "disk_source": "native_io_20261027.json",
+  "cmk_cases": [
+    {"id":"missing-absolute","file":"cmk-paths/moved/missing-absolute.cmk","condition":"CASL files exist only alongside the cmk, not at stored absolute paths.","open_succeeds":true,"assemble_process_exits":true,"repeat_count":2,"before_image":"ui-20261027/cmk-missing-absolute-loaded-repeat.png","after_windows":"ui-20261027/cmk-missing-repeat-no-window.json"},
+    {"id":"relative-same-directory","file":"cmk-paths/relative-before-main.cmk","build_succeeds":true,"image":"ui-20261027/cmk-relative-three-success.png"},
+    {"id":"relative-after-other-directory","condition":"Open other/change-directory.cas through file dialog, activate still-open relative cmk, then assemble.","assemble_process_exits":true,"before_image":"ui-20261027/cmk-other-directory-opened.png","after_windows":"ui-20261027/cmk-relative-after-other-no-window.json"}
+  ],
+  "cmk_reorder": {
+    "before":["pathmain.cas","pathsub.cas","paththird.cas"],
+    "selected_index":2,
+    "display_after":["paththird.cas","pathmain.cas","pathsub.cas"],
+    "stored_paths_after":["paththird.cas","pathsub.cas","pathmain.cas"],
+    "fields":"cmk_reorder_20261027.json",
+    "image":"ui-20261027/cmk-three-main-saved.png"
+  },
+  "process_exit_limitations": "No Windows crash dump, exit code or exception record obtained. Process/window disappearance verified separately; event log access denied. Original caller probe demonstrates fopen failure passed to fgetc(NULL)."
+}

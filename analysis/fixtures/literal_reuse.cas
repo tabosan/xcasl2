@@ -1,0 +1,6 @@
+MAIN START
+ LD GR1,=1
+ LD GR2,=1
+ LD GR3,=#0001
+ RET
+ END

@@ -1,0 +1,5 @@
+MAIN START
+A DS 0
+B DC 7
+ RET
+ END

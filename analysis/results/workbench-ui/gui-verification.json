@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-27",
+  "application": "target/debug/xcasl2-desktop.exe",
+  "exe_sha256": "6490b7a938a92d12ced0d4aea6fb982c62459e0d255d9741dc8d1ba0d6792ab5",
+  "environment": {
+    "platform": "Windows, Tauri 2, WebView2",
+    "configuration_override": "analysis/results/workbench-ui/profile",
+    "user_appdata_settings_modified": false
+  },
+  "checks": [
+    {
+      "action": "Native File and Edit menus",
+      "result": "Japanese menus and shortcuts rendered; New, Open, Save, Save As, Save All, Close, Settings, Undo/Redo, clipboard and Find present"
+    },
+    {
+      "action": "Open alpha.cas and beta.cas together via native multiple-file picker",
+      "result": "Two source tabs, no unwanted linking of their duplicate MAIN names"
+    },
+    {
+      "action": "Build both with source upper-right preview button",
+      "result": "One simulator per source in right group; second build creates second tab and retains first"
+    },
+    {
+      "action": "Run both, then select each simulator",
+      "alpha": { "status": "halted", "instructions": 9, "gr1": 1, "output": "ALPHA" },
+      "beta": { "status": "halted", "instructions": 9, "gr1": 9, "output": "BETA" },
+      "result": "Independent register values and outputs preserved across tab selection"
+    },
+    {
+      "action": "Append 9 only to alpha, switch source tabs, return and choose Edit/Undo",
+      "result": "Only alpha simulator became stale; beta remained halted with GR1=9 and BETA. Undo removed alpha edit, cleared dirty/stale markers, and restored original text"
+    },
+    {
+      "action": "Updated executable: Ctrl+O, F5, F10, F6",
+      "result": "Open dialog works; F5 opens preview; F10 advances exactly one instruction; F6 completes ALPHA in nine instructions"
+    },
+    {
+      "action": "Maximize and drag group divider",
+      "result": "Pane widths change; narrow simulator toolbar wraps; registers, output and controls remain within right group"
+    },
+    {
+      "action": "Ctrl+Shift+S to alpha-saved.cas; Ctrl+S afterward",
+      "result": "Save As updates both associated tab labels without creating another simulator; plain Save writes without dialog",
+      "saved_bytes": 140,
+      "crlf_count": 7,
+      "bare_lf_count": 0,
+      "copy_matches_original_bytes": true,
+      "source_sha256": "408cf9b734c7125bef59859f161f0d5434e85224820ffa2633cf0e2498a51f9f"
+    },
+    {
+      "action": "Ctrl+2, Ctrl+W",
+      "result": "Only simulator tab closes; source editor tab remains and occupies available width"
+    },
+    {
+      "action": "Open examples/project/sample.cmk with a standalone source already open, F5 then F6",
+      "result": "Standalone tab remains; main/sub tabs and project tree added; six linked words, four instructions, GR1=7 and normal halt"
+    },
+    {
+      "action": "Click sub.cas:3 in simulator program table",
+      "result": "sub.cas source tab selected and matching line highlighted; main simulator stays visible with its own completed state"
+    },
+    {
+      "action": "Ctrl+N, type 9, Ctrl+W, Escape, Ctrl+Z",
+      "result": "Unsaved-close dialog appears; cancellation keeps tab and edited text; Undo restores new template and clears dirty marker"
+    }
+  ],
+  "automated_checks": {
+    "rust_workspace_tests": 43,
+    "frontend_tests": 12,
+    "typescript_vite_build": "passed",
+    "rust_clippy_deny_warnings": "passed; compiler reported fallback from incremental-cache hard links to file copies",
+    "rust_fmt": "passed",
+    "tauri_embedded_debug_exe": "built"
+  },
+  "original_wcasl2_sha256_unchanged": "389365c3f036b9c5461d669dafe98d7772b412167d3aee1730fb441e8275f74e",
+  "limitations": [
+    "Open tabs, unsaved buffers and runtime state are not restored after restart",
+    "One active cmk project at a time",
+    "Source-to-source split and drag-reordering tabs are not implemented"
+  ]
+}

@@ -1,0 +1,7 @@
+MAIN START
+ lad GR1,1
+ LAD GR1,1,GR0
+A DC #abcd
+B DC 'A;B'
+ RET
+ END

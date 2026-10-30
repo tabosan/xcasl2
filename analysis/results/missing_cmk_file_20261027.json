@@ -1,0 +1,16 @@
+{
+  "entry": "004081D0",
+  "events": [
+    {
+      "function": "fopen",
+      "path": "missing.cas",
+      "mode": "rb",
+      "return_value": 0
+    },
+    {
+      "function": "fgetc",
+      "file_pointer": 0
+    }
+  ],
+  "scope": "Original caller; fopen failure mocked; stop before native CRT NULL dereference"
+}

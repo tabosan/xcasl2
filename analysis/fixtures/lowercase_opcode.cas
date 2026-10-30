@@ -1,0 +1,4 @@
+MAIN START
+ lad GR1,1
+ RET
+ END

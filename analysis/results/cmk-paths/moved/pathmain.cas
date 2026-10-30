@@ -1,0 +1,4 @@
+P0 START
+ LAD GR1,1
+ RET
+ END

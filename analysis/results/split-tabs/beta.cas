@@ -1,0 +1,7 @@
+MAIN     START
+         LAD     GR1,9
+         OUT     MSG,LEN
+         RET
+MSG      DC      'BETA'
+LEN      DC      4
+         END

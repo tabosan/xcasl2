@@ -1,0 +1,39 @@
+{
+  "old_directory": "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old",
+  "moved_directory": "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\moved",
+  "other_directory": "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\other",
+  "missing_absolute": [
+    [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old\\pathmain.cas",
+      "pathmain.cas"
+    ],
+    [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old\\pathsub.cas",
+      "pathsub.cas"
+    ],
+    [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old\\paththird.cas",
+      "paththird.cas"
+    ]
+  ],
+  "relative": {
+    "document_strings": [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\cmk-paths\\old\\project.cmk",
+      "pathmain.cas"
+    ],
+    "files": [
+      [
+        "pathmain.cas",
+        "pathmain.cas"
+      ],
+      [
+        "pathsub.cas",
+        "pathsub.cas"
+      ],
+      [
+        "paththird.cas",
+        "paththird.cas"
+      ]
+    ]
+  }
+}

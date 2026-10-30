@@ -1,0 +1,13 @@
+{
+  "boundary_cases": 54,
+  "replay_scenarios": 5,
+  "file_input_cases": 9,
+  "original_serializer_matches": 3,
+  "native_saved_cmk_examples": 2,
+  "native_observations": 12,
+  "assertions": "passed",
+  "limitations": [
+    "Reload image, UI dialogs, file/CRT endpoints are explicitly mocked.",
+    "Native disk CRLF/flush/error paths remain unmeasured."
+  ]
+}

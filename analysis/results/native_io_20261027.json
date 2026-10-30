@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-27",
+  "source": "analysis/fixtures/ui_native_io.cas",
+  "input_hex": "414220200d0a4e4558540d0a",
+  "initial_output_hex": "5052454558495354494e472d53454e54494e454c0d0a",
+  "observations": [
+    {
+      "id": "before-out",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "size": 22,
+      "hex": "5052454558495354494e472d53454e54494e454c0d0a",
+      "sha256": "fd00dc689e1e912d5e8eede95e6214d9d65dbb9785402a371e20261ea069edba"
+    },
+    {
+      "id": "first-out-open",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "first-out-after-nop",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 0,
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "second-out-open",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 0,
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "ret-closed",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 8,
+      "size": 8,
+      "hex": "41420d0a41420d0a",
+      "sha256": "a94874b017d1c3998e01b233e864f99002fa399b5d4be0aa89ac2e2521f4f7ef"
+    },
+    {
+      "id": "back-two-out-open",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 0,
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "back-one-out-open",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 0,
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "back-before-any-out",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 4,
+      "size": 4,
+      "hex": "41420d0a",
+      "sha256": "4a979e18ec2dd94e45bf2e63ba4ed226e2714d159576b09d7338b6c6f5e720e3"
+    },
+    {
+      "id": "nul-before-out",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 4,
+      "size": 4,
+      "hex": "41420d0a",
+      "sha256": "4a979e18ec2dd94e45bf2e63ba4ed226e2714d159576b09d7338b6c6f5e720e3"
+    },
+    {
+      "id": "nul-out-open",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 0,
+      "read_error": "PermissionError",
+      "winerror": null
+    },
+    {
+      "id": "nul-ret-closed",
+      "output_path": "analysis\\results\\native-io\\output-active.txt",
+      "filesystem_size": 1,
+      "size": 1,
+      "hex": "41",
+      "sha256": "559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"
+    }
+  ]
+}

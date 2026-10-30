@@ -1,0 +1,4 @@
+MAIN START
+; header
+ RET
+ END

@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-27",
+  "application": "xCASL2 Rust + Tauri",
+  "sample": "examples/file-records.cas",
+  "input_hex": "82a0b120200d0a4142430d0a",
+  "output_hex": "82a0b10d0a4142430d0a",
+  "records_written": 2,
+  "output_bytes": 10,
+  "normal_exit": true,
+  "instructions": 47,
+  "path_selection_did_not_create_output": true,
+  "comparison": "CP932 data, trailing spaces removed, CRLF, EOF loop",
+  "replay_steps": 46,
+  "replay_buffered_bytes": 10,
+  "replay_disk_size": 0,
+  "replay_read_sharing_denied": true,
+  "window_close_flushed": true,
+  "closed_output_hex": "82a0b10d0a4142430d0a"
+}

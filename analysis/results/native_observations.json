@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-26",
+  "method": "Values transcribed from observed native WCASL2 screenshots; not programmatic process-memory extraction.",
+  "source": "MAIN START\r\n     LAD GR1,1\r\n     ADDA GR1,=2\r\n     OUT MSG,LEN\r\n     RET\r\nMSG  DC 'HELLO'\r\nLEN  DC 5\r\n     END\r\n",
+  "observations": [
+    {"id": "casl-initial", "pr": 32, "sp": 185, "gr1": 65535, "fr": 0, "image": "ui/casl-initial.png"},
+    {"id": "casl-after-lad", "pr": 34, "sp": 185, "gr1": 1, "fr": 0, "image": "ui/casl-after-lad.png"},
+    {"id": "casl-before-out", "pr": 36, "sp": 185, "gr1": 3, "fr": 0, "image": "ui/casl-before-out.png"},
+    {"id": "casl-out-first-expanded-instruction", "pr": 38, "sp": 184, "gr1": 3, "fr": 0, "ir": [28673, 0], "image": "ui/casl-out-first-expanded-instruction.png"},
+    {"id": "casl-back-before-out", "pr": 36, "sp": 185, "gr1": 3, "fr": 0, "image": "ui/casl-back-before-out.png"},
+    {"id": "comet-first-step", "pr": 32, "mar": 32, "sp": 185, "gr1": 65535, "phase_label": "命令取出サイクル", "image": "ui/comet-first-step.png"}
+  ]
+}

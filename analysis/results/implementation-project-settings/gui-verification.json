@@ -1,0 +1,42 @@
+{
+  "archive": "analysis\\results\\implementation-project-settings\\reordered.cmk",
+  "bytes": 332,
+  "stored_path": "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\implementation-project-settings\\reordered.cmk",
+  "main_path": "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\examples\\project\\sub.cas",
+  "files": [
+    [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\examples\\project\\sub.cas",
+      "sub.cas"
+    ],
+    [
+      "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\examples\\project\\main.cas",
+      "main.cas"
+    ]
+  ],
+  "main_first": true,
+  "display_path_pairs_consistent": true,
+  "initial_execution_instructions": 4,
+  "initial_execution_gr1": 7,
+  "date": "2026-10-27",
+  "application": "xCASL2 Rust + Tauri",
+  "cmk_reopened": true,
+  "reordered_execution_instructions": 2,
+  "reordered_execution_gr1": 7,
+  "restored_base_used_in_build": 64,
+  "settings_restored_after_restart": true,
+  "persisted_settings": {
+    "version": 1,
+    "base": 64,
+    "fill": 65535,
+    "interval_ms": 2345,
+    "step_mode": "instruction",
+    "decimal": false,
+    "comet_view": true,
+    "memory_start": 32,
+    "devices": {
+      "input_path": null,
+      "output_path": null
+    }
+  },
+  "settings_path": "C:/Users/tabos/AppData/Roaming/dev.xcasl2.desktop/settings.json"
+}

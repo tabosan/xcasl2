@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-27",
+  "native_input_cases": 5,
+  "disk_checkpoints": 11,
+  "native_cmk_path_scenarios": 3,
+  "three_file_reorder_mismatch_confirmed": true,
+  "legacy_saved_path_used": true,
+  "unchecked_fopen_failure_confirmed": true,
+  "assertions": "passed"
+}

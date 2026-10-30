@@ -1,0 +1,68 @@
+[
+  {
+    "file": "synthetic-archive.cmk",
+    "size": 81,
+    "fields": {
+      "document_strings": [
+        "fixture.cmk",
+        "metadata"
+      ],
+      "files": [
+        [
+          "C:\\fixtures\\main.cas",
+          "main.cas"
+        ],
+        [
+          "C:\\fixtures\\副.cas",
+          "副.cas"
+        ]
+      ]
+    },
+    "original_serializer_byte_match": true,
+    "hex": "020000000b666978747572652e636d6b086d6574616461746114433a5c66697874757265735c6d61696e2e636173086d61696e2e63617312433a5c66697874757265735c959b2e63617306959b2e636173"
+  },
+  {
+    "file": "native-project-before-main.cmk",
+    "size": 339,
+    "fields": {
+      "document_strings": [
+        "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\native-project.cmk",
+        "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\baseline.cas"
+      ],
+      "files": [
+        [
+          "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\baseline.cas",
+          "baseline.cas"
+        ],
+        [
+          "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\副プログラム.cas",
+          "副プログラム.cas"
+        ]
+      ]
+    },
+    "original_serializer_byte_match": true,
+    "hex": "020000004e433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c726573756c74735c6e61746976652d70726f6a6563742e636d6b49433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c626173656c696e652e63617349433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c626173656c696e652e6361730c626173656c696e652e6361734d433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c959b8376838d834f838983802e63617310959b8376838d834f838983802e636173"
+  },
+  {
+    "file": "native-project.cmk",
+    "size": 343,
+    "fields": {
+      "document_strings": [
+        "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\native-project.cmk",
+        "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\副プログラム.cas"
+      ],
+      "files": [
+        [
+          "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\副プログラム.cas",
+          "副プログラム.cas"
+        ],
+        [
+          "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\fixtures\\baseline.cas",
+          "baseline.cas"
+        ]
+      ]
+    },
+    "original_serializer_byte_match": true,
+    "hex": "020000004e433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c726573756c74735c6e61746976652d70726f6a6563742e636d6b4d433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c959b8376838d834f838983802e6361734d433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c959b8376838d834f838983802e63617310959b8376838d834f838983802e63617349433a5c55736572735c7461626f735c8368834c83858381839383675c436861744750545c786361736c325c616e616c797369735c66697874757265735c626173656c696e652e6361730c626173656c696e652e636173"
+  }
+]

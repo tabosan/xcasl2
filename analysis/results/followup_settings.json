@@ -1,0 +1,10 @@
+{
+  "path": "C:\\Users\\tabos\\AppData\\Local\\VirtualStore\\Windows\\Wcasl2.INI",
+  "section": "wcasl-ii",
+  "values": {
+    "baseaddress": "32",
+    "loadmode": "1",
+    "intervaltime": "1"
+  },
+  "evidence": "read existing file; other sections omitted"
+}

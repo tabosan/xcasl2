@@ -1,0 +1,4 @@
+MAIN START
+A DC 'A;B'
+ RET
+ END

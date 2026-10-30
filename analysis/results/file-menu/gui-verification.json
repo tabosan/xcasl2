@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-30",
+  "executable": "target/debug/xcasl2-desktop.exe",
+  "sha256": "802B50B91C453FDB9CAB9F86441A98FC2B7CAFA2A580B22C8DF7A85B469ED4B9",
+  "profile": "analysis/results/file-menu/profile",
+  "checks": {
+    "native_file_menu": "recent-files submenu and auto-save check item visible",
+    "legacy_settings": "profile without auto_save loads with unchecked auto-save",
+    "recent_open": "selected auto.cas from history; source editor opened",
+    "toggle_auto_save": "menu click persisted auto_save=true",
+    "actual_save": "edited source via native accessibility; file updated without manual save",
+    "saved_content": "MAIN START / RET / END / comment AUTO SAVE VERIFIED, exact CRLF bytes verified",
+    "dirty_indicator": "dirty dot cleared after automatic save",
+    "history_deduplication": "same path remains a single entry after automatic save",
+    "restart": "auto-save check and recent file restored in native menu",
+    "shutdown": "both verification processes exited with code 0"
+  },
+  "automated_checks": {
+    "frontend_tests": "30 passed, including history aliases/cap and auto-save debounce/retry/cancel",
+    "settings_tests": "9 passed, including new fields roundtrip and legacy defaults",
+    "typescript_vite_build": "passed",
+    "cargo_clippy": "passed (-D warnings)",
+    "cargo_fmt": "passed",
+    "tauri_debug_build": "passed"
+  }
+}

@@ -1,0 +1,63 @@
+Window: "WCASL-II - Assembler Output", App: Wcasl2.exe.
+	0 ウィンドウ WCASL-II - Assembler Output Secondary Actions: Raise
+		1 ウィンドウ 作業領域 ID: 59648
+			220 ウィンドウ Assembler Output Secondary Actions: Raise ID: 65281
+				221 テキスト Assemble Messages ID: 65535
+				222 一覧 Assemble Messages ID: 1006
+					223 一覧項目 (selectable) ｱｾﾝﾌﾞﾙ中...
+					224 一覧項目 (selectable) C:\Users\tabos\ドキュメント\ChatGPT\xcasl2\analysis\fixtures\line_201.cas
+					225 一覧項目 (selectable) アセンブルエラーは ありません．
+					226 一覧項目 (selectable) ﾘﾝｸ中...
+					227 一覧項目 (selectable) ｴﾗｰはありません．
+				228 スクロール バー (settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+					229 ボタン 1 行上 ID: UpButton
+					230 縮小 表示位置 ID: ScrollbarThumb
+					231 ボタン 下へドラッグ ID: DownPageButton
+					232 ボタン 1 行下 ID: DownButton
+				233 タイトル バー (settable, string) Value: Assembler Output
+					234 メニュー バー システム ID: MenuBar
+						235 メニュー項目 ドキュメント ウィンドウ
+					236 ボタン 最小化
+					237 ボタン 最大化
+					238 ボタン 閉じる
+			197 ウィンドウ line_201.cas Secondary Actions: Raise ID: 65280
+				198 編集 (settable, string) Value: MAIN START ;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx RET END ID: 59648
+					199 スクロール バー (disabled, settable, float) 垂直 Value: 0 ID: NonClientVerticalScrollBar
+						200 ボタン (disabled) 1 行上 ID: UpButton
+						201 ボタン (disabled) 1 行下 ID: DownButton
+				202 タイトル バー (settable, string) Value: line_201.cas
+					203 メニュー バー システム ID: MenuBar
+						204 メニュー項目 ドキュメント ウィンドウ
+					205 ボタン 最小化
+					206 ボタン 最大化
+					207 ボタン 閉じる
+		2 ステータス バー ID: 59393
+			3 テキスト ﾚﾃﾞｨ
+			4 テキスト
+			5 テキスト
+			6 テキスト
+			7 テキスト
+		8 ツール バー ID: 59392
+			9 ボタン
+			10 ボタン
+			11 ボタン
+			12 ボタン (disabled)
+			13 ボタン (disabled)
+			14 ボタン (disabled)
+			15 ボタン (disabled)
+			16 ボタン
+		17 タイトル バー (settable, string) Value: WCASL-II - Assembler Output
+			18 メニュー バー システム ID: MenuBar
+				19 メニュー項目 システム
+			20 ボタン 最小化
+			21 ボタン 最大化
+			22 ボタン 閉じる
+		239 メニュー バー アプリケーション ID: MenuBar
+			240 メニュー項目 ﾌｧｲﾙ(F)
+			241 メニュー項目 編集(E)
+			242 メニュー項目 表示(V)
+			243 メニュー項目 ﾌﾟﾛｼﾞｪｸﾄ(P)
+			244 メニュー項目 ｳｨﾝﾄﾞｳ(W)
+			219 メニュー項目 ﾍﾙﾌﾟ(H)
+
+The focused UI element is 222 一覧 Assemble Messages ID: 1006.

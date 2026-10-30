@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-29",
+  "application": "target/debug/xcasl2-desktop.exe",
+  "gui_checked_exe_sha256": "8326e28982d61aec83c631c6cfbab68562c05aa676521eaccd6a2b7497822ab4",
+  "final_exe_sha256": "3ad911b982f22020c3d49c7a6baac88bce0c7613590716cbcc7fd0ce93e1f29f",
+  "final_build_note": "The final build also focuses the simulator tab after a successful preview; all layout/runtime checks were performed immediately before this focus adjustment.",
+  "original_exe_sha256_unchanged": "389365c3f036b9c5461d669dafe98d7772b412167d3aee1730fb441e8275f74e",
+  "configuration_override": "analysis/results/split-tabs/profile",
+  "user_appdata_settings_modified": false,
+  "fixtures": ["alpha.cas", "beta.cas", "gamma.cas"],
+  "checks": [
+    {
+      "action": "Open three sources, drag gamma before alpha in the tab strip",
+      "result": "Order changed from alpha/beta/gamma to gamma/alpha/beta; no duplicate tabs or document replacement"
+    },
+    {
+      "action": "Drag beta to the right edge of the source content",
+      "result": "Two source groups display distinct sources side by side"
+    },
+    {
+      "action": "Type 9 into beta, move its tab between groups, then undo",
+      "result": "Modified text moved with its tab; Ctrl+Z restored original beta text and cleared its dirty marker; other source unchanged",
+      "implementation_note": "WebView native history can be lost on reparenting; per-file backup history was added and verified in the updated executable"
+    },
+    {
+      "action": "Move the last tab out of the second group",
+      "result": "Empty group disappears and remaining group expands to the full workspace width",
+      "implementation_note": "Normalized flex weights fixed leftover blank space observed during initial validation"
+    },
+    {
+      "action": "F5 and F6 for beta, then alpha",
+      "result": "New simulator tabs use the adjacent right group; beta remains in its existing tab when alpha is added",
+      "beta": { "steps": 9, "gr1": 9, "output": "BETA", "status": "halted" },
+      "alpha": { "steps": 9, "gr1": 1, "output": "ALPHA", "status": "halted" }
+    },
+    {
+      "action": "Drag beta simulator into the left source group while alpha simulator stays on the right",
+      "result": "Both simulators are visible simultaneously with independent GR1 values 9/1 and retained nine-step state"
+    },
+    {
+      "action": "Reload only the moved beta simulator and switch it to COMET",
+      "result": "Beta resets to zero steps and displays COMET; alpha stays halted at nine steps in CASL with GR1=1"
+    },
+    {
+      "action": "Ctrl+Backslash on a mixed group's simulator tab",
+      "result": "Three groups: source, beta simulator, alpha simulator; no duplicate simulator or runtime reset"
+    },
+    {
+      "action": "View menu: combine groups into one",
+      "result": "One full-width group retains all source/simulator tabs in visual order and the selected beta simulator's COMET state"
+    }
+  ],
+  "automated_checks": {
+    "frontend_tests": 26,
+    "rust_workspace_tests": 45,
+    "typescript_vite": "passed",
+    "clippy_deny_warnings": "passed; incremental-cache hard linking used copy fallback",
+    "cargo_fmt_check": "passed",
+    "tauri_embedded_debug_exe": "built"
+  },
+  "remaining_limits": [
+    "One editing tab per source; splitting moves it rather than cloning the same file's editor",
+    "Tab/group layouts and runtime state are not restored after restart",
+    "No vertical split or detached windows"
+  ]
+}
