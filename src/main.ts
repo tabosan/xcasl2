@@ -18,6 +18,7 @@ import { editPreferences } from './preferences';
 import { examples } from './examples';
 import { AutoSave, recentFiles } from './file-features';
 import { workbenchShortcut } from './shortcuts';
+import { AppContextMenu, type ContextMenuEntry, type ContextMenuItem } from './context-menu';
 import type { Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
@@ -104,13 +105,12 @@ function moveToNeighbor(direction: number) {
 function ensureSimulationView(id: string): HTMLElement {
   const existing = simulationViews.get(id); if (existing) return existing.root;
   const root = document.createElement('div'); root.className = 'simulation-buffer';
-  root.innerHTML = scopedMarkup('<div class="sim-document-actions"><button id="sim-source" title="対応するソースを開く">対応するソースを開く</button></div>' + simulatorMarkup(), id);
+  root.innerHTML = scopedMarkup(simulatorMarkup(), id);
   applyCometLayout(root.querySelector<SVGSVGElement>('.datapath')!);
   const el = <T extends HTMLElement = HTMLElement>(name: string) => root.querySelector(`[data-view="${name}"]`) as T;
   for (const path of root.querySelectorAll('.bus-lines path')) path.setAttribute('marker-end', `url(#${id}-bus-arrow)`);
   const sim = () => wb.simulation(id);
   for (const name of ['run', 'step', 'stop', 'back', 'reset', 'devices']) el(name).onclick = () => { selectSimulator(id); action(name); };
-  el('sim-source').onclick = () => selectSource(id, true);
   el('sim-rebuild').onclick = () => buildPreview(id);
   el('binary-registers').onchange = () => { const current = sim(); if (current) { current.binaryRegisters = el<HTMLInputElement>('binary-registers').checked; persistSettings(current); renderSim(); } };
   el('speed').onchange = () => { const current = sim(); if (current) { current.interval = Number(el<HTMLSelectElement>('speed').value); persistSettings(current); } };
@@ -148,7 +148,7 @@ function stop(sim: SimulatorTab | null) { if (!sim) return; sim.running = false;
 function stopAll() { for (const sim of wb.simulators.values()) stop(sim); }
 function invalidateChanged() { for (const sim of wb.simulators.values()) if (wb.stale(sim, settings)) stop(sim); }
 const view = new WorkbenchView($('editor-groups'), wb, {
-  editor: ensureEditor, simulator: ensureSimulationView,
+  editor: ensureEditor, simulator: ensureSimulationView, source: id => selectSource(id, true),
   renderSimulator: id => { const sim = wb.simulation(id); if (sim) simulationViews.get(id)!.render(sim, wb.stale(sim, settings), ioBusy, row => revealRow(sim, row), wb.layout.current() === tabKey('simulator', id), settings.signed_decimal); },
   select: selectTab, focus: adoptFocus,
   close: key => withIo(() => parseTab(key).kind === 'source' ? closeDocument(parseTab(key).id) : closeSimulator(parseTab(key).id)),
@@ -174,7 +174,7 @@ function renderSidebar() {
     const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = 'Ⅱ';
     const label = document.createElement('span'); label.textContent = doc.name;
     const dirty = document.createElement('span'); dirty.className = 'tree-dirty'; dirty.textContent = doc.source !== doc.saved ? '●' : '';
-    button.append(icon, label, dirty); button.title = doc.path ?? '未保存'; button.onclick = () => selectSource(id, true); return button;
+    button.append(icon, label, dirty); button.dataset.sourceId = id; button.title = doc.path ?? '未保存'; button.onclick = () => selectSource(id, true); return button;
   }));
   const project = wb.project;
   $('project-name').textContent = project ? `${project.path ? basename(project.path) : '新規cmk'}${project.dirty ? ' ●' : ''}` : 'cmkは開かれていません';
@@ -183,7 +183,7 @@ function renderSidebar() {
     const doc = wb.source(id)!, button = document.createElement('button'); button.className = 'tree-file';
     const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = i === 0 ? '★' : 'Ⅱ';
     const label = document.createElement('span'); label.textContent = doc.name;
-    button.append(icon, label); button.title = `${doc.path ?? '未保存'}${i === 0 ? '\nメインファイル' : ''}`; button.onclick = () => selectSource(id, true); return button;
+    button.append(icon, label); button.dataset.sourceId = id; button.title = `${doc.path ?? '未保存'}${i === 0 ? '\nメインファイル' : ''}`; button.onclick = () => selectSource(id, true); return button;
   }));
 }
 function renderSource() { view.render(settings, ioBusy || !settingsReady, desktop); renderDiagnostics(); updatePosition(); }
@@ -467,6 +467,91 @@ async function action(name: string) {
     default: if (name.startsWith('sample-') && examples[name.slice(7)]) newDocument(examples[name.slice(7)], `${name.slice(7)}.cas`);
   }
 }
+
+function contextMenuEntries(target: Element): ContextMenuEntry[] {
+  const blocked = ioBusy || closing || !settingsReady || !!document.querySelector('dialog[open]');
+  const item = (label: string, run: ContextMenuItem['run'], disabled = false, shortcut?: string): ContextMenuItem => ({ label, run, disabled, shortcut });
+  const command = (label: string, name: string, disabled = false, shortcut?: string) => item(label, () => action(name), blocked || disabled, shortcut);
+  const selection = window.getSelection()?.toString() ?? '';
+  const copy = item('選択範囲をコピー', () => navigator.clipboard.writeText(selection), !selection);
+  const field = target.closest<HTMLInputElement | HTMLTextAreaElement>('input:not([type=checkbox]):not([type=radio]),textarea');
+  if (field) {
+    const start = field.selectionStart, end = field.selectionEnd;
+    const text = start === null || end === null ? field.value : field.value.slice(start, end);
+    const replace = (value: string, inputType: string) => {
+      if (!field.isConnected || field.disabled || field.readOnly) return;
+      field.focus();
+      if (start !== null && end !== null) {
+        field.setSelectionRange(start, end);
+        // Preserve the form input's own undo history when the WebView supports it.
+        if (document.execCommand(value ? 'insertText' : 'delete', false, value)) return;
+      }
+      if (start === null || end === null) field.value = value;
+      else field.setRangeText(value, start, end, 'end');
+      field.dispatchEvent(new InputEvent('input', { bubbles: true, inputType }));
+    };
+    const readOnly = field.disabled || field.readOnly;
+    return [
+      item('元に戻す', () => { field.focus(); document.execCommand('undo'); }, readOnly, 'Ctrl+Z'),
+      item('やり直し', () => { field.focus(); document.execCommand('redo'); }, readOnly, 'Ctrl+Y'), null,
+      item('切り取り', async () => { await navigator.clipboard.writeText(text); replace('', 'deleteByCut'); }, readOnly || !text, 'Ctrl+X'),
+      item('コピー', () => navigator.clipboard.writeText(text), !text, 'Ctrl+C'),
+      item('貼り付け', async () => replace(await navigator.clipboard.readText(), 'insertFromPaste'), readOnly, 'Ctrl+V'), null,
+      item('すべて選択', () => { field.focus(); field.select(); }, field.disabled || start === null, 'Ctrl+A'),
+    ];
+  }
+  if (document.querySelector('dialog[open]')) return [copy];
+  const tab = target.closest<HTMLElement>('[data-tab-key]');
+  if (tab?.dataset.tabKey) {
+    const key = tab.dataset.tabKey as TabKey; selectTab(key);
+    const { kind, id } = parseTab(key), doc = wb.source(id)!;
+    return [
+      ...(kind === 'source' ? [command('保存', 'save', !desktop, 'Ctrl+S'), command('名前を付けて保存…', 'save-as', !desktop, 'Ctrl+Shift+S'), command('アセンブルして右に開く', 'preview', !desktop, 'F5')] : [item('対応するソースを開く', () => selectSource(id, true), blocked)]), null,
+      command('タブを右に分割して移動', 'split-right', false, 'Ctrl+\\'),
+      command('左のグループへ移動', 'move-left'), command('右のグループへ移動', 'move-right'),
+      command('グループを統合', 'join-groups', wb.layout.groups.length < 2), null,
+      item('ファイルのパスをコピー', () => navigator.clipboard.writeText(doc.path!), !doc.path), null,
+      command('閉じる', 'close-tab', false, 'Ctrl+W'), command('すべて閉じる', 'close-all'),
+    ];
+  }
+  const file = target.closest<HTMLElement>('[data-source-id]');
+  if (file?.dataset.sourceId) {
+    const id = file.dataset.sourceId, doc = wb.source(id)!;
+    const forSource = (name: string) => async () => { selectSource(id); await action(name); };
+    return [
+      item('ソースを開く', () => selectSource(id, true), blocked),
+      item('保存', forSource('save'), blocked || !desktop, 'Ctrl+S'),
+      item('名前を付けて保存…', forSource('save-as'), blocked || !desktop),
+      item('アセンブルして右に開く', () => buildPreview(id), blocked || !desktop, 'F5'), null,
+      item('ファイルのパスをコピー', () => navigator.clipboard.writeText(doc.path!), !doc.path),
+    ];
+  }
+  const simulator = target.closest<HTMLElement>('.simulation-buffer');
+  if (simulator?.dataset.bufferKey) {
+    const { id } = parseTab(simulator.dataset.bufferKey as TabKey); selectSimulator(id);
+    const sim = wb.simulation(id)!, ready = !!sim.snapshot && !wb.stale(sim, settings) && !sim.running && !sim.busy;
+    return [copy, null,
+      command('実行', 'run', !ready || sim.snapshot?.status !== 'ready', 'F6'),
+      command('1 STEP実行', 'step', !ready || sim.snapshot?.status !== 'ready', 'F10'),
+      command('停止', 'stop', !sim.running, 'Shift+F5'),
+      command('1 STEP戻る', 'back', !ready), command('初期状態へ戻す', 'reset', !ready), null,
+      item('対応するソースを開く', () => selectSource(id, true), blocked),
+      command('再アセンブル', 'preview', !desktop, 'F5'),
+    ];
+  }
+  const group = target.closest<HTMLElement>('[data-group-id]'), active = group ? wb.layout.group(group.dataset.groupId)?.active : null;
+  if (active) selectTab(active);
+  return [
+    ...(selection ? [copy, null] : []),
+    command('新しいCASLファイル', 'new', false, 'Ctrl+N'), command('ファイルを開く…', 'open', !desktop, 'Ctrl+O'),
+    command('保存', 'save', !desktop || !wb.source(), 'Ctrl+S'), command('アセンブルして右に開く', 'preview', !desktop || !wb.source(), 'F5'), null,
+    command('エクスプローラーの表示切替', 'sidebar', false, 'Ctrl+B'),
+    command('アセンブラ出力の表示切替', 'output-panel', false, 'Ctrl+J'),
+    command('コマンドパレット…', 'command-palette', !wb.source(), 'F1'),
+    command('設定…', 'settings', !desktop, 'Ctrl+,'),
+  ];
+}
+const contextMenu = new AppContextMenu(contextMenuEntries, error => message(String(error), true));
 
 $('activity-explorer').onclick = toggleSidebar; $('status-sidebar').onclick = toggleSidebar;
 $('activity-settings').onclick = () => action('settings'); $('sidebar-new').onclick = () => action('new'); $('sidebar-project-open').onclick = () => action('project-open');

@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-30",
+  "frontend_tests": {
+    "passed": 44,
+    "failed": 0
+  },
+  "monaco": {
+    "locale": "bundled monaco-editor/nls/lang/ja loaded before editor and worker code",
+    "cause": "Fixed shadow-root context menus lacked the standalone theme CSS variables on their host",
+    "fix": "The editor host now has monaco-component so variables inherit into fixed shadow-root menus; application form/reset CSS excludes Monaco",
+    "verified": [
+      "Japanese editor context menu, find/replace controls and 131 command-palette action labels",
+      "Readable foreground/background in dark and light themes",
+      "Context menu remains fully visible across the source/simulator group boundary",
+      "No observed browser console errors"
+    ]
+  },
+  "workbench": {
+    "verified": [
+      "Custom Japanese menus replace the WebView default outside Monaco",
+      "Tab and sidebar file menus use the clicked file",
+      "ArrowDown changes the focused menu item; Escape closes the menu",
+      "The tab menu can split two source files into side-by-side groups",
+      "A menu opened at the status bar is clamped within the viewport",
+      "The sidebar menu assembles Hello successfully and opens its simulator",
+      "Tab strip and right-side action bar both start at the same Y coordinate (0 in browser preview)"
+    ],
+    "configuration_directory": "analysis/results/menu-ui/config",
+    "usual_user_settings_modified": false
+  },
+  "screenshots": [
+    "analysis/results/menu-ui/monaco-dark.png",
+    "analysis/results/menu-ui/workbench-dark.png",
+    "analysis/results/menu-ui/monaco-light.png"
+  ],
+  "desktop_build": "passed: tauri build --debug --no-bundle -- --offline",
+  "desktop_sha256": "AD9503F0505B839A3B7B399BE785FAE50303333882CA0D44B444F58D89891DA9"
+}

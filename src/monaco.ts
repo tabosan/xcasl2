@@ -1,10 +1,12 @@
 // The full entry point registers Monaco's standard editor contributions.
+// NLS must run before editor contributions register their labels.
+import 'monaco-editor/nls/lang/ja';
 import * as monaco from 'monaco-editor';
-import EditorWorker from 'monaco-editor/editor/editor.worker?worker';
-import JsonWorker from 'monaco-editor/language/json/json.worker?worker';
-import CssWorker from 'monaco-editor/language/css/css.worker?worker';
-import HtmlWorker from 'monaco-editor/language/html/html.worker?worker';
-import TsWorker from 'monaco-editor/language/typescript/ts.worker?worker';
+import EditorWorker from './workers/editor.worker?worker';
+import JsonWorker from './workers/json.worker?worker';
+import CssWorker from './workers/css.worker?worker';
+import HtmlWorker from './workers/html.worker?worker';
+import TsWorker from './workers/ts.worker?worker';
 import { directives, instructions, macros, tokenizeCaslLine } from './highlight';
 import { analyseCasl, definitionsFor, occurrenceAt, referencesFor, tokenAt, type CaslOccurrence } from './casl-language';
 

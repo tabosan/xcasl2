@@ -14,7 +14,8 @@ export class SourceEditor {
   constructor(readonly document: SourceDocument, private onChange: () => void, private onPosition: () => void) {
     initializeMonaco();
     this.root.className = 'editor-wrap editor-buffer monaco-source';
-    const host = window.document.createElement('div'); host.className = 'monaco-host'; this.root.append(host);
+    // Floating shadow-root menus inherit their theme variables from this host.
+    const host = window.document.createElement('div'); host.className = 'monaco-host monaco-component'; this.root.append(host);
     this.model = monaco.editor.createModel(document.source, 'casl2', monaco.Uri.from({ scheme: 'inmemory', authority: 'xcasl2', path: `/${document.id}/${document.name}` }));
     this.model.setEOL(monaco.editor.EndOfLineSequence.LF);
     this.model.updateOptions({ tabSize: 4, insertSpaces: true });
@@ -25,7 +26,8 @@ export class SourceEditor {
       minimap: { enabled: true }, folding: true, showFoldingControls: 'mouseover',
       lineNumbers: 'on', glyphMargin: true, scrollBeyondLastLine: true,
       wordWrap: 'off', padding: { top: 16, bottom: 16 }, contextmenu: true,
-      fixedOverflowWidgets: true, accessibilitySupport: 'auto',
+      // Fixed menus escape the editor group's clipped/scrolling viewport.
+      useShadowDOM: true, fixedOverflowWidgets: true, accessibilitySupport: 'auto',
       // Use Monaco's established input path for WebView IME/native edit menus.
       editContext: false,
       // These are part of WCASL2's source syntax; do not flag Japanese strings.

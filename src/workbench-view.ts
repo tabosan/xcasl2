@@ -11,14 +11,16 @@ interface Callbacks {
   focus(key: TabKey | null): void;
   close(key: TabKey): void;
   build(id: string): void;
+  source(id: string): void;
   action(name: string): void;
   changed(): void;
   blocked(): boolean;
 }
-interface GroupView { root: HTMLElement; strip: HTMLElement; breadcrumb: HTMLElement; split: HTMLButtonElement; preview: HTMLButtonElement; buffers: HTMLElement; welcome: HTMLElement }
+interface GroupView { root: HTMLElement; strip: HTMLElement; breadcrumb: HTMLElement; split: HTMLButtonElement; preview: HTMLButtonElement; source: HTMLButtonElement; buffers: HTMLElement; welcome: HTMLElement }
 interface DropTarget { group: string; index: number; side?: 'left' | 'right' }
 const splitIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16"/></svg>';
 const previewIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16m3 5 3 3-3 3"/></svg>';
+const sourceIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16"/><path d="M12 4v16m-3-11-3 3 3 3"/></svg>';
 
 export class WorkbenchView {
   private groups = new Map<string, GroupView>();
@@ -58,6 +60,7 @@ export class WorkbenchView {
       view.breadcrumb.textContent = doc ? `${doc.name}${tab?.kind === 'simulator' ? ' › シミュレーター' : ''}` : 'xCASL2';
       view.breadcrumb.title = doc?.path ?? '';
       view.preview.hidden = tab?.kind !== 'source'; view.preview.disabled = blocked || !canBuild;
+      view.source.hidden = tab?.kind !== 'simulator'; view.source.disabled = blocked;
       view.split.disabled = !group.active || blocked;
       view.welcome.hidden = !!tab;
       view.buffers.hidden = !tab;
@@ -129,11 +132,12 @@ export class WorkbenchView {
   }
   private makeGroup(group: EditorGroup): GroupView {
     const root = document.createElement('section'); root.className = 'editor-group'; root.dataset.groupId = group.id;
-    root.innerHTML = `<div class="tab-strip" role="tablist" aria-label="ファイルとシミュレーターのタブ"></div><div class="group-breadcrumb"><span></span><div class="group-actions"><button class="icon-button split-source" title="タブを右に分割して移動 (Ctrl+\\)" aria-label="タブを右に分割して移動">${splitIcon}</button><button class="icon-button source-preview" title="アセンブルしてシミュレーターを右に開く (F5)" aria-label="アセンブルしてシミュレーターを右に開く">${previewIcon}</button></div></div><div class="editor-buffers"></div><div class="welcome"><div class="welcome-logo">x<span>CASL2</span></div><p>CASL II ワークスペース</p><div class="welcome-actions"><button data-action="new">新しいファイル<span>Ctrl+N</span></button><button data-action="open">ファイルを開く…<span>Ctrl+O</span></button><button data-action="sample-hello">Hello, CASL II を開く<span>サンプル</span></button><button data-action="sample-sum">1〜10の合計を開く<span>サンプル</span></button></div><p class="welcome-note">タブを端へドラッグすると左右に並べられます。</p></div>`;
-    const view: GroupView = { root, strip: root.querySelector('.tab-strip')!, breadcrumb: root.querySelector('.group-breadcrumb>span')!, split: root.querySelector('.split-source')!, preview: root.querySelector('.source-preview')!, buffers: root.querySelector('.editor-buffers')!, welcome: root.querySelector('.welcome')! };
+    root.innerHTML = `<div class="group-titlebar"><div class="tab-strip" role="tablist" aria-label="ファイルとシミュレーターのタブ"></div><div class="group-actions" role="toolbar" aria-label="エディターの操作"><button class="icon-button split-source" title="タブを右に分割して移動 (Ctrl+\\)" aria-label="タブを右に分割して移動">${splitIcon}</button><button class="icon-button source-preview" title="アセンブルしてシミュレーターを右に開く (F5)" aria-label="アセンブルしてシミュレーターを右に開く">${previewIcon}</button><button class="icon-button show-source" title="対応するソースを開く" aria-label="対応するソースを開く">${sourceIcon}</button></div></div><div class="group-breadcrumb"><span></span></div><div class="editor-buffers"></div><div class="welcome"><div class="welcome-logo">x<span>CASL2</span></div><p>CASL II ワークスペース</p><div class="welcome-actions"><button data-action="new">新しいファイル<span>Ctrl+N</span></button><button data-action="open">ファイルを開く…<span>Ctrl+O</span></button><button data-action="sample-hello">Hello, CASL II を開く<span>サンプル</span></button><button data-action="sample-sum">1〜10の合計を開く<span>サンプル</span></button></div><p class="welcome-note">タブを端へドラッグすると左右に並べられます。</p></div>`;
+    const view: GroupView = { root, strip: root.querySelector('.tab-strip')!, breadcrumb: root.querySelector('.group-breadcrumb>span')!, split: root.querySelector('.split-source')!, preview: root.querySelector('.source-preview')!, source: root.querySelector('.show-source')!, buffers: root.querySelector('.editor-buffers')!, welcome: root.querySelector('.welcome')! };
     const focused = () => { this.wb.layout.focused = group.id; this.callbacks.focus(group.active); this.updateFocus(); };
     root.addEventListener('focusin', focused);
     view.preview.onclick = () => { focused(); if (group.active) this.callbacks.build(parseTab(group.active).id); };
+    view.source.onclick = () => { focused(); if (group.active) this.callbacks.source(parseTab(group.active).id); };
     view.split.onclick = () => { if (group.active) { this.wb.layout.split(group.active, group.id, 'right'); this.callbacks.changed(); } };
     for (const button of root.querySelectorAll<HTMLButtonElement>('[data-action]')) button.onclick = () => { focused(); this.callbacks.action(button.dataset.action!); };
     view.strip.addEventListener('keydown', event => {
