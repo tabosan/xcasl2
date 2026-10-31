@@ -23,3 +23,11 @@ test('automatic comments use Ctrl+Shift+C without consuming normal copy or AltGr
   assert.equal(workbenchShortcut(key('C',true,true)),null);
   assert.equal(workbenchShortcut(key('C',true,false,false)),null);
 });
+
+test('Alt+F5 opens a simulator in the same group while F5 and Shift+F5 retain their commands',()=>{
+  assert.equal(workbenchShortcut(key('F5',false,false,false)),'preview');
+  assert.equal(workbenchShortcut(key('F5',false,true,false)),'preview-same-group');
+  assert.equal(workbenchShortcut(key('F5',true,false,false)),'stop');
+  assert.equal(workbenchShortcut(key('F5',true,true,false)),null);
+  assert.equal(workbenchShortcut(key('F5',false,true,true)),null);
+});

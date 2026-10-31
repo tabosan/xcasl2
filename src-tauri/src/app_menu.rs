@@ -137,8 +137,14 @@ pub fn create(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
             &item(
                 app,
                 "preview",
-                "アセンブルしてシミュレーターを右に開く",
+                "アセンブルしてシミュレーターを横に表示",
                 Some("F5"),
+            )?,
+            &item(
+                app,
+                "preview-same-group",
+                "アセンブルしてシミュレーターを開く（同じグループ）",
+                Some("Alt+F5"),
             )?,
             &item(app, "run", "実行", Some("F6"))?,
             &item(app, "step", "1STEP実行", Some("F10"))?,

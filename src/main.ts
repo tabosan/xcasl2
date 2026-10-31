@@ -10,7 +10,7 @@ import { Workbench, basename, pathKey, type SourceDocument, type SimulatorTab } 
 import { SourceEditor } from './editor';
 import { createSimulatorRenderer, simulatorMarkup, hex } from './simulator';
 import { WorkbenchView } from './workbench-view';
-import { tabKey, parseTab, type TabKey } from './tab-layout';
+import { tabKey, parseTab, type TabKey, type PreviewPlacement } from './tab-layout';
 import { scopedMarkup } from './scoped-view';
 import { layout } from './layout';
 import { initializeSidebarResize } from './sidebar';
@@ -21,9 +21,11 @@ import { formatSampleIndentation } from './indentation';
 import { AutoSave, recentFiles } from './file-features';
 import { workbenchShortcut } from './shortcuts';
 import { AppContextMenu, type ContextMenuEntry, type ContextMenuItem } from './context-menu';
+import { AppTooltips } from './tooltips';
 import type { CommentEdit, Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
+new AppTooltips();
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 initializeSidebarResize($('workbench'), $('sidebar'), $('sidebar-divider'));
 const desktop = isTauri();
@@ -70,7 +72,7 @@ async function toggleAutoSave() {
   message(`自動保存を${settings.auto_save ? '有効' : '無効'}にしました。${settings.auto_save ? '保存先のあるCASファイルを編集後1秒で保存します。' : ''}`);
 }
 
-function message(text: string, error = false) { $('message').textContent = text; $('message').title = text; $('message').classList.toggle('error', error); }
+function message(text: string, error = false) { $('message').textContent = text; $('message').dataset.tooltip = text; $('message').classList.toggle('error', error); }
 function showError(error: unknown, doc: SourceDocument | null = wb.source()) {
   const items: Diagnostic[] = Array.isArray(error) ? error : [{ line: 0, code: 0, message: String(error) }];
   if (doc) { doc.diagnostics = items; doc.buildMessage = ''; outputOpen = true; }
@@ -194,16 +196,16 @@ function renderSidebar() {
     const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = 'Ⅱ';
     const label = document.createElement('span'); label.textContent = doc.name;
     const dirty = document.createElement('span'); dirty.className = 'tree-dirty'; dirty.textContent = doc.source !== doc.saved ? '●' : '';
-    button.append(icon, label, dirty); button.dataset.sourceId = id; button.title = doc.path ?? '未保存'; button.onclick = () => selectSource(id, true); return button;
+    button.append(icon, label, dirty); button.dataset.sourceId = id; button.dataset.tooltip = doc.path ?? '未保存'; button.onclick = () => selectSource(id, true); return button;
   }));
   const project = wb.project;
   $('project-name').textContent = project ? `${project.path ? basename(project.path) : '新規cmk'}${project.dirty ? ' ●' : ''}` : 'cmkは開かれていません';
-  $('project-name').title = project?.path ?? '';
+  $('project-name').dataset.tooltip = project?.path ?? '';
   $('project-tree').replaceChildren(...(project?.fileIds ?? []).map((id, i) => {
     const doc = wb.source(id)!, button = document.createElement('button'); button.className = 'tree-file';
     const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = i === 0 ? '★' : 'Ⅱ';
     const label = document.createElement('span'); label.textContent = doc.name;
-    button.append(icon, label); button.dataset.sourceId = id; button.title = `${doc.path ?? '未保存'}${i === 0 ? '\nメインファイル' : ''}`; button.onclick = () => selectSource(id, true); return button;
+    button.append(icon, label); button.dataset.sourceId = id; button.dataset.tooltip = `${doc.path ?? '未保存'}${i === 0 ? '\nメインファイル' : ''}`; button.onclick = () => selectSource(id, true); return button;
   }));
 }
 function renderSource() { view.render(settings, ioBusy || !settingsReady, desktop); renderDiagnostics(); updatePosition(); }
@@ -244,7 +246,7 @@ function updatePosition() {
   if (editor) {
     const options = editor.indentation();
     status.textContent = options.insertSpaces ? `スペース: ${options.indentSize}${options.indentSize !== options.tabSize ? ` (タブ: ${options.tabSize})` : ''}` : `タブ: ${options.tabSize}`;
-    status.title = `現在のファイルのインデント設定（インデント幅: ${options.indentSize}、タブ表示幅: ${options.tabSize}）`;
+    status.dataset.tooltip = `現在のファイルのインデント設定（インデント幅: ${options.indentSize}、タブ表示幅: ${options.tabSize}）`;
   }
 }
 function revealRow(sim: SimulatorTab, row: Row) {
@@ -269,7 +271,7 @@ async function generateComments(id: string) {
     message(edits.length ? `${doc.name}: ${edits.length}行にコメントを付けました。Ctrl+Zでまとめて元に戻せます。` : `${doc.name}: コメントを追加・更新する行はありませんでした。`);
   });
 }
-async function buildPreview(id = wb.activeSource) {
+async function buildPreview(id = wb.activeSource, placement: PreviewPlacement = 'beside') {
   if (!id || !desktop) return;
   await withIo(async () => {
     const doc = wb.source(id); if (!doc) return;
@@ -279,10 +281,10 @@ async function buildPreview(id = wb.activeSource) {
     doc.diagnostics = []; doc.buildMessage = 'アセンブル中…'; outputOpen = true; render();
     try {
       const next = await invoke<Snapshot>('build', { id, sources: inputs.map(input => ({ file: input.id, path: input.path, source: input.source })), base: settings.base, fill: settings.fill, mode });
-      sim = wb.ensureSimulator(id, settings); sim.snapshot = next; sim.previous = null; sim.buildKey = key;
+      sim = wb.ensureSimulator(id, settings, placement); sim.snapshot = next; sim.previous = null; sim.buildKey = key;
       sim.sourceIds = inputs.map(input => input.id); sim.sourceFiles = new Map(inputs.map(input => [input.id, input.name]));
       doc.buildMessage = `アセンブル・リンク成功。${next.program_end - settings.base}語 / 開始番地 #${hex(next.entry)} / 初期SP #${hex(next.cpu.sp)}${inputs.length > 1 ? ` / ${inputs.length}ファイルをリンク` : ''}`;
-      adoptFocus(wb.layout.current()); message(`${doc.name} のシミュレーターを右に開きました。`);
+      adoptFocus(wb.layout.current()); message(`${doc.name} のシミュレーターを${placement === 'same-group' ? '同じタブグループに' : ''}開きました。`);
     } catch (error) { showError(error, doc); }
     await syncBackend();
   });
@@ -485,7 +487,7 @@ async function action(name: string) {
     case 'save-all': await withIo(async () => { for (const doc of wb.documents.values()) if ((!doc.path && wb.editorTabs.includes(doc.id)) || doc.source !== doc.saved) if (!await saveDocument(doc)) return; if (wb.project?.dirty) await saveProject(); }); break;
     case 'close-tab': if (focusedGroup === 'simulator' && wb.activeSimulator) await withIo(() => closeSimulator(wb.activeSimulator!)); else if (wb.activeSource) await withIo(() => closeDocument(wb.activeSource!)); break;
     case 'close-all': await withIo(closeAllTabs); break;
-    case 'preview': await buildPreview(focusedGroup === 'simulator' ? wb.activeSimulator : wb.activeSource); break;
+    case 'preview': case 'preview-same-group': await buildPreview(focusedGroup === 'simulator' ? wb.activeSimulator : wb.activeSource, name === 'preview-same-group' ? 'same-group' : 'beside'); break;
     case 'auto-comment': {
       const key = wb.layout.current();
       if (key) { const { kind, id } = parseTab(key); if (kind === 'source') await generateComments(id); }
@@ -633,7 +635,6 @@ document.addEventListener('keydown', event => {
   if (event.ctrlKey && !event.altKey && /^[3-9]$/.test(event.key)) { reserve(); focusGroup(Number(event.key) - 1); return; }
   if (event.ctrlKey && event.altKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) { reserve(); action(event.key === 'ArrowLeft' ? 'move-left' : 'move-right'); return; }
   if (event.ctrlKey && event.shiftKey && event.key === 'Enter') { reserve(); buildPreview(); return; }
-  if (event.key === 'F5') { reserve(); action(event.shiftKey ? 'stop' : 'preview'); return; }
   if (event.key === 'F6' || event.key === 'F10') { reserve(); action(event.key === 'F6' ? 'run' : 'step'); return; }
   if (event.ctrlKey && event.key.toLowerCase() === 'q') { reserve(); action('stop'); return; }
   // Native menu accelerators do not reach every WebView focus path on Windows.

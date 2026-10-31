@@ -1,0 +1,668 @@
+Window: "hello.cas — xCASL2", App: xcasl2-desktop.exe.
+	0 ウィンドウ hello.cas — xCASL2 Secondary Actions: Raise
+		1 ウィンドウ
+			8 ウィンドウ xCASL2
+				9 ウィンドウ (disabled)
+				10 領域 xCASL2 - Web コンテンツ
+					11 領域
+						12 領域
+						13 領域
+							14 領域
+								23 ドキュメント xCASL2 Value: http://tauri.localhost/ ID: RootWebArea
+									62 グループ
+										24 メイン ID: workbench
+											25 ナビゲーション アクティビティ
+												26 ボタン エクスプローラー Description: エクスプローラー (Ctrl+B) ID: activity-explorer
+												27 ボタン 設定 Description: 設定 ID: activity-settings
+											28 補助 エクスプローラー ID: sidebar
+												29 テキスト エクスプローラー
+												30 ボタン 新しいCASLファイル Description: 新しいCASLファイル (Ctrl+N) ID: sidebar-new
+												31 見出し ⌄ 開いているファイル
+												855 ボタン Ⅱ hello.cas Description: 未保存
+												32 見出し ⌄ プロジェクト
+												856 テキスト cmkは開かれていません
+												34 ボタン cmkを開く… ID: sidebar-project-open
+												35 テキスト ソース右上の
+												36 テキスト から
+												37 テキスト 
+												38 テキスト シミュレーターを右に開けます。
+											39 縮小 エクスプローラーの幅 Description: ドラッグで幅を変更、ダブルクリックで元の幅に戻す Value: 201 ID: sidebar-divider
+											40 グループ エディターグループ ID: editor-groups
+												41 セクション エディターグループ 1
+													42 タブ ファイルとシミュレーターのタブ
+														65 タブ項目 (selectable) hello.cas Description: hello.cas ドラッグで並べ替え・グループ移動。端へドロップで左右に分割。
+														66 ボタン hello.casを閉じる
+														92 タブ項目 (selectable) hello.cas のシミュレーター Description: hello.cas シミュレーター ドラッグで並べ替え・グループ移動。端へドロップで左右に分割。
+														93 ボタン hello.cas のシミュレーターを閉じる
+													43 ツール バー エディターの操作
+														44 ボタン タブを右に分割して移動 Description: タブを右に分割して移動 (Ctrl+\)
+														857 ボタン 対応するソースを開く Description: 対応するソースを開く
+													858 テキスト hello.cas › シミュレーター
+													98 グループ シミュレーターの操作
+														99 ボタン 実行 Description: 実行 (F6) ID: source-1-run
+														100 ボタン (disabled) 停止 Description: 停止 (Shift+F5) ID: source-1-stop
+														101 ボタン 1 STEP Description: 1STEP実行 (F10) ID: source-1-step
+														102 ボタン (disabled) ↶ 戻る Description: 1STEP戻る ID: source-1-back
+														103 ボタン ↻ Description: リロード ID: source-1-reset
+														104 テキスト STEP
+														105 コンボ ボックス (settable, string) STEP粒度 Value: 命令 ID: source-1-step-mode
+														106 テキスト 間隔
+														107 コンボ ボックス (settable, string) 実行間隔 Value: 100 ms ID: source-1-speed
+														108 ボタン 入出力装置 Description: このシミュレーターの入出力装置 ID: source-1-devices
+													109 ボタン CASL ID: source-1-view-program
+													110 ボタン COMET ID: source-1-view-comet
+													859 テキスト 実行可能
+													860 テキスト 0 STEP · 0 instructions
+													113 セクション レジスタ ID: source-1-register-panel
+														114 見出し レジスタ
+														115 チェック ボックス (settable, string) 2進のみ Description: GR0〜GR7を2進のみで表示。オフは16進・10進を同時表示。PR・SPは常に16進。 ID: source-1-binary-registers
+														116 テキスト FR
+														861 テキスト O 0 S 0 Z 0
+														862 テキスト GR
+														863 テキスト 16進
+														864 テキスト 10進
+														865 テキスト GR0
+														866 グループ Description: GR0 16進: FFFF
+															867 テキスト FFFF
+														868 グループ Description: GR0 10進: -1
+															869 テキスト -1
+														870 テキスト GR1
+														871 グループ Description: GR1 16進: FFFF
+															872 テキスト FFFF
+														873 グループ Description: GR1 10進: -1
+															874 テキスト -1
+														875 テキスト GR2
+														876 グループ Description: GR2 16進: FFFF
+															877 テキスト FFFF
+														878 グループ Description: GR2 10進: -1
+															879 テキスト -1
+														880 テキスト GR3
+														881 グループ Description: GR3 16進: FFFF
+															882 テキスト FFFF
+														883 グループ Description: GR3 10進: -1
+															884 テキスト -1
+														885 テキスト GR4
+														886 グループ Description: GR4 16進: FFFF
+															887 テキスト FFFF
+														888 グループ Description: GR4 10進: -1
+															889 テキスト -1
+														890 テキスト GR5
+														891 グループ Description: GR5 16進: FFFF
+															892 テキスト FFFF
+														893 グループ Description: GR5 10進: -1
+															894 テキスト -1
+														895 テキスト GR6
+														896 グループ Description: GR6 16進: FFFF
+															897 テキスト FFFF
+														898 グループ Description: GR6 10進: -1
+															899 テキスト -1
+														900 テキスト GR7
+														901 グループ Description: GR7 16進: FFFF
+															902 テキスト FFFF
+														903 グループ Description: GR7 10進: -1
+															904 テキスト -1
+														905 テキスト PR
+														906 グループ Description: PR 16進: 0020
+															907 テキスト 0020
+														908 テキスト SP
+														909 グループ Description: SP 16進: 00C3
+															910 テキスト 00C3
+														167 テキスト IR
+														911 テキスト FFFF FFFF
+														169 テキスト CALL DEPTH
+														912 テキスト 0
+													171 見出し プログラム
+													913 テキスト ENTRY #0020 · END #0042
+													174 表
+														175 行
+															176 列のヘッダー 行
+															177 列のヘッダー 番地
+															178 列のヘッダー 機械語
+															179 列のヘッダー ソース
+														914 行 hello.cas:2 / 2語 Description: hello.cas:2 / 2語
+															915 項目 2
+															916 項目 0020
+															917 項目 1210 0001
+															918 項目 LAD GR1,1
+														919 行 hello.cas:3 / 2語 Description: hello.cas:3 / 2語
+															920 項目 3
+															921 項目 0022
+															922 項目 2010 0041
+															923 項目 ADDA GR1,=2
+														924 行 hello.cas:4 / 12語 Description: hello.cas:4 / 12語
+															925 項目 4
+															926 項目 0024
+															927 項目 7001 0000 7002 0000 …
+															928 項目 OUT MSG,LEN
+														929 行 hello.cas:5 / 1語 Description: hello.cas:5 / 1語
+															930 項目 5
+															931 項目 0030
+															932 項目 8100
+															933 項目 RET
+														934 行 hello.cas:6 / 15語 Description: hello.cas:6 / 15語
+															935 項目 6
+															936 項目 0031
+															937 項目 0048 0045 004C 004C …
+															938 項目 MSG DC 'HELLO, CASL II!'
+														939 行 hello.cas:7 / 1語 Description: hello.cas:7 / 1語
+															940 項目 7
+															941 項目 0040
+															942 項目 000F
+															943 項目 LEN DC 15
+													210 セクション ラベルと現在のメモリ値
+														211 見出し ラベル
+														212 グループ ラベル一覧をスクロール ID: source-1-labels-scroll
+															213 表
+																214 行
+																	215 列のヘッダー ラベル
+																	216 列のヘッダー 番地
+																	217 列のヘッダー 16進
+																	218 列のヘッダー 10進
+																944 行 MAIN / hello.cas:6 / MSG Description: MAIN / hello.cas:6 / MSG
+																	945 項目 MAIN:MSG
+																		946 ボタン MAIN:MSG
+																	947 項目 0031
+																	948 項目 0048
+																	949 項目 72
+																950 行 MAIN / hello.cas:6 / MSG+1 Description: MAIN / hello.cas:6 / MSG+1
+																	951 項目 +1
+																		952 ボタン +1
+																	953 項目 0032
+																	954 項目 0045
+																	955 項目 69
+																956 行 MAIN / hello.cas:6 / MSG+2 Description: MAIN / hello.cas:6 / MSG+2
+																	957 項目 +2
+																		958 ボタン +2
+																	959 項目 0033
+																	960 項目 004C
+																	961 項目 76
+																962 行 MAIN / hello.cas:6 / MSG+3 Description: MAIN / hello.cas:6 / MSG+3
+																	963 項目 +3
+																		964 ボタン +3
+																	965 項目 0034
+																	966 項目 004C
+																	967 項目 76
+																968 行 MAIN / hello.cas:6 / MSG+4 Description: MAIN / hello.cas:6 / MSG+4
+																	969 項目 +4
+																		970 ボタン +4
+																	971 項目 0035
+																	972 項目 004F
+																	973 項目 79
+																974 行 MAIN / hello.cas:6 / MSG+5 Description: MAIN / hello.cas:6 / MSG+5
+																	975 項目 +5
+																		976 ボタン +5
+																	977 項目 0036
+																	978 項目 002C
+																	979 項目 44
+																980 行 MAIN / hello.cas:6 / MSG+6 Description: MAIN / hello.cas:6 / MSG+6
+																	981 項目 +6
+																		982 ボタン +6
+																	983 項目 0037
+																	984 項目 0020
+																	985 項目 32
+																986 行 MAIN / hello.cas:6 / MSG+7 Description: MAIN / hello.cas:6 / MSG+7
+																	987 項目 +7
+																		988 ボタン +7
+																	989 項目 0038
+																	990 項目 0043
+																	991 項目 67
+																992 行 MAIN / hello.cas:6 / MSG+8 Description: MAIN / hello.cas:6 / MSG+8
+																	993 項目 +8
+																		994 ボタン +8
+																	995 項目 0039
+																	996 項目 0041
+																	997 項目 65
+																998 行 MAIN / hello.cas:6 / MSG+9 Description: MAIN / hello.cas:6 / MSG+9
+																	999 項目 +9
+																		1000 ボタン +9
+																	1001 項目 003A
+																	1002 項目 0053
+																	1003 項目 83
+																1004 行 MAIN / hello.cas:6 / MSG+10 Description: MAIN / hello.cas:6 / MSG+10
+																	1005 項目 +10
+																		1006 ボタン +10
+																	1007 項目 003B
+																	1008 項目 004C
+																	1009 項目 76
+																1010 行 MAIN / hello.cas:6 / MSG+11 Description: MAIN / hello.cas:6 / MSG+11
+																	1011 項目 +11
+																		1012 ボタン +11
+																	1013 項目 003C
+																	1014 項目 0020
+																	1015 項目 32
+																1016 行 MAIN / hello.cas:6 / MSG+12 Description: MAIN / hello.cas:6 / MSG+12
+																	1017 項目 +12
+																		1018 ボタン +12
+																	1019 項目 003D
+																	1020 項目 0049
+																	1021 項目 73
+																1022 行 MAIN / hello.cas:6 / MSG+13 Description: MAIN / hello.cas:6 / MSG+13
+																	1023 項目 +13
+																		1024 ボタン +13
+																	1025 項目 003E
+																	1026 項目 0049
+																	1027 項目 73
+																1028 行 MAIN / hello.cas:6 / MSG+14 Description: MAIN / hello.cas:6 / MSG+14
+																	1029 項目 +14
+																		1030 ボタン +14
+																	1031 項目 003F
+																	1032 項目 0021
+																	1033 項目 33
+																1034 行 MAIN / hello.cas:7 / LEN Description: MAIN / hello.cas:7 / LEN
+																	1035 項目 MAIN:LEN
+																		1036 ボタン MAIN:LEN
+																	1037 項目 0040
+																	1038 項目 000F
+																	1039 項目 15
+																1040 行 MAIN / hello.cas / =2 Description: MAIN / hello.cas / =2
+																	1041 項目 MAIN:=2
+																	1042 項目 0041
+																	1043 項目 0002
+																	1044 項目 2
+													320 セクション スタックエリア
+														321 見出し スタックエリア
+														322 切り替えボタン 現在のSPに追従 Description: 現在のSPに追従 ID: source-1-stack-follow
+														323 テキスト #
+														324 編集 (settable, string) スタック表示の先頭番地 Value: 00BF ID: source-1-stack-address
+														1045 テキスト SP #00C3
+														326 グループ スタック一覧をスクロール ID: source-1-stack-scroll
+															327 表
+																328 行
+																	329 列のヘッダー SP位置
+																	330 列のヘッダー 番地
+																	331 列のヘッダー 16進
+																1046 行
+																	1047 項目
+																	1048 項目 00BF
+																	1049 項目 FFFF
+																1050 行
+																	1051 項目
+																	1052 項目 00C0
+																	1053 項目 FFFF
+																1054 行
+																	1055 項目
+																	1056 項目 00C1
+																	1057 項目 FFFF
+																1058 行
+																	1059 項目
+																	1060 項目 00C2
+																	1061 項目 FFFF
+																1062 行
+																	1063 項目 SP ▶
+																	1064 項目 00C3
+																	1065 項目 FFFF
+																1066 行
+																	1067 項目
+																	1068 項目 00C4
+																	1069 項目 FFFF
+																1070 行
+																	1071 項目
+																	1072 項目 00C5
+																	1073 項目 FFFF
+																1074 行
+																	1075 項目
+																	1076 項目 00C6
+																	1077 項目 FFFF
+																1078 行
+																	1079 項目
+																	1080 項目 00C7
+																	1081 項目 FFFF
+																1082 行
+																	1083 項目
+																	1084 項目 00C8
+																	1085 項目 FFFF
+																1086 行
+																	1087 項目
+																	1088 項目 00C9
+																	1089 項目 FFFF
+																1090 行
+																	1091 項目
+																	1092 項目 00CA
+																	1093 項目 FFFF
+																1094 行
+																	1095 項目
+																	1096 項目 00CB
+																	1097 項目 FFFF
+																1098 行
+																	1099 項目
+																	1100 項目 00CC
+																	1101 項目 FFFF
+																1102 行
+																	1103 項目
+																	1104 項目 00CD
+																	1105 項目 FFFF
+																1106 行
+																	1107 項目
+																	1108 項目 00CE
+																	1109 項目 FFFF
+																1110 行
+																	1111 項目
+																	1112 項目 00CF
+																	1113 項目 FFFF
+																1114 行
+																	1115 項目
+																	1116 項目 00D0
+																	1117 項目 FFFF
+																1118 行
+																	1119 項目
+																	1120 項目 00D1
+																	1121 項目 FFFF
+																1122 行
+																	1123 項目
+																	1124 項目 00D2
+																	1125 項目 FFFF
+																1126 行
+																	1127 項目
+																	1128 項目 00D3
+																	1129 項目 FFFF
+																1130 行
+																	1131 項目
+																	1132 項目 00D4
+																	1133 項目 FFFF
+																1134 行
+																	1135 項目
+																	1136 項目 00D5
+																	1137 項目 FFFF
+																1138 行
+																	1139 項目
+																	1140 項目 00D6
+																	1141 項目 FFFF
+																1142 行
+																	1143 項目
+																	1144 項目 00D7
+																	1145 項目 FFFF
+																1146 行
+																	1147 項目
+																	1148 項目 00D8
+																	1149 項目 FFFF
+																1150 行
+																	1151 項目
+																	1152 項目 00D9
+																	1153 項目 FFFF
+																1154 行
+																	1155 項目
+																	1156 項目 00DA
+																	1157 項目 FFFF
+																1158 行
+																	1159 項目
+																	1160 項目 00DB
+																	1161 項目 FFFF
+																1162 行
+																	1163 項目
+																	1164 項目 00DC
+																	1165 項目 FFFF
+																1166 行
+																	1167 項目
+																	1168 項目 00DD
+																	1169 項目 FFFF
+																1170 行
+																	1171 項目
+																	1172 項目 00DE
+																	1173 項目 FFFF
+																1174 行
+																	1175 項目
+																	1176 項目 00DF
+																	1177 項目 FFFF
+																1178 行
+																	1179 項目
+																	1180 項目 00E0
+																	1181 項目 FFFF
+																1182 行
+																	1183 項目
+																	1184 項目 00E1
+																	1185 項目 FFFF
+																1186 行
+																	1187 項目
+																	1188 項目 00E2
+																	1189 項目 FFFF
+																1190 行
+																	1191 項目
+																	1192 項目 00E3
+																	1193 項目 FFFF
+																1194 行
+																	1195 項目
+																	1196 項目 00E4
+																	1197 項目 FFFF
+																1198 行
+																	1199 項目
+																	1200 項目 00E5
+																	1201 項目 FFFF
+																1202 行
+																	1203 項目
+																	1204 項目 00E6
+																	1205 項目 FFFF
+																1206 行
+																	1207 項目
+																	1208 項目 00E7
+																	1209 項目 FFFF
+																1210 行
+																	1211 項目
+																	1212 項目 00E8
+																	1213 項目 FFFF
+																1214 行
+																	1215 項目
+																	1216 項目 00E9
+																	1217 項目 FFFF
+																1218 行
+																	1219 項目
+																	1220 項目 00EA
+																	1221 項目 FFFF
+																1222 行
+																	1223 項目
+																	1224 項目 00EB
+																	1225 項目 FFFF
+																1226 行
+																	1227 項目
+																	1228 項目 00EC
+																	1229 項目 FFFF
+																1230 行
+																	1231 項目
+																	1232 項目 00ED
+																	1233 項目 FFFF
+																1234 行
+																	1235 項目
+																	1236 項目 00EE
+																	1237 項目 FFFF
+																1238 行
+																	1239 項目
+																	1240 項目 00EF
+																	1241 項目 FFFF
+																1242 行
+																	1243 項目
+																	1244 項目 00F0
+																	1245 項目 FFFF
+																1246 行
+																	1247 項目
+																	1248 項目 00F1
+																	1249 項目 FFFF
+																1250 行
+																	1251 項目
+																	1252 項目 00F2
+																	1253 項目 FFFF
+																1254 行
+																	1255 項目
+																	1256 項目 00F3
+																	1257 項目 FFFF
+																1258 行
+																	1259 項目
+																	1260 項目 00F4
+																	1261 項目 FFFF
+																1262 行
+																	1263 項目
+																	1264 項目 00F5
+																	1265 項目 FFFF
+																1266 行
+																	1267 項目
+																	1268 項目 00F6
+																	1269 項目 FFFF
+																1270 行
+																	1271 項目
+																	1272 項目 00F7
+																	1273 項目 FFFF
+																1274 行
+																	1275 項目
+																	1276 項目 00F8
+																	1277 項目 FFFF
+																1278 行
+																	1279 項目
+																	1280 項目 00F9
+																	1281 項目 FFFF
+																1282 行
+																	1283 項目
+																	1284 項目 00FA
+																	1285 項目 FFFF
+																1286 行
+																	1287 項目
+																	1288 項目 00FB
+																	1289 項目 FFFF
+																1290 行
+																	1291 項目
+																	1292 項目 00FC
+																	1293 項目 FFFF
+																1294 行
+																	1295 項目
+																	1296 項目 00FD
+																	1297 項目 FFFF
+																1298 行
+																	1299 項目
+																	1300 項目 00FE
+																	1301 項目 FFFF
+													588 見出し 出力 ID: source-1-output-heading
+													1302 テキスト 44 bytes × 12 rows
+													590 グループ ディスプレイ出力 ID: source-1-output
+													591 見出し メモリ
+													592 テキスト #
+													593 編集 (settable, string) メモリ表示の先頭番地 Value: 0020 ID: source-1-memory-address
+													594 グループ
+														595 表 ID: source-1-memory
+															1303 行
+																1304 行見出し 0020
+																1305 項目 1210 Description: #0020
+																1306 項目 0001 Description: #0021
+																1307 項目 2010 Description: #0022
+																1308 項目 0041 Description: #0023
+															1309 行
+																1310 行見出し 0024
+																1311 項目 7001 Description: #0024
+																1312 項目 0000 Description: #0025
+																1313 項目 7002 Description: #0026
+																1314 項目 0000 Description: #0027
+															1315 行
+																1316 行見出し 0028
+																1317 項目 1210 Description: #0028
+																1318 項目 0031 Description: #0029
+																1319 項目 1220 Description: #002A
+																1320 項目 0040 Description: #002B
+															1321 行
+																1322 行見出し 002C
+																1323 項目 F000 Description: #002C
+																1324 項目 0002 Description: #002D
+																1325 項目 7120 Description: #002E
+																1326 項目 7110 Description: #002F
+															1327 行
+																1328 行見出し 0030
+																1329 項目 8100 Description: #0030
+																1330 項目 0048 Description: #0031
+																1331 項目 0045 Description: #0032
+																1332 項目 004C Description: #0033
+															1333 行
+																1334 行見出し 0034
+																1335 項目 004C Description: #0034
+																1336 項目 004F Description: #0035
+																1337 項目 002C Description: #0036
+																1338 項目 0020 Description: #0037
+															1339 行
+																1340 行見出し 0038
+																1341 項目 0043 Description: #0038
+																1342 項目 0041 Description: #0039
+																1343 項目 0053 Description: #003A
+																1344 項目 004C Description: #003B
+															1345 行
+																1346 行見出し 003C
+																1347 項目 0020 Description: #003C
+																1348 項目 0049 Description: #003D
+																1349 項目 0049 Description: #003E
+																1350 項目 0021 Description: #003F
+															1351 行
+																1352 行見出し 0040
+																1353 項目 000F Description: #0040
+																1354 項目 0002 Description: #0041
+																1355 項目 FFFF Description: #0042
+																1356 項目 FFFF Description: #0043
+															1357 行
+																1358 行見出し 0044
+																1359 項目 FFFF Description: #0044
+																1360 項目 FFFF Description: #0045
+																1361 項目 FFFF Description: #0046
+																1362 項目 FFFF Description: #0047
+															1363 行
+																1364 行見出し 0048
+																1365 項目 FFFF Description: #0048
+																1366 項目 FFFF Description: #0049
+																1367 項目 FFFF Description: #004A
+																1368 項目 FFFF Description: #004B
+															1369 行
+																1370 行見出し 004C
+																1371 項目 FFFF Description: #004C
+																1372 項目 FFFF Description: #004D
+																1373 項目 FFFF Description: #004E
+																1374 項目 FFFF Description: #004F
+															1375 行
+																1376 行見出し 0050
+																1377 項目 FFFF Description: #0050
+																1378 項目 FFFF Description: #0051
+																1379 項目 FFFF Description: #0052
+																1380 項目 FFFF Description: #0053
+															1381 行
+																1382 行見出し 0054
+																1383 項目 FFFF Description: #0054
+																1384 項目 FFFF Description: #0055
+																1385 項目 FFFF Description: #0056
+																1386 項目 FFFF Description: #0057
+															1387 行
+																1388 行見出し 0058
+																1389 項目 FFFF Description: #0058
+																1390 項目 FFFF Description: #0059
+																1391 項目 FFFF Description: #005A
+																1392 項目 FFFF Description: #005B
+															1393 行
+																1394 行見出し 005C
+																1395 項目 FFFF Description: #005C
+																1396 項目 FFFF Description: #005D
+																1397 項目 FFFF Description: #005E
+																1398 項目 FFFF Description: #005F
+											81 見出し アセンブラ出力
+											82 ボタン アセンブラ出力を閉じる Description: 出力を閉じる ID: diagnostics-close
+											83 状態 ID: diagnostics
+												1399 テキスト アセンブル・リンク成功。34語 / 開始番地 #0020 / 初期SP #00C3
+										54 フッター
+											55 ボタン エクスプローラー切替 Description: エクスプローラー切替 ID: status-sidebar
+											56 状態 Description: hello.cas のシミュレーターを同じタブグループに開きました。 ID: message
+												1400 テキスト hello.cas のシミュレーターを同じタブグループに開きました。
+											1401 テキスト 行 1、列 1
+											58 テキスト CP932
+											59 テキスト CRLF
+											60 テキスト CASL II
+											61 テキスト Rust + Tauri
+										74 警告
+										75 警告
+										76 グループ
+										77 グループ
+								15 領域
+		2 タイトル バー (settable, string) Value: hello.cas — xCASL2
+			3 メニュー バー システム ID: MenuBar
+				4 メニュー項目 システム
+			5 ボタン 最小化
+			6 ボタン 元のサイズに戻す
+			7 ボタン 閉じる
+		16 メニュー バー アプリケーション ID: MenuBar
+			17 メニュー項目 ファイル(F)
+			18 メニュー項目 編集(E)
+			19 メニュー項目 表示(V)
+			20 メニュー項目 実行(R)
+			21 メニュー項目 プロジェクト(P)
+			22 メニュー項目 ヘルプ(H)
+
+Document text: ```
+0020
+```

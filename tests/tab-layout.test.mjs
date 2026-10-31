@@ -27,6 +27,31 @@ test('preview uses the group beside its source and reuses an existing simulator 
   layout.move(sa,layout.groups[0].id,0);const owner=layout.focused;
   layout.preview(a,sa);assert.equal(layout.focused,owner);assert.equal(layout.groups.flatMap(g=>g.tabs).filter(k=>k===sa).length,1);
 });
+
+test('same-group preview opens next to its source even when another group is focused',()=>{
+  const layout=new TabLayout();layout.open(a);layout.open(b);layout.split(b,layout.focused,'right');
+  const sourceGroup=layout.owner(a).id,sa=tabKey('simulator','a');
+  layout.preview(a,sa,'same-group');
+  assert.deepEqual(layout.group(sourceGroup).tabs,[a,sa]);
+  assert.equal(layout.groups.length,2);assert.equal(layout.current(),sa);assert.equal(layout.focused,sourceGroup);
+  layout.preview(a,sa,'same-group');
+  assert.deepEqual(layout.group(sourceGroup).tabs,[a,sa]);
+});
+
+test('same-group preview moves an existing simulator and removes an empty origin without duplicates',()=>{
+  const wb=new Workbench(),doc=wb.create('source'),settings={step_mode:'instruction',interval_ms:100,memory_start:32};
+  const source=tabKey('source',doc.id),key=tabKey('simulator',doc.id),sim=wb.ensureSimulator(doc.id,settings);
+  sim.snapshot={steps:42};sim.inputText='keep input';
+  assert.equal(wb.layout.groups.length,2);
+  const moved=wb.ensureSimulator(doc.id,settings,'same-group');
+  assert.equal(moved,sim);assert.equal(moved.snapshot.steps,42);assert.equal(moved.inputText,'keep input');
+  assert.equal(wb.layout.groups.length,1);assert.deepEqual(wb.layout.group().tabs,[source,key]);
+  assert.equal(wb.layout.current(),key);assert.equal(wb.simulators.size,1);
+  wb.ensureSimulator(doc.id,settings,'same-group');
+  assert.deepEqual(wb.layout.group().tabs,[source,key]);
+  wb.closeSource(doc.id);wb.ensureSimulator(doc.id,settings,'same-group');
+  assert.deepEqual(wb.layout.group().tabs,[key]);assert.equal(wb.layout.current(),key);
+});
 test('closing an active tab selects its neighbor, closing a group keeps a valid focused group',()=>{
   const layout=new TabLayout();layout.open(a);layout.open(b);layout.split(b,layout.focused,'right');
   layout.close(b);assert.equal(layout.groups.length,1);assert.equal(layout.current(),a);

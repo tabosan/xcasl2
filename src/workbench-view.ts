@@ -1,8 +1,8 @@
-import { parseTab, tabKey, type EditorGroup, type TabKey } from './tab-layout';
+import { parseTab, tabKey, type EditorGroup, type TabKey, type PreviewPlacement } from './tab-layout';
 import { basename, type Workbench, type SourceDocument } from './workbench';
 import type { Settings } from './types';
 import type { SourceEditor } from './editor';
-import { assembleIcon } from './ui-icons';
+import { assembleIcon, assembleInGroupIcon } from './ui-icons';
 
 interface Callbacks {
   editor(doc: SourceDocument): SourceEditor;
@@ -11,7 +11,7 @@ interface Callbacks {
   select(key: TabKey, focus?: boolean): void;
   focus(key: TabKey | null): void;
   close(key: TabKey): void;
-  build(id: string): void;
+  build(id: string, placement: PreviewPlacement): void;
   comment(id: string): void;
   source(id: string): void;
   action(name: string): void;
@@ -26,6 +26,7 @@ const sourceIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4
 const commentIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H9l-5 4zM8 8h8m-8 4h5"/></svg>';
 
 export class WorkbenchView {
+  private alternatePreview = false;
   private groups = new Map<string, GroupView>();
   private tabs = new Map<TabKey, HTMLElement>();
   private separators = new Map<string, HTMLElement>();
@@ -42,6 +43,23 @@ export class WorkbenchView {
     host.addEventListener('lostpointercapture', () => this.cancelDrag());
     window.addEventListener('blur', () => this.cancelDrag());
     document.addEventListener('keydown', event => { if (event.key === 'Escape') this.cancelDrag(); }, true);
+    const modifierChanged = (event: KeyboardEvent | PointerEvent) => this.setAlternatePreview(event.altKey && !event.ctrlKey && !event.metaKey);
+    document.addEventListener('keydown', modifierChanged, true);
+    document.addEventListener('keyup', modifierChanged, true);
+    host.addEventListener('pointermove', modifierChanged);
+    window.addEventListener('blur', () => this.setAlternatePreview(false));
+    document.addEventListener('visibilitychange', () => { if (document.hidden) this.setAlternatePreview(false); });
+  }
+  private setAlternatePreview(alternate: boolean) {
+    if (this.alternatePreview === alternate) return;
+    this.alternatePreview = alternate;
+    for (const group of this.groups.values()) this.updatePreviewButton(group.preview);
+  }
+  private updatePreviewButton(button: HTMLButtonElement) {
+    const label = this.alternatePreview ? 'アセンブルしてシミュレーターを開く' : 'アセンブルしてシミュレーターを横に表示';
+    button.dataset.tooltip = this.alternatePreview ? `${label} (Alt+F5)` : `${label} (F5)\n[Alt] アセンブルしてシミュレーターを開く (Alt+F5)`;
+    button.setAttribute('aria-label', label);
+    button.innerHTML = this.alternatePreview ? assembleInGroupIcon : previewIcon;
   }
   render(settings: Settings, blocked: boolean, canBuild = true) {
     const activeElement = document.activeElement;
@@ -61,7 +79,7 @@ export class WorkbenchView {
       const tab = group.active ? parseTab(group.active) : null, doc = tab ? this.wb.source(tab.id) : null;
       view.root.classList.toggle('simulator-group', tab?.kind === 'simulator');
       view.breadcrumb.textContent = doc ? `${doc.name}${tab?.kind === 'simulator' ? ' › シミュレーター' : ''}` : 'xCASL2';
-      view.breadcrumb.title = doc?.path ?? '';
+      view.breadcrumb.dataset.tooltip = doc?.path ?? '';
       view.preview.hidden = tab?.kind !== 'source'; view.preview.disabled = blocked || !canBuild;
       view.comment.hidden = tab?.kind !== 'source'; view.comment.disabled = blocked || !canBuild;
       view.source.hidden = tab?.kind !== 'simulator'; view.source.disabled = blocked;
@@ -113,7 +131,7 @@ export class WorkbenchView {
         node.classList.toggle('waiting', kind === 'simulator' && sim?.snapshot?.status === 'waiting_input'); node.classList.toggle('stale', kind === 'simulator' && !!sim && this.wb.stale(sim, settings));
         button.setAttribute('aria-selected', String(group.active === key)); button.tabIndex = group.active === key ? 0 : -1;
         button.setAttribute('aria-label', `${doc.name}${kind === 'simulator' ? ' のシミュレーター' : dirty ? '、未保存' : ''}`);
-        button.title = `${doc.path ?? doc.name}${kind === 'simulator' ? '\nシミュレーター' : ''}\nドラッグで並べ替え・グループ移動。端へドロップで左右に分割。`;
+        button.dataset.tooltip = `${doc.path ?? doc.name}${kind === 'simulator' ? '\nシミュレーター' : ''}\nドラッグで並べ替え・グループ移動。端へドロップで左右に分割。`;
         node.querySelector('.tab-title')!.textContent = doc.name;
         const duplicate = group.tabs.some(other => other !== key && this.wb.source(parseTab(other).id)?.name === doc.name && parseTab(other).kind === kind);
         node.querySelector('.tab-description')!.textContent = kind === 'simulator' ? 'シミュレーター' : duplicate && doc.path ? basename(doc.path.replace(/\\/g, '/').split('/').slice(0, -1).join('/')) : '';
@@ -136,14 +154,15 @@ export class WorkbenchView {
   }
   private makeGroup(group: EditorGroup): GroupView {
     const root = document.createElement('section'); root.className = 'editor-group'; root.dataset.groupId = group.id;
-    root.innerHTML = `<div class="group-titlebar"><div class="tab-strip" role="tablist" aria-label="ファイルとシミュレーターのタブ"></div><div class="group-actions" role="toolbar" aria-label="エディターの操作"><button class="icon-button split-source" title="タブを右に分割して移動 (Ctrl+\\)" aria-label="タブを右に分割して移動">${splitIcon}</button><button class="icon-button source-preview" title="アセンブルしてシミュレーターを右に開く (F5)" aria-label="アセンブルしてシミュレーターを右に開く">${previewIcon}</button><button class="icon-button show-source" title="対応するソースを開く" aria-label="対応するソースを開く">${sourceIcon}</button></div></div><div class="group-breadcrumb"><span></span></div><div class="editor-buffers"></div><div class="welcome"><div class="welcome-logo">x<span>CASL2</span></div><p>CASL II ワークスペース</p><div class="welcome-actions"><button data-action="new">新しいファイル<span>Ctrl+N</span></button><button data-action="open">ファイルを開く…<span>Ctrl+O</span></button><button data-action="sample-hello">Hello, CASL II を開く<span>サンプル</span></button><button data-action="sample-sum">1〜10の合計を開く<span>サンプル</span></button></div><p class="welcome-note">タブを端へドラッグすると左右に並べられます。</p></div>`;
+    root.innerHTML = `<div class="group-titlebar"><div class="tab-strip" role="tablist" aria-label="ファイルとシミュレーターのタブ"></div><div class="group-actions" role="toolbar" aria-label="エディターの操作"><button class="icon-button split-source" data-tooltip="タブを右に分割して移動 (Ctrl+\\)" aria-label="タブを右に分割して移動">${splitIcon}</button><button class="icon-button source-preview" data-tooltip="アセンブルしてシミュレーターを右に開く (F5)" aria-label="アセンブルしてシミュレーターを右に開く">${previewIcon}</button><button class="icon-button show-source" data-tooltip="対応するソースを開く" aria-label="対応するソースを開く">${sourceIcon}</button></div></div><div class="group-breadcrumb"><span></span></div><div class="editor-buffers"></div><div class="welcome"><div class="welcome-logo">x<span>CASL2</span></div><p>CASL II ワークスペース</p><div class="welcome-actions"><button data-action="new">新しいファイル<span>Ctrl+N</span></button><button data-action="open">ファイルを開く…<span>Ctrl+O</span></button><button data-action="sample-hello">Hello, CASL II を開く<span>サンプル</span></button><button data-action="sample-sum">1〜10の合計を開く<span>サンプル</span></button></div><p class="welcome-note">タブを端へドラッグすると左右に並べられます。</p></div>`;
     const comment = document.createElement('button'); comment.className = 'icon-button source-comment'; comment.type = 'button';
-    comment.title = '命令に沿った定型コメントを追加 (Ctrl+Shift+C)'; comment.setAttribute('aria-label', '自動コメント'); comment.innerHTML = commentIcon;
+    comment.dataset.tooltip = '命令に沿った定型コメントを追加 (Ctrl+Shift+C)'; comment.setAttribute('aria-label', '自動コメント'); comment.innerHTML = commentIcon;
     root.querySelector('.group-actions')!.insertBefore(comment, root.querySelector('.source-preview'));
     const view: GroupView = { root, strip: root.querySelector('.tab-strip')!, breadcrumb: root.querySelector('.group-breadcrumb>span')!, split: root.querySelector('.split-source')!, preview: root.querySelector('.source-preview')!, comment, source: root.querySelector('.show-source')!, buffers: root.querySelector('.editor-buffers')!, welcome: root.querySelector('.welcome')! };
+    this.updatePreviewButton(view.preview);
     const focused = () => { this.wb.layout.focused = group.id; this.callbacks.focus(group.active); this.updateFocus(); };
     root.addEventListener('focusin', focused);
-    view.preview.onclick = () => { focused(); if (group.active) this.callbacks.build(parseTab(group.active).id); };
+    view.preview.onclick = event => { focused(); if (group.active) this.callbacks.build(parseTab(group.active).id, event.altKey && !event.ctrlKey && !event.metaKey ? 'same-group' : 'beside'); };
     view.comment.onclick = () => { focused(); if (group.active) this.callbacks.comment(parseTab(group.active).id); };
     view.source.onclick = () => { focused(); if (group.active) this.callbacks.source(parseTab(group.active).id); };
     view.split.onclick = () => { if (group.active) { this.wb.layout.split(group.active, group.id, 'right'); this.callbacks.changed(); } };

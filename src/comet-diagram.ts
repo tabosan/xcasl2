@@ -6,7 +6,7 @@ function register(id: string, label: string, x: number, y: number, width = 90) {
 
 export function cometDiagramMarkup():string {
   return `<svg class="datapath" viewBox="0 0 620 438" role="img" aria-labelledby="datapath-title">
-        <title id="datapath-title">COMET CPUのレジスタ、制御部、加算器、ALUと転送経路</title>
+        <desc id="datapath-title">COMET CPUのレジスタ、制御部、加算器、ALUと転送経路</desc>
         <defs><marker id="bus-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z"/></marker></defs>
         <g class="bus-lines">${defaultCometLayout.wires.map(wire=>`<path data-wire-id="${wire.id}" data-from="${wire.from}" data-to="${wire.to}" d="${wirePath(defaultCometLayout,wire.id)}"/>`).join('')}</g>
         <g id="node-ir" class="datapath-node"><text class="node-label" x="30" y="38">IR</text><rect x="30" y="48" width="168" height="36" rx="3"/><path class="node-divider" d="M114 48V84"/><text id="value-ir1" class="node-value" x="72" y="72" text-anchor="middle">—</text><text id="value-ir2" class="node-value" x="156" y="72" text-anchor="middle">—</text></g>

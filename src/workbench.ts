@@ -1,5 +1,5 @@
 import type { Diagnostic, OpenedSource, Settings, Snapshot, StepMode } from './types';
-import { TabLayout, tabKey } from './tab-layout.ts';
+import { TabLayout, tabKey, type PreviewPlacement } from './tab-layout.ts';
 
 export interface SourceDocument {
   id: string; path: string | null; name: string; source: string; saved: string;
@@ -50,7 +50,7 @@ export class Workbench {
     return JSON.stringify([settings.base, settings.fill, this.sourcesFor(id).map(doc => [doc.id, doc.path, doc.source])]);
   }
   stale(sim: SimulatorTab, settings: Pick<Settings, 'base' | 'fill'>): boolean { return !sim.buildKey || sim.buildKey !== this.key(sim.id, settings); }
-  ensureSimulator(id: string, settings: Settings): SimulatorTab {
+  ensureSimulator(id: string, settings: Settings, placement: PreviewPlacement = 'beside'): SimulatorTab {
     if (!this.documents.has(id)) throw new Error('ソースがありません。');
     let sim = this.simulators.get(id);
     if (!sim) {
@@ -61,7 +61,7 @@ export class Workbench {
         running: false, busy: false, epoch: 0, pending: Promise.resolve(), inputText: '' };
       this.simulators.set(id, sim);
     }
-    this.activeSimulator = id; this.layout.preview(tabKey('source', id), tabKey('simulator', id)); return sim;
+    this.activeSimulator = id; this.layout.preview(tabKey('source', id), tabKey('simulator', id), placement); return sim;
   }
   closeSimulator(id: string) {
     const ids = [...this.simulators.keys()], index = ids.indexOf(id);

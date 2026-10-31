@@ -1,4 +1,5 @@
 export type TabKind = 'source' | 'simulator';
+export type PreviewPlacement = 'beside' | 'same-group';
 export type TabKey = `${TabKind}:${string}`;
 export const tabKey = (kind: TabKind, id: string): TabKey => `${kind}:${id}`;
 export function parseTab(key: TabKey) { const at = key.indexOf(':'); return { kind: key.slice(0, at) as TabKind, id: key.slice(at + 1) }; }
@@ -29,7 +30,14 @@ export class TabLayout {
     const group: EditorGroup = { id: `group-${++this.serial}`, tabs: [], active: null, weight };
     this.groups.splice(index + (side === 'right' ? 1 : 0), 0, group); return group;
   }
-  preview(source: TabKey, simulator: TabKey) {
+  preview(source: TabKey, simulator: TabKey, placement: PreviewPlacement = 'beside') {
+    if (placement === 'same-group') {
+      const target = this.owner(source) ?? this.group();
+      if (this.owner(simulator)?.id === target.id) { this.focus(simulator); return; }
+      this.open(simulator, target.id);
+      this.move(simulator, target.id, target.tabs.indexOf(source) + 1);
+      return;
+    }
     if (this.owner(simulator)) { this.focus(simulator); return; }
     const owner = this.owner(source) ?? this.group();
     const next = this.groups[this.groups.indexOf(owner) + 1] ?? this.insertGroup(owner.id, 'right');

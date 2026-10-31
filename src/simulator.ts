@@ -7,24 +7,24 @@ import { initializeCometViewport } from './comet-viewport';
 export const hex = (value: number) => value.toString(16).toUpperCase().padStart(4, '0');
 export function simulatorMarkup(): string {
   return `<div class="sim-toolbar" aria-label="シミュレーターの操作">
-    <button id="run" class="icon-button run" title="実行 (F6)" aria-label="実行">▶</button><button id="stop" class="icon-button" title="停止 (Shift+F5)" aria-label="停止">■</button>
-    <button id="step" title="1STEP実行 (F10)">1 STEP</button><button id="back" title="1STEP戻る">↶ 戻る</button><button id="reset" title="リロード">↻</button>
+    <button id="run" class="icon-button run" data-tooltip="実行 (F6)" aria-label="実行">▶</button><button id="stop" class="icon-button" data-tooltip="停止 (Shift+F5)" aria-label="停止">■</button>
+    <button id="step" data-tooltip="1STEP実行 (F10)">1 STEP</button><button id="back" data-tooltip="1STEP戻る">↶ 戻る</button><button id="reset" data-tooltip="リロード" aria-label="リロード">↻</button>
     <span class="toolbar-divider"></span><label>STEP <select id="step-mode" aria-label="STEP粒度"><option value="instruction">命令</option><option value="phase">フェーズ</option><option value="micro">最小STEP</option></select></label>
     <label>間隔 <select id="speed" aria-label="実行間隔"><option value="100">100 ms</option><option value="500">500 ms</option><option value="16">16 ms</option><option value="0">高速</option></select></label>
-    <button id="devices" class="icon-button" title="このシミュレーターの入出力装置" aria-label="入出力装置">⚙</button>
+    <button id="devices" class="icon-button" data-tooltip="このシミュレーターの入出力装置" aria-label="入出力装置">⚙</button>
   </div>
   <div id="sim-stale" class="sim-alert" hidden><span>ソースまたは配置設定が変わりました。</span><button id="sim-rebuild">再アセンブル</button></div>
   <div class="execution-heading"><div class="view-switch"><button id="view-program" class="selected">CASL</button><button id="view-comet">COMET</button></div><span id="state" class="state">未ロード</span><span id="step-count">0 STEP · 0 instructions</span></div>
   <div id="sim-runtime-error" class="runtime-error" role="status" hidden></div>
   <div id="sim-content" class="sim-content">
     <section id="register-panel" class="register-panel panel" aria-label="レジスタ">
-      <div class="panel-heading"><h2>レジスタ</h2><label class="compact-label"><input id="binary-registers" type="checkbox" title="GR0〜GR7を2進のみで表示。オフは16進・10進を同時表示。PR・SPは常に16進。">2進のみ</label><span class="flag-label">FR <b id="flags">O 0　S 0　Z 0</b></span></div>
+      <div class="panel-heading"><h2>レジスタ</h2><label class="compact-label"><input id="binary-registers" type="checkbox" data-tooltip="GR0〜GR7を2進のみで表示。オフは16進・10進を同時表示。PR・SPは常に16進。">2進のみ</label><span class="flag-label">FR <b id="flags">O 0　S 0　Z 0</b></span></div>
       <div id="registers" class="registers"></div><div class="cpu-detail"><span>IR <b id="ir">—</b></span><span>CALL DEPTH <b id="depth">0</b></span></div>
     </section>
     <section id="program-panel" class="program-panel panel"><div class="panel-heading"><h2>プログラム</h2><span id="program-info"></span></div><div class="table-scroll"><table class="program-table"><thead><tr><th>行</th><th>番地</th><th>機械語</th><th>ソース</th></tr></thead><tbody id="program"></tbody></table></div></section>
     <div id="casl-inspection" class="casl-inspection">
       <section class="panel label-panel" aria-label="ラベルと現在のメモリ値"><div class="panel-heading"><h2>ラベル</h2></div><div id="labels-scroll" class="inspection-scroll" tabindex="0" aria-label="ラベル一覧をスクロール"><table class="inspection-table label-table"><thead><tr><th>ラベル</th><th>番地</th><th>16進</th><th>10進</th></tr></thead><tbody id="labels"></tbody></table><p id="labels-empty" class="inspection-empty" hidden>DC・DS・リテラルのデータがありません。</p></div></section>
-      <section class="panel stack-panel" aria-label="スタックエリア"><div class="panel-heading"><h2>スタックエリア</h2><button id="stack-follow" title="現在のSPに追従" aria-label="現在のSPに追従" aria-pressed="true">SP追従</button></div><div class="stack-address-bar"><label class="memory-address"># <input id="stack-address" maxlength="4" aria-label="スタック表示の先頭番地"></label><span id="stack-pointer"></span></div><div id="stack-scroll" class="inspection-scroll" tabindex="0" aria-label="スタック一覧をスクロール"><table class="inspection-table stack-table"><thead><tr><th aria-label="SP位置"></th><th>番地</th><th>16進</th></tr></thead><tbody id="stack"></tbody></table></div></section>
+      <section class="panel stack-panel" aria-label="スタックエリア"><div class="panel-heading"><h2>スタックエリア</h2><button id="stack-follow" data-tooltip="現在のSPに追従" aria-label="現在のSPに追従" aria-pressed="true">SP追従</button></div><div class="stack-address-bar"><label class="memory-address"># <input id="stack-address" maxlength="4" aria-label="スタック表示の先頭番地"></label><span id="stack-pointer"></span></div><div id="stack-scroll" class="inspection-scroll" tabindex="0" aria-label="スタック一覧をスクロール"><table class="inspection-table stack-table"><thead><tr><th aria-label="SP位置"></th><th>番地</th><th>16進</th></tr></thead><tbody id="stack"></tbody></table></div></section>
     </div>
     ${cometMarkup()}
     <div class="bottom-panels">
@@ -88,7 +88,7 @@ function renderSimulator(tab: SimulatorTab | null, stale: boolean, blocked: bool
     for (const [column, text] of formatted.entries()) {
       const number = document.createElement('b'); number.textContent = text;
       const radix = i > 7 || !tab.binaryRegisters && column === 0 ? '16進' : tab.binaryRegisters ? '2進' : '10進';
-      number.title = `${label.textContent} ${radix}: ${text}`;
+      number.dataset.tooltip = `${label.textContent} ${radix}: ${text}`;
       content.append(number);
     }
     cell.append(label, content); return cell;
@@ -130,7 +130,7 @@ function renderInspection(tab: SimulatorTab, switched: boolean, onRow: (row: Row
     const source = labelSourceRow(symbol, snapshot!);
     if (source) { const button = document.createElement('button'); button.textContent = name; button.onclick = () => onRow(source); label.append(button); }
     else label.textContent = name;
-    tr.title = `${symbol.scope} / ${tab.sourceFiles.get(symbol.file ?? '') ?? ''}${symbol.line ? `:${symbol.line}` : ''} / ${symbol.name}${offset ? `+${offset}` : ''}`;
+    tr.dataset.tooltip = `${symbol.scope} / ${tab.sourceFiles.get(symbol.file ?? '') ?? ''}${symbol.line ? `:${symbol.line}` : ''} / ${symbol.name}${offset ? `+${offset}` : ''}`;
     tr.append(label);
     for (const text of [hex(address), value === undefined ? '—' : hex(value), decimal === null ? '—' : String(decimal)]) { const cell = document.createElement('td'); cell.textContent = text; tr.append(cell); }
     if (previous && previous.memory[address] !== value) tr.classList.add('changed');
@@ -165,7 +165,7 @@ function renderProgram(snapshot: Snapshot | null, onRow: (row: Row) => void, fol
     if (active && pc >= row.address && pc < row.address + row.words) tr.className = 'active';
     const words = snapshot!.memory.slice(row.address, row.address + Math.min(row.words, 4)).map(hex).join(' ');
     for (const text of [String(row.line), hex(row.address), words + (row.words > 4 ? ' …' : ''), row.source]) { const td = document.createElement('td'); td.textContent = text; tr.append(td); }
-    tr.title = `${sourceFiles.get(row.file ?? '') ?? ''}:${row.line} / ${row.words}語`; tr.addEventListener('click', () => onRow(row)); return tr;
+    tr.dataset.tooltip = `${sourceFiles.get(row.file ?? '') ?? ''}:${row.line} / ${row.words}語`; tr.addEventListener('click', () => onRow(row)); return tr;
   }));
   if (follow) {
     const activeRow = $('program').querySelector<HTMLElement>('.active'), scroller = $('program').closest<HTMLElement>('.table-scroll');
@@ -185,7 +185,7 @@ function renderMemory(snapshot: Snapshot | null, previous: Snapshot | null, star
     for (let i = 0; i < 4 && address + i < 3000; i++) {
       const td = document.createElement('td'), value = snapshot?.memory[address + i]; td.textContent = value === undefined ? '····' : hex(value);
       if (snapshot?.cpu.pr === address + i) td.classList.add('at-pr'); if (snapshot?.cpu.sp === address + i) td.classList.add('at-sp');
-      if (value !== undefined && previous && previous.memory[address + i] !== value) td.classList.add('changed'); td.title = `#${hex(address + i)}`; tr.append(td);
+      if (value !== undefined && previous && previous.memory[address + i] !== value) td.classList.add('changed'); td.dataset.tooltip = `#${hex(address + i)}`; tr.append(td);
     }
     table.append(tr);
   }

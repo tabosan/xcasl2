@@ -16,6 +16,7 @@ h2:not(:where(.monaco-editor *, .monaco-component *)) { font-size:11px; font-wei
 svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .icon-button { display:inline-flex; align-items:center; justify-content:center; width:28px; height:27px; padding:3px; font-size:16px; flex-shrink:0; }
 .icon-button svg,.activity svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.app-tooltip { position:fixed; inset:auto; margin:0; padding:6px 9px; width:max-content; max-width:min(480px,calc(100vw - 16px)); max-height:calc(100vh - 16px); overflow:auto; z-index:10000; pointer-events:none; white-space:pre-line; overflow-wrap:anywhere; font:12px/1.55 "Segoe UI","Yu Gothic UI",sans-serif; color:var(--context-menu-fg); background:var(--context-menu-bg); border:1px solid var(--context-menu-border); border-radius:4px; box-shadow:var(--context-menu-shadow); }
 .workbench { display:flex; flex:1; min-height:0; min-width:0; }
 .activity-bar { width:46px; flex-shrink:0; background:var(--surface); border-right:1px solid var(--border-subtle); display:flex; flex-direction:column; align-items:stretch; }
 .activity { width:45px; height:49px; border-radius:0; color:var(--subtle); padding:12px; }
@@ -190,10 +191,10 @@ svg:not(:where(.monaco-editor *, .monaco-component *)) { display:block; }
 .file-output { padding:10px; overflow:auto; flex:1; color:var(--secondary); font:11px/1.7 var(--mono); }
 .file-output p { margin-bottom:7px; overflow-wrap:anywhere; }
 .file-output b { color:var(--strong); font-weight:400; display:block; margin-bottom:7px; }
-.status-bar { display:flex; align-items:center; gap:16px; padding:0 10px 0 0; min-height:23px; height:23px; background:#007acc; color:#fff; font-size:10px; flex-shrink:0; }
+.status-bar { display:flex; align-items:center; gap:16px; padding:0 10px 0 0; min-height:23px; height:23px; background:var(--surface); color:var(--secondary); border-top:1px solid var(--border); font-size:10px; flex-shrink:0; }
 .status-bar button { height:23px; padding:0 10px; border-radius:0; }
 #message { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.status-bar .error { color:#fff !important; }
+.status-bar .error { color:var(--error) !important; }
 #cursor-position { white-space:nowrap; }
 dialog { width:550px; max-width:90vw; max-height:90vh; overflow:auto; border:1px solid var(--outline); border-radius:4px; background:var(--raised); color:var(--strong); padding:25px; line-height:1.8; box-shadow:0 8px 30px #0008; }
 dialog::backdrop { background:#0007; }
