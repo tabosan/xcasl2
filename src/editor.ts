@@ -1,5 +1,5 @@
 import { initializeMonaco, monaco } from './monaco';
-import type { Diagnostic, Settings } from './types';
+import type { CommentEdit, Diagnostic, Settings } from './types';
 import type { SourceDocument } from './workbench';
 
 export class SourceEditor {
@@ -62,6 +62,15 @@ export class SourceEditor {
     this.focus(); void this.editor.getAction(replace ? 'editor.action.startFindReplaceAction' : 'actions.find')?.run();
   }
   commandPalette() { this.focus(); void this.editor.getAction('editor.action.quickCommand')?.run(); }
+  applyCommentEdits(edits: CommentEdit[]) {
+    if (!edits.length) return;
+    this.editor.pushUndoStop();
+    this.editor.executeEdits('auto-comment', edits.map(edit => ({
+      range: new monaco.Range(edit.line, 1, edit.line, this.model.getLineMaxColumn(edit.line)),
+      text: edit.text,
+    })));
+    this.editor.pushUndoStop();
+  }
   replaceSource(source: string) {
     if (this.model.getValue() === source) return;
     this.replacing = true;

@@ -252,6 +252,7 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     settings.editor_font_family = "Consolas, 'Courier New', monospace".into();
     settings.editor_font_size = 20;
     settings.auto_switch_step_mode = false;
+    settings.auto_comment_overwrite = true;
     settings.auto_save = true;
     settings.recent_files = vec![temp.0.join("日本語.cas").to_string_lossy().into()];
     settings.comet_view = true;
@@ -277,6 +278,7 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     );
     assert_eq!(old.editor_font_size, 14);
     assert!(old.auto_switch_step_mode);
+    assert!(!old.auto_comment_overwrite);
     for theme in [
         wcasl2_core::settings::ThemePreference::Light,
         wcasl2_core::settings::ThemePreference::Dark,

@@ -15,3 +15,11 @@ test('palette and find/replace have explicit bindings without intercepting AltGr
   assert.equal(workbenchShortcut(key('f')),'find');assert.equal(workbenchShortcut(key('h')),'replace');
   assert.equal(workbenchShortcut(key('s',false,true)),null);
 });
+
+test('automatic comments use Ctrl+Shift+C without consuming normal copy or AltGr',()=>{
+  assert.equal(workbenchShortcut(key('C',true)),'auto-comment');
+  assert.equal(workbenchShortcut(key('c',true)),'auto-comment');
+  assert.equal(workbenchShortcut(key('c')),null);
+  assert.equal(workbenchShortcut(key('C',true,true)),null);
+  assert.equal(workbenchShortcut(key('C',true,false,false)),null);
+});

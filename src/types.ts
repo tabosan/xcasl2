@@ -8,7 +8,9 @@ export interface Settings {
   theme: ThemePreference;
   editor_font_family: string; editor_font_size: number;
   auto_switch_step_mode: boolean;
+  auto_comment_overwrite: boolean;
 }
+export interface CommentEdit { line: number; text: string }
 export interface OpenedSource { path: string; source: string }
 export interface DeviceSnapshot {
   config: DeviceConfig; input_open: boolean; input_eof: boolean; output_open: boolean;

@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-31",
+  "frontend_build": "npm run build: passed",
+  "desktop_build": "cargo build --manifest-path src-tauri/Cargo.toml --offline --features tauri/custom-protocol: passed",
+  "auto_comment_tests": "8 passed; NOP without a comment and NOP with existing handwritten/generated comments stay untouched with either overwrite setting",
+  "editor_tests": "45 passed; Ctrl+Shift+C mapped to auto-comment, ordinary copy and AltGr unaffected",
+  "menu": "Edit > Add automatic comments, Ctrl+Shift+C",
+  "active_target": "Currently selected source tab only, shared generateComments handler with toolbar",
+  "native_ui": "Not verified: Computer Use app approval timed out",
+  "executable_sha256": "813037055DE0A2C9514CD02AF43A6F2E1104BAC3CEE710F6C4BD1F0646C32A09"
+}

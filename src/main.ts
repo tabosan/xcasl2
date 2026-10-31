@@ -20,7 +20,7 @@ import { examples } from './examples';
 import { AutoSave, recentFiles } from './file-features';
 import { workbenchShortcut } from './shortcuts';
 import { AppContextMenu, type ContextMenuEntry, type ContextMenuItem } from './context-menu';
-import type { Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
+import type { CommentEdit, Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -29,7 +29,7 @@ const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
 const simulationViews = new Map<string, { root: HTMLElement; render: ReturnType<typeof createSimulatorRenderer> }>();
-let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, auto_switch_step_mode: true, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
+let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, auto_switch_step_mode: true, auto_comment_overwrite: false, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
 const themeController = createThemeController(document.documentElement, window.matchMedia('(prefers-color-scheme: dark)'));
 async function applyTheme() {
   themeController.setPreference(settings.theme);
@@ -171,7 +171,7 @@ const view = new WorkbenchView($('editor-groups'), wb, {
   renderSimulator: id => { const sim = wb.simulation(id); if (sim) simulationViews.get(id)!.render(sim, wb.stale(sim, settings), ioBusy, row => revealRow(sim, row), wb.layout.current() === tabKey('simulator', id), settings.signed_decimal); },
   select: selectTab, focus: adoptFocus,
   close: key => withIo(() => parseTab(key).kind === 'source' ? closeDocument(parseTab(key).id) : closeSimulator(parseTab(key).id)),
-  build: buildPreview, action, changed: () => { render(); const key = wb.layout.current(); if (key) view.focusTab(key); },
+  build: buildPreview, comment: generateComments, action, changed: () => { render(); const key = wb.layout.current(); if (key) view.focusTab(key); },
   blocked: () => ioBusy || closing || !!document.querySelector('dialog[open]'),
 });
 function adoptFocus(key: TabKey | null) {
@@ -244,6 +244,23 @@ function revealRow(sim: SimulatorTab, row: Row) {
   selectSource(id, true); editors.get(id)!.reveal(row.line, row.source.length);
 }
 
+async function generateComments(id: string) {
+  if (!desktop) return;
+  await withIo(async () => {
+    const doc = wb.source(id); if (!doc) return;
+    const key = wb.key(id, settings), editor = ensureEditor(doc);
+    const edits = await invoke<CommentEdit[]>('generate_comments', {
+      sources: wb.sourcesFor(id).map(input => ({ file: input.id, path: input.path, source: input.source })),
+      target: id, base: settings.base, overwrite: settings.auto_comment_overwrite,
+    });
+    if (wb.source(id) !== doc || wb.key(id, settings) !== key) {
+      message('処理中にソースが変更されたため、自動コメントの追加を中止しました。'); return;
+    }
+    editor.applyCommentEdits(edits);
+    if (wb.layout.current() === tabKey('source', id)) editor.focus();
+    message(edits.length ? `${doc.name}: ${edits.length}行にコメントを付けました。Ctrl+Zでまとめて元に戻せます。` : `${doc.name}: コメントを追加・更新する行はありませんでした。`);
+  });
+}
 async function buildPreview(id = wb.activeSource) {
   if (!id || !desktop) return;
   await withIo(async () => {
@@ -461,6 +478,10 @@ async function action(name: string) {
     case 'close-tab': if (focusedGroup === 'simulator' && wb.activeSimulator) await withIo(() => closeSimulator(wb.activeSimulator!)); else if (wb.activeSource) await withIo(() => closeDocument(wb.activeSource!)); break;
     case 'close-all': await withIo(closeAllTabs); break;
     case 'preview': await buildPreview(focusedGroup === 'simulator' ? wb.activeSimulator : wb.activeSource); break;
+    case 'auto-comment': {
+      const key = wb.layout.current();
+      if (key) { const { kind, id } = parseTab(key); if (kind === 'source') await generateComments(id); }
+    } break;
     case 'run': run(wb.simulation()); break;
     case 'step': if (wb.simulation() && !wb.simulation()!.running) await control(wb.simulation()!, 'step'); break;
     case 'back': await stepBack(); break;

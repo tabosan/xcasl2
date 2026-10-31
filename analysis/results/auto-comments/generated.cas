@@ -1,0 +1,17 @@
+MAIN START
+ LAD GR1,DATA	;GR1 <- DATA
+ LD GR2,DATA ;keep this
+ ADDA GR1,DATA,GR2	;GR1 <- GR1 + (DATA + GR2)
+ AND GR1,DATA,GR2	;GR1 <- GR1 AND (DATA + GR2)
+ ST GR5,0,GR7	;<0+GR7> <- GR5
+ SRA GR1,2,GR2	;GR1 <- GR1 >> 2 + GR2
+ CPA GR1,GR2	;GR1 : GR2
+ JPL FIN	;SF=0 & ZF=0 then goto FIN
+ PUSH 0,GR1	;SP <- SP - 1, <SP> <- 0 + GR1
+ POP GR1	;(SP) -> GR1, SP <- SP + 1
+ LD GR8,DATA ;invalid keep
+DATA DC 1234	;<DATA> <- 1234
+ARR DC 1,2,3	;<ARR> <- 1,2,3
+BUF DS 10	;allocate 10 words for BUF
+FIN RET ;leave RET comment
+ END

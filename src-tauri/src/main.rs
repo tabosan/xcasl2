@@ -66,6 +66,20 @@ async fn control(
         .control(&id, &action, count, text.as_deref(), mode)
 }
 
+#[tauri::command]
+fn generate_comments(
+    sources: Vec<BuildSource>,
+    target: String,
+    base: u16,
+    overwrite: bool,
+) -> Vec<wcasl2_core::assembler::CommentEdit> {
+    let inputs: Vec<_> = sources
+        .iter()
+        .map(|s| (Some(s.file.as_str()), s.source.as_str()))
+        .collect();
+    wcasl2_core::assembler::auto_comments(&inputs, Some(&target), base, overwrite)
+}
+
 #[derive(Serialize)]
 struct OpenedSource {
     path: String,
@@ -462,6 +476,7 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             build,
+            generate_comments,
             control,
             open_sources,
             open_recent,

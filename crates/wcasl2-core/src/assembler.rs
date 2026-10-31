@@ -2,6 +2,9 @@ use crate::{encode_cp932, Machine, MEMORY_WORDS};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
+mod auto_comment;
+pub use auto_comment::{auto_comments, CommentEdit};
+
 #[derive(Clone, Debug, Serialize)]
 pub struct Diagnostic {
     pub file: Option<String>,
@@ -392,6 +395,16 @@ pub fn assemble_sources(
     sources: &[(Option<&str>, &str)],
     base: u16,
 ) -> Result<Image, Vec<Diagnostic>> {
+    assemble_sources_impl(sources, base, None)
+}
+
+// Comment generation needs linker errors even when another line has a syntax
+// error. Normal assembly keeps its original early-error behavior.
+fn assemble_sources_impl(
+    sources: &[(Option<&str>, &str)],
+    base: u16,
+    mut analysis_rows: Option<&mut Vec<SourceRow>>,
+) -> Result<Image, Vec<Diagnostic>> {
     let mut errors = Vec::new();
     let mut sections = Vec::new();
     if sources.is_empty() {
@@ -547,12 +560,16 @@ pub fn assemble_sources(
         }
         if !ended {
             errors.push(diagnostic(lines.len(), 0, "ENDがありません。"));
+            if analysis_rows.is_some() {
+                section.finish();
+                sections.push(section);
+            }
         }
         for error in &mut errors[first_error..] {
             error.file = file.map(str::to_owned);
         }
     }
-    if !errors.is_empty() {
+    if !errors.is_empty() && analysis_rows.is_none() {
         return Err(errors);
     }
     let mut globals = BTreeMap::new();
@@ -607,6 +624,9 @@ pub fn assemble_sources(
             labels.insert(format!("{scope}:{name}"), address);
         }
         words.extend(section.words);
+        if let Some(output) = &mut analysis_rows {
+            output.extend(section.rows.iter().cloned());
+        }
         rows.extend(section.rows);
     }
     let end = base as usize + words.len();

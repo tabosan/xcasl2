@@ -89,6 +89,12 @@ pub fn create(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
             &PredefinedMenuItem::separator(app)?,
             &item(app, "find", "検索(&F)…", Some("Ctrl+F"))?,
             &item(app, "replace", "置換(&H)…", Some("Ctrl+H"))?,
+            &item(
+                app,
+                "auto-comment",
+                "自動コメントを追加(&M)",
+                Some("Ctrl+Shift+C"),
+            )?,
             &item(app, "command-palette", "コマンドパレット…", Some("F1"))?,
         ],
     )?;

@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-31",
+  "build": "npm run build + cargo build --manifest-path src-tauri/Cargo.toml --offline --features tauri/custom-protocol: passed",
+  "core_tests": "48 passed including 7 auto-comment tests",
+  "editor_tests": "44 passed",
+  "native_generation": "12 supported lines annotated in one operation, with one tab before semicolon",
+  "native_preservation": "Existing LD comment, invalid GR8 line and RET comment preserved by default",
+  "native_overwrite": "After changing settings, only the existing supported LD comment was replaced; invalid GR8 and RET comments still preserved",
+  "native_undo": "One Ctrl+Z restored exact original text",
+  "native_redo": "One Ctrl+Y restored generated text",
+  "persisted_setting": "auto_comment_overwrite=true confirmed in isolated profile",
+  "executable_sha256": "8CD1B22B616254DFAE3945F5247C080BBF433771BE5997E3CE86E948B6A709BB"
+}
