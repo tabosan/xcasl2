@@ -5,6 +5,7 @@ export interface Settings {
   version: number; base: number; fill: number; interval_ms: number; step_mode: StepMode;
   binary_registers: boolean; signed_decimal: boolean; comet_view: boolean; memory_start: number; devices: DeviceConfig;
   auto_save: boolean; recent_files: string[];
+  confirm_delete: boolean;
   theme: ThemePreference;
   editor_font_family: string; editor_font_size: number;
   editor_insert_spaces: boolean; editor_tab_size: number; editor_detect_indentation: boolean;

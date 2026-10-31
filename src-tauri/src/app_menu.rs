@@ -53,6 +53,8 @@ pub fn create(app: &AppHandle) -> tauri::Result<Menu<Wry>> {
         &[
             &item(app, "new", "新しいCASLファイル(&N)", Some("Ctrl+N"))?,
             &item(app, "open", "ファイルを開く(&O)…", Some("Ctrl+O"))?,
+            &item(app, "folder-open", "フォルダーを開く…", None)?,
+            &item(app, "folder-close", "フォルダーを閉じる", None)?,
             &recent,
             &PredefinedMenuItem::separator(app)?,
             &item(app, "save", "保存(&S)", Some("Ctrl+S"))?,

@@ -1,0 +1,98 @@
+Window: "main.cas — xCASL2", App: xcasl2-desktop.exe.
+	0 ウィンドウ main.cas — xCASL2 Secondary Actions: Raise
+		1 ウィンドウ
+			2 ウィンドウ xCASL2
+				3 ウィンドウ (disabled)
+				4 領域 xCASL2 - Web コンテンツ
+					5 領域
+						6 領域
+						7 領域
+							8 領域
+								9 ドキュメント xCASL2 Value: http://tauri.localhost/ ID: RootWebArea
+									85 グループ
+										10 メイン ID: workbench
+											11 ナビゲーション アクティビティ
+												12 ボタン エクスプローラー ID: activity-explorer
+												13 ボタン 設定 ID: activity-settings
+											14 補助 エクスプローラー ID: sidebar
+												15 テキスト エクスプローラー
+												16 ボタン 新しいCASLファイル ID: sidebar-new
+												17 見出し ⌄ 開いているファイル
+												90 ボタン Ⅱ main.cas
+												91 ボタン Ⅱ sub.cas
+												18 セクション 開いているフォルダー ID: folder-section
+													19 見出し フォルダー
+													20 ボタン 新しいファイル ID: folder-new-file
+													21 ボタン 新しいフォルダー ID: folder-new-directory
+													22 ボタン フォルダーを更新 ID: folder-refresh
+													23 ボタン フォルダーを閉じる ID: folder-close
+													24 ツリー フォルダーの内容 ID: folder-tree
+														108 ツリー項目 (selectable) workspace
+														109 ツリー項目 (selectable) nested
+														110 ツリー項目 (selectable) child.cas
+														111 ツリー項目 (selectable) 作成テスト
+														112 ツリー項目 (selectable) created.cas
+														113 ツリー項目 (selectable) main.cas
+														114 ツリー項目 (selectable) sample.cmk
+														115 ツリー項目 (selectable) sub.cas
+													26 ボタン フォルダーを開く… ID: folder-open
+												27 見出し ⌄ プロジェクト
+												92 テキスト sample.cmk
+												93 ボタン ★ main.cas
+												94 ボタン Ⅱ sub.cas
+												29 ボタン cmkを開く… ID: sidebar-project-open
+												30 テキスト ソース右上の
+												31 テキスト から
+												32 テキスト 
+												33 テキスト シミュレーターを右に開けます。
+											34 縮小 エクスプローラーの幅 Value: 201 ID: sidebar-divider
+											35 グループ エディターグループ ID: editor-groups
+												36 セクション エディターグループ 1
+													37 タブ ファイルとシミュレーターのタブ
+														95 タブ項目 (selectable) main.cas
+														96 ボタン main.casを閉じる
+														97 タブ項目 (selectable) sub.cas
+														98 ボタン sub.casを閉じる
+													38 ツール バー エディターの操作
+														39 ボタン タブを右に分割して移動
+														99 ボタン 自動コメント
+														100 ボタン アセンブルしてシミュレーターを横に表示
+													101 テキスト main.cas
+													102 コード
+														103 エディター (settable, string) main.cas — CASL II ソースコード Value: ; Main file calls a public START name in another file. MAIN START CALL SUB RET END
+										49 フッター
+											50 ボタン エクスプローラー切替 ID: status-sidebar
+											51 状態 ID: message
+												104 テキスト sample.cmk を開きました。2ファイル / ★がメインです。
+											105 テキスト 行 1、列 1
+											106 ボタン インデント設定 ID: status-indentation
+											53 テキスト CP932
+											54 テキスト CRLF
+											55 テキスト CASL II
+											56 テキスト Rust + Tauri
+										86 警告
+										87 警告
+										88 グループ
+										89 グループ
+								57 領域
+		58 タイトル バー (settable, string) Value: main.cas — xCASL2
+			59 メニュー バー システム ID: MenuBar
+				60 メニュー項目 システム
+			61 ボタン 最小化
+			62 ボタン 最大化
+			63 ボタン 閉じる
+		64 メニュー バー アプリケーション ID: MenuBar
+			65 メニュー項目 ファイル(F)
+			66 メニュー項目 編集(E)
+			67 メニュー項目 表示(V)
+			68 メニュー項目 実行(R)
+			69 メニュー項目 プロジェクト(P)
+			70 メニュー項目 ヘルプ(H)
+
+Document text: ```
+; Main file calls a public START name in another file.
+MAIN     START
+         CALL    SUB
+         RET
+         END
+```

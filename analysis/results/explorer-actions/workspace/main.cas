@@ -1,0 +1,5 @@
+; Main file calls a public START name in another file.
+MAIN     START
+         CALL    SUB
+         RET
+         END

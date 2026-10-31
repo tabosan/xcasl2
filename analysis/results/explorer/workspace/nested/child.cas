@@ -1,0 +1,5 @@
+; GR1 = 7 after CALL / RET.
+SUB      START
+         LAD     GR1,7
+         RET
+         END

@@ -2,7 +2,7 @@ import { parseTab, tabKey, type EditorGroup, type TabKey, type PreviewPlacement 
 import { basename, type Workbench, type SourceDocument } from './workbench';
 import type { Settings } from './types';
 import type { SourceEditor } from './editor';
-import { assembleIcon, assembleInGroupIcon } from './ui-icons';
+import { assembleIcon, assembleInGroupIcon, sourceFileIcon, simulatorFileIcon, closeIcon, fileKind } from './ui-icons';
 
 interface Callbacks {
   editor(doc: SourceDocument): SourceEditor;
@@ -116,10 +116,10 @@ export class WorkbenchView {
         if (!node) {
           node = document.createElement('div'); node.className = 'workbench-tab'; node.dataset.tabKey = key;
           const select = document.createElement('button'); select.type = 'button'; select.className = 'tab-select'; select.setAttribute('role', 'tab');
-          select.innerHTML = `<span class="tab-icon">${kind === 'source' ? 'Ⅱ' : '▷'}</span><span class="tab-title"></span><span class="tab-description"></span><span class="tab-state" aria-hidden="true"></span>`;
+          select.innerHTML = '<span class="tab-icon"></span><span class="tab-title"></span><span class="tab-description"></span><span class="tab-state" aria-hidden="true"></span>';
           select.onclick = event => { if (this.suppressClick) { event.preventDefault(); return; } this.callbacks.select(key); };
           select.onpointerdown = event => this.dragStart(event, key);
-          const close = document.createElement('button'); close.type = 'button'; close.className = 'tab-close'; close.textContent = '×'; close.tabIndex = -1;
+          const close = document.createElement('button'); close.type = 'button'; close.className = 'tab-close'; close.innerHTML = closeIcon; close.tabIndex = -1;
           close.onclick = () => this.callbacks.close(key);
           node.append(select, close); this.tabs.set(key, node);
           node.addEventListener('auxclick', event => { if (event.button === 1) { event.preventDefault(); this.callbacks.close(key); } });
@@ -133,6 +133,8 @@ export class WorkbenchView {
         button.setAttribute('aria-label', `${doc.name}${kind === 'simulator' ? ' のシミュレーター' : dirty ? '、未保存' : ''}`);
         button.dataset.tooltip = `${doc.path ?? doc.name}${kind === 'simulator' ? '\nシミュレーター' : ''}\nドラッグで並べ替え・グループ移動。端へドロップで左右に分割。`;
         node.querySelector('.tab-title')!.textContent = doc.name;
+        const icon = node.querySelector<HTMLElement>('.tab-icon')!, iconKind = kind === 'source' ? fileKind(doc.name) : 'simulator';
+        if (icon.dataset.kind !== iconKind) { icon.dataset.kind = iconKind; icon.innerHTML = kind === 'source' ? sourceFileIcon(doc.name) : simulatorFileIcon; }
         const duplicate = group.tabs.some(other => other !== key && this.wb.source(parseTab(other).id)?.name === doc.name && parseTab(other).kind === kind);
         node.querySelector('.tab-description')!.textContent = kind === 'simulator' ? 'シミュレーター' : duplicate && doc.path ? basename(doc.path.replace(/\\/g, '/').split('/').slice(0, -1).join('/')) : '';
         node.querySelector('.tab-close')!.setAttribute('aria-label', `${doc.name}${kind === 'simulator' ? ' のシミュレーター' : ''}を閉じる`);

@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/core';
 import type { Settings, ThemePreference } from './types';
 
-const sections = [['appearance', '外観'], ['editor', 'エディター'], ['assembly', 'アセンブル'], ['simulator', 'シミュレーター'], ['storage', '保存先']] as const;
+const sections = [['appearance', '外観'], ['editor', 'エディター'], ['explorer', 'エクスプローラー'], ['assembly', 'アセンブル'], ['simulator', 'シミュレーター'], ['storage', '保存先']] as const;
 
 export function preferencesMarkup() {
   return `<dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
@@ -20,6 +20,9 @@ export function preferencesMarkup() {
         <label class="settings-check"><input id="settings-detect-indentation" type="checkbox" />Editor: Detect Indentation — 開いたファイルの内容からインデントを検出</label>
         <h4>自動コメント</h4><label class="device-heading" for="settings-comment-overwrite">既存のコメント</label><select id="settings-comment-overwrite"><option value="false">既存のコメントを保持する</option><option value="true">生成対象の行のコメントを上書きする</option></select><p class="device-note">対象外の命令・エラー行のコメントは保持します。</p>
         <h4>略記の展開</h4><p class="device-note"><code>!</code>＋Tabでプログラムひな形、<code>inc</code>／<code>dec</code>／<code>clr</code>＋Tabでレジスタ操作を生成します。<code>inc.gr3</code>のようにレジスタも指定できます。</p>
+      </section>
+      <section id="settings-section-explorer" class="settings-section"><h3 tabindex="-1">エクスプローラー</h3>
+        <label class="settings-check"><input id="settings-confirm-delete" type="checkbox" />ファイルやフォルダーをごみ箱に移動するときに確認する</label><p class="device-note">削除確認で「今後このメッセージを表示しない」を選んだ場合も、ここから確認を再び有効にできます。</p>
       </section>
       <section id="settings-section-assembly" class="settings-section"><h3 tabindex="-1">アセンブル</h3><p class="device-note">配置と初期化の変更は次のアセンブルから有効です。</p>
         <label class="device-heading" for="settings-base">配置先頭番地（16進数）</label><input id="settings-base" maxlength="4" aria-label="配置先頭番地" />
@@ -54,6 +57,7 @@ export async function editPreferences(current: Settings, path: string): Promise<
   tabSize.value = String(current.editor_tab_size); insertSpaces.checked = current.editor_insert_spaces; detectIndentation.checked = current.editor_detect_indentation;
   const autoStep = el<HTMLSelectElement>('settings-auto-step'); autoStep.value = String(current.auto_switch_step_mode);
   const commentOverwrite = el<HTMLSelectElement>('settings-comment-overwrite'); commentOverwrite.value = String(current.auto_comment_overwrite);
+  const confirmDelete = el<HTMLInputElement>('settings-confirm-delete'); confirmDelete.checked = current.confirm_delete;
   base.value = current.base.toString(16).toUpperCase().padStart(4, '0'); fill.value = String(current.fill); interval.value = String(current.interval_ms); signedDecimal.value = String(current.signed_decimal);
   el('settings-path').textContent = `保存先: ${path}`; el('settings-error').textContent = '';
   let working = false;
@@ -72,7 +76,7 @@ export async function editPreferences(current: Settings, path: string): Promise<
       if (tabSize.value === '' || !tabSize.checkValidity() || !Number.isInteger(Number(tabSize.value))) {
         el('settings-error').textContent = 'タブの表示サイズは1〜16の整数で指定してください。'; navigate('editor'); return;
       }
-      const next = { ...current, theme: theme.value as ThemePreference, base: parseInt(base.value, 16), fill: Number(fill.value), interval_ms: Number(interval.value), signed_decimal: signedDecimal.value === 'true', editor_font_family: fontFamily.value.trim(), editor_font_size: Number(fontSize.value), editor_tab_size: Number(tabSize.value), editor_insert_spaces: insertSpaces.checked, editor_detect_indentation: detectIndentation.checked, auto_switch_step_mode: autoStep.value === 'true', auto_comment_overwrite: commentOverwrite.value === 'true' };
+      const next = { ...current, confirm_delete:confirmDelete.checked, theme: theme.value as ThemePreference, base: parseInt(base.value, 16), fill: Number(fill.value), interval_ms: Number(interval.value), signed_decimal: signedDecimal.value === 'true', editor_font_family: fontFamily.value.trim(), editor_font_size: Number(fontSize.value), editor_tab_size: Number(tabSize.value), editor_insert_spaces: insertSpaces.checked, editor_detect_indentation: detectIndentation.checked, auto_switch_step_mode: autoStep.value === 'true', auto_comment_overwrite: commentOverwrite.value === 'true' };
       working = true;
       for (const control of dialog.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLButtonElement>('input,select,button')) control.disabled = true;
       try { await invoke('set_settings', { settings: next }); result = next; dialog.close(); }

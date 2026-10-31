@@ -1,6 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod app_menu;
+mod explorer;
+mod shell_files;
 mod workspace;
 
 use serde::Serialize;
@@ -139,7 +141,17 @@ async fn open_sources(
 }
 
 #[tauri::command]
-async fn open_recent(path: PathBuf, state: State<'_, AppState>) -> Result<OpenedSource, String> {
+async fn open_recent(
+    path: PathBuf,
+    from_folder: Option<bool>,
+    explorer: State<'_, explorer::Explorer>,
+    state: State<'_, AppState>,
+) -> Result<OpenedSource, String> {
+    let path = if from_folder.unwrap_or(false) {
+        explorer.resolve(&path)?
+    } else {
+        path
+    };
     let source = read_cas(&path)?;
     state
         .0
@@ -321,18 +333,24 @@ struct OpenedProject {
 }
 #[tauri::command]
 async fn open_project(
+    path: Option<PathBuf>,
     app: tauri::AppHandle,
+    explorer: State<'_, explorer::Explorer>,
     state: State<'_, AppState>,
 ) -> Result<Option<OpenedProject>, String> {
-    let Some(file) = app
-        .dialog()
-        .file()
-        .add_filter("CASL2 プロジェクト", &["cmk"])
-        .blocking_pick_file()
-    else {
-        return Ok(None);
+    let path = if let Some(path) = path {
+        explorer.resolve(&path)?
+    } else {
+        let Some(file) = app
+            .dialog()
+            .file()
+            .add_filter("CASL2 プロジェクト", &["cmk"])
+            .blocking_pick_file()
+        else {
+            return Ok(None);
+        };
+        file.into_path().map_err(|e| e.to_string())?
     };
-    let path = file.into_path().map_err(|e| e.to_string())?;
     let path = canonical_path(&path)?;
     let project = Project::decode(&std::fs::read(&path).map_err(|e| e.to_string())?)?;
     let paths = project.resolved_paths(&path)?;
@@ -438,6 +456,7 @@ async fn save_project(
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
+        .manage(explorer::Explorer::default())
         .setup(|app| {
             let directory = std::env::var_os("XCASL2_CONFIG_DIR")
                 .map(PathBuf::from)
@@ -479,6 +498,14 @@ fn main() {
             generate_comments,
             control,
             open_sources,
+            explorer::open_folder,
+            explorer::read_folder,
+            explorer::create_explorer_entry,
+            explorer::rename_explorer_entry,
+            explorer::explorer_mutation_path,
+            explorer::delete_explorer_entry,
+            explorer::reveal_in_explorer,
+            explorer::close_folder,
             open_recent,
             refresh_file_menu,
             save_source,

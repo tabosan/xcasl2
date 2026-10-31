@@ -22,17 +22,24 @@ import { AutoSave, recentFiles } from './file-features';
 import { workbenchShortcut } from './shortcuts';
 import { AppContextMenu, type ContextMenuEntry, type ContextMenuItem } from './context-menu';
 import { AppTooltips } from './tooltips';
+import { FolderExplorer } from './folder-explorer';
+import { explorerFileKind, type FolderEntry, type OpenedFolder } from './folder-tree';
+import { initializeSidebarSections } from './sidebar-sections';
+import { confirmFileDeletion } from './delete-confirmation';
+import { sourceFileIcon, mainFileIcon } from './ui-icons';
+import { pathWithin, rebasePath, renameWorkbenchPaths } from './path-changes';
 import type { CommentEdit, Diagnostic, OpenedSource, Row, Settings, Snapshot, StepMode } from './types';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = layout();
 new AppTooltips();
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 initializeSidebarResize($('workbench'), $('sidebar'), $('sidebar-divider'));
+const sidebarSections = initializeSidebarSections($('sidebar'));
 const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
 const simulationViews = new Map<string, { root: HTMLElement; render: ReturnType<typeof createSimulatorRenderer> }>();
-let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, editor_insert_spaces: true, editor_tab_size: 4, editor_detect_indentation: true, auto_switch_step_mode: true, auto_comment_overwrite: false, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
+let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, editor_insert_spaces: true, editor_tab_size: 4, editor_detect_indentation: true, auto_switch_step_mode: true, auto_comment_overwrite: false, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, confirm_delete: true, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
 const themeController = createThemeController(document.documentElement, window.matchMedia('(prefers-color-scheme: dark)'));
 async function applyTheme() {
   themeController.setPreference(settings.theme);
@@ -83,6 +90,11 @@ async function withIo(work: () => Promise<unknown>) {
   ioBusy = true; render();
   try { await work(); } catch (error) { showError(error); }
   finally { ioBusy = false; render(); }
+}
+async function withExplorerIo<T>(work: () => Promise<T>): Promise<T> {
+  if (ioBusy || closing || document.querySelector('dialog[open]')) throw 'ほかの処理が終わるまでお待ちください。';
+  ioBusy = true; render();
+  try { return await work(); } finally { ioBusy = false; render(); }
 }
 function syncBackend() {
   if (!desktop) return Promise.resolve();
@@ -169,6 +181,15 @@ async function switchSimulatorView(sim: SimulatorTab, comet: boolean) {
   sim.cometView = comet; persistSettings(sim); renderSim();
 }
 function invalidateChanged() { for (const sim of wb.simulators.values()) if (wb.stale(sim, settings)) stop(sim); }
+const folders = new FolderExplorer($('folder-section'), {
+  open: entry => { void withIo(() => openFolderEntry(entry)); },
+  create: (directory, parent) => { void newExplorerEntry(directory, parent); },
+  rename: entry => { void renameExplorerEntry(entry); },
+  remove: entry => { void withIo(() => deleteExplorerEntry(entry)); },
+  openFolder: () => { void action('folder-open'); }, closeFolder: () => { void action('folder-close'); },
+  blocked: () => ioBusy || closing || !desktop || !settingsReady || !!document.querySelector('dialog[open]'),
+  error: error => message(String(error), true),
+});
 const view = new WorkbenchView($('editor-groups'), wb, {
   editor: ensureEditor, simulator: ensureSimulationView, source: id => selectSource(id, true),
   renderSimulator: id => { const sim = wb.simulation(id); if (sim) simulationViews.get(id)!.render(sim, wb.stale(sim, settings), ioBusy, row => revealRow(sim, row), wb.layout.current() === tabKey('simulator', id), settings.signed_decimal); },
@@ -191,9 +212,10 @@ function selectTab(key: TabKey, focus = false) {
 }
 function renderTabs() { view.renderTabs(settings); }
 function renderSidebar() {
+  folders.update(desktop && settingsReady && !ioBusy && !closing, wb.source()?.path ?? null);
   $('open-editors').replaceChildren(...wb.editorTabs.map(id => {
     const doc = wb.source(id)!, button = document.createElement('button'); button.className = `tree-file ${id === wb.activeSource ? 'active' : ''}`;
-    const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = 'Ⅱ';
+    const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.innerHTML = sourceFileIcon(doc.name);
     const label = document.createElement('span'); label.textContent = doc.name;
     const dirty = document.createElement('span'); dirty.className = 'tree-dirty'; dirty.textContent = doc.source !== doc.saved ? '●' : '';
     button.append(icon, label, dirty); button.dataset.sourceId = id; button.dataset.tooltip = doc.path ?? '未保存'; button.onclick = () => selectSource(id, true); return button;
@@ -203,7 +225,7 @@ function renderSidebar() {
   $('project-name').dataset.tooltip = project?.path ?? '';
   $('project-tree').replaceChildren(...(project?.fileIds ?? []).map((id, i) => {
     const doc = wb.source(id)!, button = document.createElement('button'); button.className = 'tree-file';
-    const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.textContent = i === 0 ? '★' : 'Ⅱ';
+    const icon = document.createElement('span'); icon.className = 'tree-file-icon'; icon.innerHTML = i === 0 ? mainFileIcon : sourceFileIcon(doc.name);
     const label = document.createElement('span'); label.textContent = doc.name;
     button.append(icon, label); button.dataset.sourceId = id; button.dataset.tooltip = `${doc.path ?? '未保存'}${i === 0 ? '\nメインファイル' : ''}`; button.onclick = () => selectSource(id, true); return button;
   }));
@@ -343,7 +365,7 @@ async function saveDocument(doc: SourceDocument, saveAs = false): Promise<boolea
   doc.path = path; doc.name = basename(path); doc.saved = source;
   rememberFiles([path]); scheduleAutoSave(doc);
   if (changedPath && wb.project?.fileIds.includes(doc.id)) wb.project.dirty = true;
-  invalidateChanged(); await syncBackend(); render(); message(`${doc.name} をCP932 / CRLFで保存しました。`); return true;
+  invalidateChanged(); await syncBackend(); if (changedPath) await folders.refresh(true); render(); message(`${doc.name} をCP932 / CRLFで保存しました。`); return true;
 }
 async function confirmDocument(doc: SourceDocument): Promise<boolean> {
   if (doc.source === doc.saved) return true;
@@ -366,7 +388,7 @@ async function saveProject(saveAs = false): Promise<boolean> {
   for (const id of project.fileIds) { const doc = wb.source(id)!; if (!doc.path && !await saveDocument(doc)) return false; }
   const path = await invoke<string | null>('save_project', { files: project.fileIds.map(id => ({ path: wb.source(id)!.path!, name: wb.source(id)!.name })), previousPath: project.path, saveAs });
   if (!path) return false;
-  project.path = path; project.dirty = false; await syncBackend(); render(); message('cmkを保存しました。ソースの本文は各casへ保存してください。'); return true;
+  project.path = path; project.dirty = false; await syncBackend(); await folders.refresh(true); render(); message('cmkを保存しました。ソースの本文は各casへ保存してください。'); return true;
 }
 async function confirmProject(): Promise<boolean> {
   if (!wb.project?.dirty) return true;
@@ -388,20 +410,94 @@ async function openSources(addToProject = false) {
   invalidateChanged(); await syncBackend(); selectSource(wb.activeSource!, true);
   rememberFiles(files.map(file => file.path));
 }
-async function openRecent(path: string) {
+async function openRecent(path: string, fromFolder = false) {
   const existing = [...wb.documents.values()].find(doc => doc.path && pathKey(doc.path) === pathKey(path));
   if (existing) { selectSource(existing.id, true); rememberFiles([existing.path!]); return; }
-  const file = await invoke<OpenedSource>('open_recent', { path });
+  const file = await invoke<OpenedSource>('open_recent', { path, fromFolder });
   const doc = wb.open(file); ensureEditor(doc); await syncBackend(); selectSource(doc.id, true); rememberFiles([file.path]);
 }
-async function openProject() {
+async function openProject(path?: string) {
   if (!await confirmProject()) return;
-  const project = await invoke<{ path: string; files: OpenedSource[] } | null>('open_project'); if (!project) return;
+  const project = await invoke<{ path: string; files: OpenedSource[] } | null>('open_project', { path: path ?? null }); if (!project) return;
   const ids = project.files.map(file => { const doc = wb.open(file); ensureEditor(doc); return doc.id; });
   wb.project = { path: project.path, fileIds: [...new Set(ids)], dirty: false };
   invalidateChanged(); await syncBackend(); if (ids.length) selectSource(ids[0], true); else render();
-  message(`${basename(project.path)} を開きました。${ids.length}ファイル / ★がメインです。`);
+  message(`${basename(project.path)} を開きました。${ids.length ? `${ids.length}ファイル / ★がメインです。` : 'ソースファイルを追加できます。'}`);
   rememberFiles(project.files.map(file => file.path));
+}
+async function openFolderEntry(entry: FolderEntry) {
+  if (explorerFileKind(entry.name) === 'cmk') await openProject(entry.path);
+  else if (explorerFileKind(entry.name) === 'cas') await openRecent(entry.path, true);
+}
+async function openFolder() {
+  const folder = await invoke<OpenedFolder | null>('open_folder'); if (!folder) return;
+  folders.setFolder(folder); $('sidebar').hidden = false; $('sidebar-divider').hidden = false;
+  $('activity-explorer').classList.add('selected'); $('activity-explorer').setAttribute('aria-expanded', 'true');
+  sidebarSections.expand('folder-content');
+  message(`${folder.name} を開きました。`);
+}
+async function newExplorerEntry(directory: boolean, parent = folders.tree.creationParent() ?? undefined) {
+  if (!parent) return;
+  sidebarSections.expand('folder-content');
+  const entry = await folders.editName(parent, directory, name => withExplorerIo(() => invoke<FolderEntry>('create_explorer_entry', { parent, name, directory }))); if (!entry) return;
+  message(`${entry.name} を作成しました。`);
+  if (!directory) await withIo(() => openFolderEntry(entry));
+}
+async function stopPathSimulations(path: string) {
+  const ids = new Set([...wb.documents.values()].filter(doc => pathWithin(doc.path,path)).map(doc => doc.id));
+  const sims = [...wb.simulators.values()].filter(sim => ids.has(sim.id) || sim.sourceIds.some(id => ids.has(id)));
+  for (const sim of sims) stop(sim); await Promise.all(sims.map(sim => sim.pending)); return sims;
+}
+async function renameExplorerEntry(entry: FolderEntry) {
+  const parent = folders.tree.parent(entry.path); if (!parent) return;
+  sidebarSections.expand('folder-content');
+  await folders.editName(parent, entry.directory, async name => withExplorerIo(async () => {
+    const target = await invoke<string>('explorer_mutation_path', {path:entry.path});
+    const docs = [...wb.documents.values()].filter(doc => pathWithin(doc.path,target));
+    docs.forEach(doc => autoSave.cancel(doc.id));
+    await stopPathSimulations(target);
+    try {
+      const change = await invoke<{from:string;to:string;entry:FolderEntry}>('rename_explorer_entry', { path:entry.path, name });
+      renameWorkbenchPaths(wb,change.from,change.to); folders.tree.rename(entry.path,change.entry.path);
+      settings = { ...settings, recent_files: settings.recent_files.map(path => rebasePath(path,change.from,change.to)) }; persistSettings(null);
+      invalidateChanged(); await syncBackend(); message(`${entry.name} → ${change.entry.name} に名前を変更しました。${wb.project?.dirty ? 'cmkの変更はプロジェクトメニューから保存できます。' : ''}`);
+      return change.entry;
+    } finally { docs.forEach(scheduleAutoSave); }
+  }), entry);
+}
+async function deleteExplorerEntry(entry: FolderEntry) {
+  const parent = folders.tree.parent(entry.path); if (!parent) return;
+  if (settings.confirm_delete) {
+    const answer = await confirmFileDeletion(entry.name,entry.directory); if (!answer.confirmed) return;
+    if (answer.dontAskAgain) { settings = {...settings, confirm_delete:false}; persistSettings(null); await settingsQueue; }
+  }
+  const target = await invoke<string>('explorer_mutation_path', {path:entry.path});
+  const docs = [...wb.documents.values()].filter(doc => pathWithin(doc.path,target));
+  docs.forEach(doc => autoSave.cancel(doc.id));
+  const sims = await stopPathSimulations(target);
+  let deleted = false;
+  try {
+    const path = await invoke<string>('delete_explorer_entry', {path:entry.path}); deleted = true;
+    // Keep dirty dependencies reachable when closing simulators prunes documents.
+    for (const doc of docs) if (doc.source !== doc.saved && !wb.editorTabs.includes(doc.id)) selectSource(doc.id);
+    for (const sim of sims) { try { await closeSimulator(sim.id); } catch (error) { message(String(error),true); } }
+    const ids = new Set(docs.map(doc => doc.id));
+    if (wb.project) {
+      const removed = wb.project.fileIds.some(id=>ids.has(id));
+      wb.project.fileIds = wb.project.fileIds.filter(id=>!ids.has(id));
+      if (removed) wb.project.dirty = true;
+      if (pathWithin(wb.project.path,path)) { if (wb.project.fileIds.length) { wb.project.path=null; wb.project.dirty=true; } else wb.project=null; }
+    }
+    let retained = 0;
+    for (const doc of docs) {
+      if (doc.source !== doc.saved) { doc.path=null; doc.saved=''; if (!wb.editorTabs.includes(doc.id)) selectSource(doc.id); retained++; }
+      else { wb.closeSource(doc.id); editors.get(doc.id)?.dispose(); editors.delete(doc.id); }
+    }
+    wb.prune().forEach(id=>{editors.get(id)?.dispose();editors.delete(id);});
+    settings = { ...settings, recent_files: settings.recent_files.filter(file=>!pathWithin(file,path)) }; persistSettings(null);
+    await syncBackend(); await folders.refreshParent(parent);
+    message(`${entry.name} をごみ箱に移動しました。${retained ? `未保存の編集${retained}件をタブに残しました。` : ''}`);
+  } finally { if (!deleted) docs.forEach(scheduleAutoSave); }
 }
 async function changeProject(action: string) {
   if (action === 'project-new') {
@@ -480,6 +576,11 @@ async function action(name: string) {
   switch (name) {
     case 'new': newDocument(); break;
     case 'open': await withIo(() => openSources()); break;
+    case 'folder-open': if (desktop) await withIo(openFolder); break;
+    case 'folder-close': await withIo(async () => { await invoke('close_folder'); folders.setFolder(null); message('フォルダーを閉じました。'); }); break;
+    case 'folder-refresh': await folders.refresh(); break;
+    case 'folder-new-file': await newExplorerEntry(false); break;
+    case 'folder-new-directory': await newExplorerEntry(true); break;
     case 'auto-save': await withIo(toggleAutoSave); break;
     case 'recent-clear': settings = { ...settings, recent_files: [] }; persistSettings(null); message('最近使用したファイルの履歴を消去しました。'); break;
     case 'save': { const doc = focusedGroup === 'simulator' ? wb.source(wb.activeSimulator) : wb.source(); if (doc) await withIo(() => saveDocument(doc)); } break;
@@ -552,6 +653,23 @@ function contextMenuEntries(target: Element): ContextMenuEntry[] {
     ];
   }
   if (document.querySelector('dialog[open]')) return [copy];
+  if (target.closest('#folder-section')) {
+    const path = target.closest<HTMLElement>('[data-explorer-path]')?.dataset.explorerPath;
+    const entry = path ? folders.tree.entry(path) : null;
+    const parent = folders.tree.creationParent(path);
+    return [
+      ...(entry ? [item(entry.directory ? '展開 / 折りたたみ' : '開く', () => entry.directory ? folders.toggle(entry.path) : withIo(() => openFolderEntry(entry)), blocked || !desktop || !entry.directory && !explorerFileKind(entry.name))] : []),
+      item('新しいファイル…', () => newExplorerEntry(false, parent ?? undefined), blocked || !desktop || !parent),
+      item('新しいフォルダー…', () => newExplorerEntry(true, parent ?? undefined), blocked || !desktop || !parent),
+      ...(entry && folders.tree.parent(entry.path) ? [
+        item('名前の変更', () => renameExplorerEntry(entry), blocked || !desktop, 'F2'),
+        item('削除', () => withIo(() => deleteExplorerEntry(entry)), blocked || !desktop, 'Delete'),
+      ] : []), null,
+      command('フォルダーを更新', 'folder-refresh', !desktop || !folders.tree.root),
+      ...(entry ? [item('エクスプローラーで表示する', () => invoke('reveal_in_explorer',{path:entry.path}), blocked || !desktop), item('パスをコピー', () => navigator.clipboard.writeText(entry.path))] : []), null,
+      command('フォルダーを開く…', 'folder-open', !desktop), command('フォルダーを閉じる', 'folder-close', !desktop || !folders.tree.root),
+    ];
+  }
   const tab = target.closest<HTMLElement>('[data-tab-key]');
   if (tab?.dataset.tabKey) {
     const key = tab.dataset.tabKey as TabKey; selectTab(key);
@@ -562,6 +680,7 @@ function contextMenuEntries(target: Element): ContextMenuEntry[] {
       command('左のグループへ移動', 'move-left'), command('右のグループへ移動', 'move-right'),
       command('グループを統合', 'join-groups', wb.layout.groups.length < 2), null,
       item('ファイルのパスをコピー', () => navigator.clipboard.writeText(doc.path!), !doc.path), null,
+      item('エクスプローラーで表示する', () => invoke('reveal_in_explorer',{path:doc.path}), blocked || !desktop || !doc.path),
       command('閉じる', 'close-tab', false, 'Ctrl+W'), command('すべて閉じる', 'close-all'),
     ];
   }
@@ -575,6 +694,7 @@ function contextMenuEntries(target: Element): ContextMenuEntry[] {
       item('名前を付けて保存…', forSource('save-as'), blocked || !desktop),
       item('アセンブルして右に開く', () => buildPreview(id), blocked || !desktop, 'F5'), null,
       item('ファイルのパスをコピー', () => navigator.clipboard.writeText(doc.path!), !doc.path),
+      item('エクスプローラーで表示する', () => invoke('reveal_in_explorer',{path:doc.path}), blocked || !desktop || !doc.path),
     ];
   }
   const simulator = target.closest<HTMLElement>('.simulation-buffer');
@@ -625,6 +745,7 @@ for (const button of document.querySelectorAll<HTMLButtonElement>('[data-action]
 
 document.addEventListener('keydown', event => {
   if (document.querySelector('dialog[open]') || event.isComposing) return;
+  if (event.target instanceof Element && event.target.closest('.folder-editor-row')) return;
   const reserve = () => { event.preventDefault(); event.stopPropagation(); };
   if (event.ctrlKey && event.key === 'Tab') {
     reserve(); const group = wb.layout.group(), index = group.tabs.indexOf(group.active!);
@@ -642,7 +763,8 @@ document.addEventListener('keydown', event => {
   const command = workbenchShortcut(event);
   if (command) { reserve(); action(command); return; }
   const editing = event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLInputElement || event.target instanceof HTMLSelectElement;
-  if (focusedGroup === 'simulator' && !editing && !ioBusy) {
+  const inSidebar = event.target instanceof Element && !!event.target.closest('#sidebar');
+  if (focusedGroup === 'simulator' && !inSidebar && !editing && !ioBusy) {
     if (event.key === 'Enter') { reserve(); action('step'); }
     if (event.key === 'Backspace') { reserve(); action('back'); }
   }

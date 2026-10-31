@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "theme": "dark",
+  "editor_font_family": "\"Cascadia Code\", Consolas, \"BIZ UDGothic\", monospace",
+  "editor_font_size": 14,
+  "editor_insert_spaces": true,
+  "editor_tab_size": 4,
+  "editor_detect_indentation": true,
+  "auto_switch_step_mode": true,
+  "auto_comment_overwrite": false,
+  "base": 32,
+  "fill": 65535,
+  "interval_ms": 100,
+  "step_mode": "instruction",
+  "binary_registers": false,
+  "signed_decimal": true,
+  "auto_save": false,
+  "recent_files": [
+    "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\explorer\\workspace\\sub.cas",
+    "C:\\Users\\tabos\\ドキュメント\\ChatGPT\\xcasl2\\analysis\\results\\explorer\\workspace\\main.cas"
+  ],
+  "comet_view": false,
+  "memory_start": 32,
+  "devices": {
+    "input_path": null,
+    "output_path": null
+  }
+}

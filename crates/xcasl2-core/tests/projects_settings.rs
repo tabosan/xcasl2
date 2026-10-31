@@ -257,6 +257,7 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     settings.auto_switch_step_mode = false;
     settings.auto_comment_overwrite = true;
     settings.auto_save = true;
+    settings.confirm_delete = false;
     settings.recent_files = vec![temp.0.join("日本語.cas").to_string_lossy().into()];
     settings.comet_view = true;
     settings.memory_start = 100;
@@ -274,6 +275,7 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     let old: Settings = serde_json::from_str(r#"{"version":1,"decimal":true}"#).unwrap();
     assert!(!old.binary_registers && old.signed_decimal);
     assert!(!old.auto_save && old.recent_files.is_empty());
+    assert!(old.confirm_delete);
     assert_eq!(old.theme, xcasl2_core::settings::ThemePreference::Dark);
     assert_eq!(
         old.editor_font_family,

@@ -13,3 +13,6 @@ tauri = { version = "2", features = [] }
 tauri-plugin-dialog = "2"
 serde.workspace = true
 xcasl2-core = { path = "../crates/xcasl2-core" }
+
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62.2", features = ["Win32_Storage_FileSystem", "Win32_System_Com", "Win32_UI_Shell", "Win32_UI_Shell_Common"] }

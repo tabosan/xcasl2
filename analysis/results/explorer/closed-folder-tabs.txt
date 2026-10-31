@@ -1,0 +1,91 @@
+Window: "created.cas — xCASL2", App: xcasl2-desktop.exe.
+	0 ウィンドウ created.cas — xCASL2 Secondary Actions: Raise
+		1 ウィンドウ
+			8 ウィンドウ xCASL2
+				9 ウィンドウ (disabled)
+				10 領域 xCASL2 - Web コンテンツ
+					11 領域
+						12 領域
+						13 領域
+							14 領域
+								23 ドキュメント xCASL2 Value: http://tauri.localhost/ ID: RootWebArea
+									292 グループ
+										293 メイン ID: workbench
+											294 ナビゲーション アクティビティ
+												295 ボタン エクスプローラー ID: activity-explorer
+												296 ボタン 設定 ID: activity-settings
+											297 補助 エクスプローラー ID: sidebar
+												298 テキスト エクスプローラー
+												299 ボタン 新しいCASLファイル ID: sidebar-new
+												300 見出し ⌄ 開いているファイル
+												404 ボタン Ⅱ child.cas
+												405 ボタン Ⅱ main.cas
+												406 ボタン Ⅱ sub.cas
+												407 ボタン Ⅱ created.cas
+												305 セクション 開いているフォルダー ID: folder-section
+													306 見出し フォルダー
+													307 ボタン (disabled) 新しいファイル ID: folder-new-file
+													308 ボタン (disabled) 新しいフォルダー ID: folder-new-directory
+													309 ボタン (disabled) フォルダーを更新 ID: folder-refresh
+													310 ボタン (disabled) フォルダーを閉じる ID: folder-close
+													311 ツリー フォルダーの内容 ID: folder-tree
+														408 テキスト フォルダーは開かれていません
+													321 ボタン フォルダーを開く… ID: folder-open
+												322 見出し ⌄ プロジェクト
+												409 テキスト empty.cmk
+												326 ボタン cmkを開く… ID: sidebar-project-open
+												327 テキスト ソース右上の
+												328 テキスト から
+												329 テキスト 
+												330 テキスト シミュレーターを右に開けます。
+											331 縮小 エクスプローラーの幅 Value: 201 ID: sidebar-divider
+											332 グループ エディターグループ ID: editor-groups
+												333 セクション エディターグループ 1
+													334 タブ ファイルとシミュレーターのタブ
+														335 タブ項目 (selectable) child.cas
+														336 ボタン child.casを閉じる
+														337 タブ項目 (selectable) main.cas
+														338 ボタン main.casを閉じる
+														339 タブ項目 (selectable) sub.cas
+														340 ボタン sub.casを閉じる
+														341 タブ項目 (selectable) created.cas
+														342 ボタン created.casを閉じる
+													343 ツール バー エディターの操作
+														344 ボタン タブを右に分割して移動
+														345 ボタン 自動コメント
+														346 ボタン アセンブルしてシミュレーターを横に表示
+													410 テキスト created.cas
+													348 コード
+														349 エディター (settable, string) created.cas — CASL II ソースコード
+										350 フッター
+											351 ボタン エクスプローラー切替 ID: status-sidebar
+											352 状態 ID: message
+												411 テキスト フォルダーを閉じました。
+											412 テキスト 行 1、列 1
+											355 ボタン インデント設定 ID: status-indentation
+											356 テキスト CP932
+											357 テキスト CRLF
+											358 テキスト CASL II
+											359 テキスト Rust + Tauri
+										360 警告
+										361 警告
+										362 グループ
+										363 グループ
+								15 領域
+		2 タイトル バー (settable, string) Value: created.cas — xCASL2
+			3 メニュー バー システム ID: MenuBar
+				4 メニュー項目 システム
+			5 ボタン 最小化
+			6 ボタン 最大化
+			7 ボタン 閉じる
+		16 メニュー バー アプリケーション ID: MenuBar
+			17 メニュー項目 ファイル(F)
+			18 メニュー項目 編集(E)
+			19 メニュー項目 表示(V)
+			20 メニュー項目 実行(R)
+			21 メニュー項目 プロジェクト(P)
+			22 メニュー項目 ヘルプ(H)
+
+Document text: ```
+created.cas — CASL II ソースコード
+```

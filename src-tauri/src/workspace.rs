@@ -41,6 +41,33 @@ fn diagnostic(message: String) -> Vec<Diagnostic> {
 }
 
 impl Workspace {
+    pub fn validate_explorer_mutation(&self, target: &Path) -> Result<(), String> {
+        let protected = std::iter::once(&self.settings_path)
+            .chain(
+                [
+                    self.devices.input_path.as_ref(),
+                    self.devices.output_path.as_ref(),
+                ]
+                .into_iter()
+                .flatten(),
+            )
+            .chain(self.simulations.values().flat_map(|sim| {
+                [
+                    sim.session.device_config().input_path.as_ref(),
+                    sim.session.device_config().output_path.as_ref(),
+                ]
+                .into_iter()
+                .flatten()
+            }));
+        if protected
+            .into_iter()
+            .filter(|path| !path.as_os_str().is_empty())
+            .any(|path| crate::explorer::path_suffix(path, target).is_some())
+        {
+            return Err("設定ファイル、または入出力装置に指定したファイルを含む項目は操作できません。先に装置の設定を変更してください。".into());
+        }
+        Ok(())
+    }
     pub fn close_simulation(&mut self, id: &str) -> Result<(), String> {
         if let Some(simulation) = self.simulations.get_mut(id) {
             simulation.session.shutdown()?;
@@ -304,6 +331,31 @@ mod tests {
             ));
         std::fs::create_dir_all(&root).unwrap();
         root
+    }
+    #[test]
+    fn explorer_mutations_protect_settings_and_device_files_but_allow_sources() {
+        let mut workspace = Workspace::default();
+        workspace.settings_path = PathBuf::from(r"C:\config\settings.json");
+        workspace.devices.input_path = Some(PathBuf::from(r"C:\workspace\device\input.txt"));
+        workspace.devices.output_path = Some(PathBuf::from(r"C:\workspace\output.txt"));
+        workspace
+            .source_paths
+            .push(PathBuf::from(r"C:\workspace\main.cas"));
+        assert!(workspace
+            .validate_explorer_mutation(Path::new(r"C:\workspace\main.cas"))
+            .is_ok());
+        assert!(workspace
+            .validate_explorer_mutation(Path::new(r"C:\workspace\device"))
+            .is_err());
+        assert!(workspace
+            .validate_explorer_mutation(Path::new(r"C:\workspace\output.txt"))
+            .is_err());
+        assert!(workspace
+            .validate_explorer_mutation(Path::new(r"C:\config"))
+            .is_err());
+        assert!(workspace
+            .validate_explorer_mutation(Path::new(r"C:\workspace\device-backup"))
+            .is_ok());
     }
     #[test]
     fn cpu_rebuild_failure_reset_and_close_are_isolated() {
