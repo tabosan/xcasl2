@@ -327,7 +327,7 @@ async fn open_project(
     let Some(file) = app
         .dialog()
         .file()
-        .add_filter("WCASL2 プロジェクト", &["cmk"])
+        .add_filter("CASL2 プロジェクト", &["cmk"])
         .blocking_pick_file()
     else {
         return Ok(None);
@@ -372,7 +372,7 @@ async fn save_project(
         let mut picker = app
             .dialog()
             .file()
-            .add_filter("WCASL2 プロジェクト", &["cmk"])
+            .add_filter("CASL2 プロジェクト", &["cmk"])
             .set_file_name(
                 previous
                     .and_then(Path::file_name)
