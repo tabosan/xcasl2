@@ -1,4 +1,4 @@
-use wcasl2_core::{assemble_sources, Session};
+use xcasl2_core::{assemble_sources, Session};
 
 #[test]
 fn data_label_spans_include_arrays_literals_and_distinct_scopes() {

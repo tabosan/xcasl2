@@ -1,6 +1,6 @@
 # COMETパイプラインの実装と照合
 
-2026-10-27。対象は元仕様書と同じSHA-256の `Wcasl2.exe`。Rust実装は `crates/wcasl2-core/src/pipeline.rs`。
+2026-10-27。対象は元仕様書と同じSHA-256の `Wcasl2.exe`。Rust実装は `crates/xcasl2-core/src/pipeline.rs`。
 
 ## 追加採取
 

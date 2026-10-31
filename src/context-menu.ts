@@ -33,7 +33,11 @@ export class AppContextMenu {
     document.addEventListener('scroll', event => { if (!this.root.contains(event.target as Node)) this.close(false); }, true);
   }
   get isOpen() { return !this.root.hidden; }
-  private show(entries: ContextMenuEntry[], x: number, y: number) {
+  openAbove(entries: ContextMenuEntry[], origin: HTMLElement) {
+    this.close(false); this.origin = origin;
+    const box = origin.getBoundingClientRect(); this.show(entries, box.left, box.top, true);
+  }
+  private show(entries: ContextMenuEntry[], x: number, y: number, above = false) {
     this.root.replaceChildren(); this.buttons = [];
     for (const item of entries) {
       if (!item) { const separator = document.createElement('div'); separator.className = 'context-menu-separator'; separator.setAttribute('role', 'separator'); this.root.append(separator); continue; }
@@ -47,6 +51,7 @@ export class AppContextMenu {
       this.root.append(button); if (!button.disabled) this.buttons.push(button);
     }
     this.root.hidden = false;
+    if (above) y -= this.root.offsetHeight;
     const position = menuPosition(x, y, this.root.offsetWidth, this.root.offsetHeight, window.innerWidth, window.innerHeight);
     this.root.style.left = `${position.x}px`; this.root.style.top = `${position.y}px`;
     if (this.buttons.length) this.buttons[0].focus({ preventScroll: true });

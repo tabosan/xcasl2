@@ -3856,16 +3856,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "wcasl2-core"
-version = "0.1.0"
-dependencies = [
- "encoding_rs",
- "same-file",
- "serde",
- "serde_json",
-]
-
-[[package]]
 name = "web-sys"
 version = "0.3.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4395,6 +4385,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "xcasl2-core"
+version = "0.1.0"
+dependencies = [
+ "encoding_rs",
+ "same-file",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "xcasl2-desktop"
 version = "0.1.0"
 dependencies = [
@@ -4402,7 +4402,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-dialog",
- "wcasl2-core",
+ "xcasl2-core",
 ]
 
 [[package]]

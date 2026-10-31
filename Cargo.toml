@@ -1,6 +1,6 @@
 [workspace]
-members = ["crates/wcasl2-core", "src-tauri"]
-default-members = ["crates/wcasl2-core"]
+members = ["crates/xcasl2-core", "src-tauri"]
+default-members = ["crates/xcasl2-core"]
 resolver = "2"
 
 [workspace.package]

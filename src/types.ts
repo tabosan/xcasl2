@@ -7,6 +7,7 @@ export interface Settings {
   auto_save: boolean; recent_files: string[];
   theme: ThemePreference;
   editor_font_family: string; editor_font_size: number;
+  editor_insert_spaces: boolean; editor_tab_size: number; editor_detect_indentation: boolean;
   auto_switch_step_mode: boolean;
   auto_comment_overwrite: boolean;
 }

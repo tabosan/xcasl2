@@ -1,5 +1,5 @@
 use serde_json::Value;
-use wcasl2_core::{assemble, Machine, Session, Status, StepMode};
+use xcasl2_core::{assemble, Machine, Session, Status, StepMode};
 
 fn fixture(name: &str) -> Vec<Value> {
     let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -53,7 +53,7 @@ fn check(machine: &Machine, expected: &Value, context: &str) {
                 .collect();
             assert_eq!(
                 output.get(index).map_or("", String::as_str),
-                wcasl2_core::decode_cp932(&bytes),
+                xcasl2_core::decode_cp932(&bytes),
                 "{context}: display row {index}"
             );
         }

@@ -9,6 +9,7 @@ import HtmlWorker from './workers/html.worker?worker';
 import TsWorker from './workers/ts.worker?worker';
 import { directives, instructions, macros, tokenizeCaslLine } from './highlight';
 import { analyseCasl, definitionsFor, occurrenceAt, referencesFor, tokenAt, type CaslOccurrence } from './casl-language';
+import { caslAbbreviation } from './abbreviations';
 
 (self as typeof self & { MonacoEnvironment: monaco.Environment }).MonacoEnvironment = {
   getWorker(_id, label) {
@@ -70,13 +71,18 @@ export function initializeMonaco() {
   };
   const at = (model: monaco.editor.ITextModel, position: monaco.Position) => occurrenceAt(analyse(model), position.lineNumber, position.column);
   monaco.languages.registerCompletionItemProvider(language, {
-    triggerCharacters: [',', '='],
+    triggerCharacters: [',', '=', '!', '.'],
     provideCompletionItems(model, position) {
       const line = model.getLineContent(position.lineNumber), previous = tokenAt(line, position.column - 1);
       if (previous?.kind === 'comment' || previous?.kind === 'string') return { suggestions: [] };
       const word = model.getWordUntilPosition(position), range = new monaco.Range(position.lineNumber, word.startColumn, position.lineNumber, word.endColumn);
       const prefix = line.slice(0, position.column - 1), operationField = /^(?:[ \t]+|[^ \t]+[ \t]+)[^ \t]*$/.test(prefix);
       const suggestions: monaco.languages.CompletionItem[] = [];
+      const expansion = caslAbbreviation(line, position.column, model.getOptions());
+      if (expansion) suggestions.push({ label: expansion.prefix, detail: expansion.description,
+        kind: monaco.languages.CompletionItemKind.Snippet, insertText: expansion.snippet,
+        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet | monaco.languages.CompletionItemInsertTextRule.KeepWhitespace,
+        range: new monaco.Range(position.lineNumber, position.column - expansion.prefix.length, position.lineNumber, position.column), sortText: '0' });
       if (operationField) {
         for (const [set, detail] of [[instructions, 'CASL II 命令'], [directives, 'アセンブラ指令'], [macros, 'マクロ']] as const)
           for (const label of set) suggestions.push({ label, insertText: label, kind: monaco.languages.CompletionItemKind.Keyword, detail, range });

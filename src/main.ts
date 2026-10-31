@@ -17,6 +17,7 @@ import { initializeSidebarResize } from './sidebar';
 import { editDevices } from './devices';
 import { editPreferences } from './preferences';
 import { examples } from './examples';
+import { formatSampleIndentation } from './indentation';
 import { AutoSave, recentFiles } from './file-features';
 import { workbenchShortcut } from './shortcuts';
 import { AppContextMenu, type ContextMenuEntry, type ContextMenuItem } from './context-menu';
@@ -29,7 +30,7 @@ const desktop = isTauri();
 const wb = new Workbench();
 const editors = new Map<string, SourceEditor>();
 const simulationViews = new Map<string, { root: HTMLElement; render: ReturnType<typeof createSimulatorRenderer> }>();
-let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, auto_switch_step_mode: true, auto_comment_overwrite: false, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
+let settings: Settings = { version: 1, theme: 'dark', editor_font_family: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', editor_font_size: 14, editor_insert_spaces: true, editor_tab_size: 4, editor_detect_indentation: true, auto_switch_step_mode: true, auto_comment_overwrite: false, base: 32, fill: 65535, interval_ms: 100, step_mode: 'instruction', binary_registers: false, signed_decimal: true, auto_save: false, recent_files: [], comet_view: false, memory_start: 32, devices: { input_path: null, output_path: null } };
 const themeController = createThemeController(document.documentElement, window.matchMedia('(prefers-color-scheme: dark)'));
 async function applyTheme() {
   themeController.setPreference(settings.theme);
@@ -88,7 +89,7 @@ function syncBackend() {
 function ensureEditor(doc: SourceDocument) {
   let editor = editors.get(doc.id);
   if (!editor) {
-    editor = new SourceEditor(doc, () => { invalidateChanged(); scheduleAutoSave(doc); render(); }, updatePosition);
+    editor = new SourceEditor(doc, settings, () => { invalidateChanged(); scheduleAutoSave(doc); render(); }, updatePosition);
     editors.set(doc.id, editor);
   }
   editor.applyPreferences(settings); return editor;
@@ -238,6 +239,13 @@ function updateTitle() {
 function updatePosition() {
   const doc = wb.source(), position = doc ? editors.get(doc.id)?.position() : null;
   $('cursor-position').textContent = position ? `行 ${position.lineNumber}、列 ${position.column}` : '';
+  const status = $<HTMLButtonElement>('status-indentation'), editor = doc ? editors.get(doc.id) : null;
+  status.hidden = !editor || focusedGroup !== 'source';
+  if (editor) {
+    const options = editor.indentation();
+    status.textContent = options.insertSpaces ? `スペース: ${options.indentSize}${options.indentSize !== options.tabSize ? ` (タブ: ${options.tabSize})` : ''}` : `タブ: ${options.tabSize}`;
+    status.title = `現在のファイルのインデント設定（インデント幅: ${options.indentSize}、タブ表示幅: ${options.tabSize}）`;
+  }
 }
 function revealRow(sim: SimulatorTab, row: Row) {
   const id = row.file && wb.documents.has(row.file) ? row.file : sim.id;
@@ -449,7 +457,7 @@ async function attemptClose() {
     await settingsQueue; await invoke('close_devices'); await getCurrentWindow().destroy();
   } catch (error) { showError(error); } finally { closing = false; }
 }
-function newDocument(source = 'MAIN     START\n         RET\n         END\n', name?: string) {
+function newDocument(source = '', name?: string) {
   const doc = wb.create(source, name); ensureEditor(doc); selectSource(doc.id, true); return doc;
 }
 function toggleSidebar() { const sidebar = $('sidebar'); sidebar.hidden = !sidebar.hidden; $('sidebar-divider').hidden = sidebar.hidden; $('activity-explorer').classList.toggle('selected', !sidebar.hidden); $('activity-explorer').setAttribute('aria-expanded', String(!sidebar.hidden)); }
@@ -505,7 +513,7 @@ async function action(name: string) {
     case 'project-save-as': await withIo(() => saveProject(true)); break;
     case 'project-build': if (wb.project?.fileIds[0]) { selectSource(wb.project.fileIds[0]); await buildPreview(wb.project.fileIds[0]); } break;
     case 'about': $<HTMLDialogElement>('about-dialog').showModal(); break;
-    default: if (name.startsWith('sample-') && examples[name.slice(7)]) newDocument(examples[name.slice(7)], `${name.slice(7)}.cas`);
+    default: if (name.startsWith('sample-') && examples[name.slice(7)]) newDocument(formatSampleIndentation(examples[name.slice(7)], settings), `${name.slice(7)}.cas`);
   }
 }
 
@@ -593,6 +601,20 @@ function contextMenuEntries(target: Element): ContextMenuEntry[] {
   ];
 }
 const contextMenu = new AppContextMenu(contextMenuEntries, error => message(String(error), true));
+$('status-indentation').onclick = () => {
+  const key = wb.layout.current(); if (!key || parseTab(key).kind !== 'source' || ioBusy || closing) return;
+  const editor = editors.get(parseTab(key).id); if (!editor) return;
+  const run = (id: string) => async () => { await editor.indentationAction(id); updatePosition(); };
+  contextMenu.openAbove([
+    { label: 'スペースによるインデント', run: run('editor.action.indentUsingSpaces') },
+    { label: 'タブによるインデント', run: run('editor.action.indentUsingTabs') },
+    { label: 'タブの表示サイズの変更', run: run('editor.action.changeTabDisplaySize') },
+    { label: '内容からインデントを検出', run: () => { editor.detectIndentation(settings); editor.focus(); } }, null,
+    { label: 'インデントをスペースに変換', run: run('editor.action.indentationToSpaces') },
+    { label: 'インデントをタブに変換', run: run('editor.action.indentationToTabs') },
+    { label: '末尾の空白をトリミング', run: run('editor.action.trimTrailingWhitespace') },
+  ], $('status-indentation'));
+};
 
 $('activity-explorer').onclick = toggleSidebar; $('status-sidebar').onclick = toggleSidebar;
 $('activity-settings').onclick = () => action('settings'); $('sidebar-new').onclick = () => action('new'); $('sidebar-project-open').onclick = () => action('project-open');

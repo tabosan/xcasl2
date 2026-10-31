@@ -2,7 +2,7 @@ use std::{
     fs,
     path::{Path, PathBuf},
 };
-use wcasl2_core::{
+use xcasl2_core::{
     assemble_sources,
     project::{Project, ProjectFile},
     settings::{atomic_write, Settings},
@@ -248,9 +248,12 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     settings.step_mode = StepMode::Micro;
     settings.binary_registers = true;
     settings.signed_decimal = false;
-    settings.theme = wcasl2_core::settings::ThemePreference::Light;
+    settings.theme = xcasl2_core::settings::ThemePreference::Light;
     settings.editor_font_family = "Consolas, 'Courier New', monospace".into();
     settings.editor_font_size = 20;
+    settings.editor_insert_spaces = false;
+    settings.editor_tab_size = 8;
+    settings.editor_detect_indentation = false;
     settings.auto_switch_step_mode = false;
     settings.auto_comment_overwrite = true;
     settings.auto_save = true;
@@ -271,18 +274,20 @@ fn settings_defaults_and_full_roundtrip_replace_existing_file() {
     let old: Settings = serde_json::from_str(r#"{"version":1,"decimal":true}"#).unwrap();
     assert!(!old.binary_registers && old.signed_decimal);
     assert!(!old.auto_save && old.recent_files.is_empty());
-    assert_eq!(old.theme, wcasl2_core::settings::ThemePreference::Dark);
+    assert_eq!(old.theme, xcasl2_core::settings::ThemePreference::Dark);
     assert_eq!(
         old.editor_font_family,
         Settings::default().editor_font_family
     );
     assert_eq!(old.editor_font_size, 14);
+    assert!(old.editor_insert_spaces && old.editor_detect_indentation);
+    assert_eq!(old.editor_tab_size, 4);
     assert!(old.auto_switch_step_mode);
     assert!(!old.auto_comment_overwrite);
     for theme in [
-        wcasl2_core::settings::ThemePreference::Light,
-        wcasl2_core::settings::ThemePreference::Dark,
-        wcasl2_core::settings::ThemePreference::System,
+        xcasl2_core::settings::ThemePreference::Light,
+        xcasl2_core::settings::ThemePreference::Dark,
+        xcasl2_core::settings::ThemePreference::System,
     ] {
         settings.theme = theme;
         settings.save(&path).unwrap();
@@ -320,6 +325,8 @@ fn settings_invalid_input_preserves_original_and_backs_up_on_change() {
         r#"{"memory_start":3000}"#,
         r#"{"editor_font_size":7}"#,
         r#"{"editor_font_size":73}"#,
+        r#"{"editor_tab_size":0}"#,
+        r#"{"editor_tab_size":17}"#,
         r#"{"editor_font_family":"   "}"#,
         r#"{"editor_font_family":"Consolas\nmonospace"}"#,
     ] {

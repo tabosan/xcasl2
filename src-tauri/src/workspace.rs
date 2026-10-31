@@ -3,7 +3,7 @@ use std::{
     collections::BTreeMap,
     path::{Path, PathBuf},
 };
-use wcasl2_core::{
+use xcasl2_core::{
     assemble_sources, devices::same_path, settings::Settings, DeviceConfig, Diagnostic, Session,
     Snapshot, StepMode,
 };
@@ -376,7 +376,7 @@ mod tests {
         workspace.control("a", "back", None, None, None).unwrap();
         assert_eq!(
             workspace.simulations["a"].session.machine.status,
-            wcasl2_core::Status::WaitingInput
+            xcasl2_core::Status::WaitingInput
         );
         assert_eq!(workspace.simulations["b"].session.steps, 2);
     }

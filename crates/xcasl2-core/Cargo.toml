@@ -1,5 +1,5 @@
 [package]
-name = "wcasl2-core"
+name = "xcasl2-core"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

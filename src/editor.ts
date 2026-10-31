@@ -1,6 +1,12 @@
 import { initializeMonaco, monaco } from './monaco';
 import type { CommentEdit, Diagnostic, Settings } from './types';
 import type { SourceDocument } from './workbench';
+import type { IndentationDefaults } from './indentation';
+import { caslAbbreviation } from './abbreviations';
+
+interface SnippetContribution extends monaco.editor.IEditorContribution {
+  insert(template: string, options?: { overwriteBefore?: number; adjustWhitespace?: boolean }): void;
+}
 
 export class SourceEditor {
   readonly root = document.createElement('div');
@@ -12,18 +18,17 @@ export class SourceEditor {
   private markers = '';
   private fontKey = '';
   private disposables: monaco.IDisposable[] = [];
-  constructor(readonly document: SourceDocument, private onChange: () => void, private onPosition: () => void) {
+  constructor(readonly document: SourceDocument, preferences: IndentationDefaults, private onChange: () => void, private onPosition: () => void) {
     initializeMonaco();
     this.root.className = 'editor-wrap editor-buffer monaco-source';
     // Floating shadow-root menus inherit their theme variables from this host.
     const host = window.document.createElement('div'); host.className = 'monaco-host monaco-component'; this.root.append(host);
     this.model = monaco.editor.createModel(document.source, 'casl2', monaco.Uri.from({ scheme: 'inmemory', authority: 'xcasl2', path: `/${document.id}/${document.name}` }));
     this.model.setEOL(monaco.editor.EndOfLineSequence.LF);
-    this.model.updateOptions({ tabSize: 4, insertSpaces: true });
     this.editor = monaco.editor.create(host, {
       model: this.model, theme: 'xcasl2', automaticLayout: true,
       fontFamily: '"Cascadia Code", Consolas, "BIZ UDGothic", monospace', fontSize: 14, lineHeight: 23,
-      tabSize: 4, insertSpaces: true, detectIndentation: false,
+      tabSize: preferences.editor_tab_size, insertSpaces: preferences.editor_insert_spaces, detectIndentation: false,
       minimap: { enabled: true }, folding: true, showFoldingControls: 'mouseover',
       lineNumbers: 'on', glyphMargin: true, scrollBeyondLastLine: true,
       wordWrap: 'off', padding: { top: 16, bottom: 16 }, contextmenu: true,
@@ -35,7 +40,30 @@ export class SourceEditor {
       unicodeHighlight: { ambiguousCharacters: false, nonBasicASCII: false },
       quickSuggestions: { other: true, comments: false, strings: false },
     });
+    this.model.updateOptions({ tabSize: preferences.editor_tab_size, indentSize: preferences.editor_tab_size, insertSpaces: preferences.editor_insert_spaces });
+    if (preferences.editor_detect_indentation && document.path) this.detectIndentation(preferences);
+    const canExpand = this.editor.createContextKey<boolean>('caslCanExpandAbbreviation', false);
+    const abbreviation = () => {
+      const selection = this.editor.getSelection(), position = this.editor.getPosition();
+      if (!position || !selection?.isEmpty() || this.editor.getSelections()?.length !== 1 || this.composing) return null;
+      return caslAbbreviation(this.model.getLineContent(position.lineNumber), position.column, this.model.getOptions());
+    };
+    const updateAbbreviation = () => canExpand.set(!!abbreviation());
     this.disposables.push(
+      this.editor.addAction({ id: 'xcasl2.expandAbbreviation', label: 'CASL IIの略記を展開',
+        keybindings: [monaco.KeyCode.Tab], precondition: 'editorTextFocus && !editorReadonly && !inSnippetMode && caslCanExpandAbbreviation',
+        run: () => {
+          const expansion = abbreviation();
+          if (expansion) {
+            this.editor.trigger('casl-abbreviation', 'hideSuggestWidget', {});
+            // Standalone Monaco has no insertSnippet action; its bundled controller
+            // supplies placeholder navigation, mirrored fields and one undo step.
+            this.editor.getContribution<SnippetContribution>('snippetController2')?.insert(expansion.snippet, { overwriteBefore: expansion.prefix.length, adjustWhitespace: false });
+          }
+        } }),
+      this.model.onDidChangeContent(updateAbbreviation),
+      this.model.onDidChangeOptions(onPosition),
+      this.editor.onDidChangeCursorSelection(updateAbbreviation),
       this.model.onDidChangeContent(() => {
         if (this.replacing) return;
         document.source = this.model.getValue(); this.onChange(); this.onPosition();
@@ -56,6 +84,9 @@ export class SourceEditor {
       lineHeight: Math.round(settings.editor_font_size * 23 / 14) });
   }
   hasTextFocus() { return this.editor.hasTextFocus(); }
+  indentation() { return this.model.getOptions(); }
+  detectIndentation(defaults: IndentationDefaults) { this.model.detectIndentation(defaults.editor_insert_spaces, defaults.editor_tab_size); }
+  async indentationAction(action: string) { this.focus(); await this.editor.getAction(action)?.run(); }
   position() { return this.editor.getPosition(); }
   editCommand(command: 'undo' | 'redo') { this.focus(); this.editor.trigger('menu', command, null); }
   find(replace = false) {

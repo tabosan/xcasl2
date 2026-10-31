@@ -1,6 +1,6 @@
 //! Read-only execution trace for investigating a CP932 CASL source.
 use std::collections::VecDeque;
-use wcasl2_core::{assemble, decode_source, Session, Status};
+use xcasl2_core::{assemble, decode_source, Session, Status};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = std::env::args()

@@ -2,7 +2,7 @@ use tauri::{
     menu::{CheckMenuItem, Menu, MenuItem, PredefinedMenuItem, Submenu},
     AppHandle, Manager, Wry,
 };
-use wcasl2_core::settings::Settings;
+use xcasl2_core::settings::Settings;
 
 struct FileMenu {
     recent: Submenu<Wry>,

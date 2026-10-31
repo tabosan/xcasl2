@@ -12,7 +12,7 @@ npm run tauri dev
 Rust (MSVC)、C++ Build Tools / Windows SDK、Node.js、WebView2が必要。
 
 ```powershell
-cargo test -p wcasl2-core --locked
+cargo test -p xcasl2-core --locked
 npm run tauri -- build --debug --no-bundle
 ```
 
@@ -31,6 +31,7 @@ npm run tauri -- build --debug --no-bundle
 - [エディターのシンタックスハイライト](docs/EDITOR_HIGHLIGHT.md)
 - [COMETブロック図の配置エディター](docs/COMET_LAYOUT_EDITOR.md)
 - [Monaco Editorの編集機能とCASL連携](docs/MONACO_EDITOR.md)
+- [インデント設定・ステータスバーの操作・略記展開](docs/EDITOR_INDENTATION.md)
 - [K61_advance.casの異常終了の原因と修正](docs/K61_ADVANCE_COMPATIBILITY_FIX.md)
 - [詳細互換仕様書](docs/WCASL2_COMPATIBILITY_SPEC.md)
 - [COMETパイプラインの実装・追加照合](docs/WCASL2_PIPELINE_IMPLEMENTATION.md)

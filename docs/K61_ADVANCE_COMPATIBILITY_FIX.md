@@ -69,7 +69,7 @@ SHA-256: `d89b2ff90dbeadee6a0ae6885778f0e1c3cff1d3ef5a10e8b23f0e28c978e962`。
 Rustの読取り専用診断コマンド:
 
 ```powershell
-cargo run -p wcasl2-core --example diagnose -- 'C:/Users/tabos/デスクトップ/Dev Softwares/wcasl2/K61_advance.cas'
+cargo run -p xcasl2-core --example diagnose -- 'C:/Users/tabos/デスクトップ/Dev Softwares/wcasl2/K61_advance.cas'
 ```
 
 元EXEの再観測は`analysis/probe_start_exports.py`と`analysis/probe_nop_padding.py`を使う。省略可能な第1引数にCP932のCASファイルを指定する。元ファイルへの書込みは行わない。

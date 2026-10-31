@@ -14,7 +14,7 @@ npm run tauri dev
 初回のRust依存取得・コンパイルには時間がかかる。開発中はViteをTauri CLIが起動する。`npm run dev`だけでは画面のプレビューになり、Rustの実行機能は利用できない。
 
 ```powershell
-cargo test -p wcasl2-core --locked
+cargo test -p xcasl2-core --locked
 npm run build
 npm run tauri -- build --debug --no-bundle
 ```
@@ -25,23 +25,23 @@ npm run tauri -- build --debug --no-bundle
 
 | 場所 | 役割 |
 |---|---|
-| `crates/wcasl2-core/src/assembler.rs` | 2パスの名前解決、複数プログラムのリンク、リテラル、マクロ、ソース対応表 |
-| `crates/wcasl2-core/src/machine.rs` | 38機械語形式、3000語メモリ、CPU、入力待ち、ディスプレイ |
-| `crates/wcasl2-core/src/pipeline.rs` | 取出・解読・アドレス生成・実行の各転送、命令／フェーズ／最小STEP |
-| `crates/wcasl2-core/src/devices.rs` | ファイル装置、CP932バイトのレコード処理、Open/Closeとバッファ |
-| `crates/wcasl2-core/src/session.rs` | ロード、命令実行、最大1000命令のバッチ、再実行による戻り |
+| `crates/xcasl2-core/src/assembler.rs` | 2パスの名前解決、複数プログラムのリンク、リテラル、マクロ、ソース対応表 |
+| `crates/xcasl2-core/src/machine.rs` | 38機械語形式、3000語メモリ、CPU、入力待ち、ディスプレイ |
+| `crates/xcasl2-core/src/pipeline.rs` | 取出・解読・アドレス生成・実行の各転送、命令／フェーズ／最小STEP |
+| `crates/xcasl2-core/src/devices.rs` | ファイル装置、CP932バイトのレコード処理、Open/Closeとバッファ |
+| `crates/xcasl2-core/src/session.rs` | ロード、命令実行、最大1000命令のバッチ、再実行による戻り |
 | `src-tauri/src/main.rs` | Tauriコマンド、セッション管理、ファイルダイアログ・読み書き |
 | `src-tauri/src/workspace.rs` / `app_menu.rs` | ファイル別セッション、装置の競合防止、ネイティブメニュー |
 | `src/workbench.ts` / `editor.ts` / `simulator.ts` / `layout.ts` | 複数ソース・シミュレーターの左右タブグループ、編集履歴と実行状態の保持 |
 | `src/main.ts` / `src/style.css` | ソース編集、アセンブラ出力、レジスタ、実行行、メモリ、入力・出力 |
 | `src/comet.ts` / `src/types.ts` | COMETのデータパスとフェーズ表示、IPCの状態型 |
-| `crates/wcasl2-core/src/project.rs` / `settings.rs` | ANSI cmkアーカイブ、設定の検査・保存復元、置換保存 |
+| `crates/xcasl2-core/src/project.rs` / `settings.rs` | ANSI cmkアーカイブ、設定の検査・保存復元、置換保存 |
 | `src/highlight.ts` | CASL IIの着色、textareaとの縦横スクロール同期 |
 | `src/preferences.ts` | 配置・初期化・時間間隔の設定 |
 | `src/devices.ts` | キーボード／ファイル入力、画面／ファイル出力の選択・適用 |
-| `crates/wcasl2-core/tests/oracle.rs` | 原EXEから採取した固定データによる比較と、セッション試験 |
-| `crates/wcasl2-core/tests/pipeline.rs` | 各粒度の途中レジスタ・メモリ転送、入力待ち・戻りの試験 |
-| `crates/wcasl2-core/tests/file_devices.rs` | 原版ファイルI/O期待値、実ディスク・共有拒否・Close・再実行 |
+| `crates/xcasl2-core/tests/oracle.rs` | 原EXEから採取した固定データによる比較と、セッション試験 |
+| `crates/xcasl2-core/tests/pipeline.rs` | 各粒度の途中レジスタ・メモリ転送、入力待ち・戻りの試験 |
+| `crates/xcasl2-core/tests/file_devices.rs` | 原版ファイルI/O期待値、実ディスク・共有拒否・Close・再実行 |
 
 共通コアにTauri依存はない。将来eguiやCLIを追加する場合も同じアセンブラ・CPUを呼び出せる。依存バージョンは `Cargo.lock` / `package-lock.json` で固定。
 
@@ -73,7 +73,7 @@ npm run tauri -- build --debug --no-bundle
 
 ## 現時点の照合
 
-`cargo test -p wcasl2-core` の41テストで次を検証する。
+`cargo test -p xcasl2-core` の41テストで次を検証する。
 
 | 固定データ / 試験 | 確認対象 |
 |---|---|

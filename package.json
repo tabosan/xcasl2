@@ -9,8 +9,8 @@
     "build:layout-editor": "node scripts/build-layout-editor.mjs",
     "dev:layout-editor": "vite --host 127.0.0.1 --port 1433 --strictPort --open /comet-layout-editor.html",
     "tauri": "tauri",
-    "test:core": "cargo test -p wcasl2-core",
-    "test:editor": "node --experimental-strip-types --test tests/highlight.test.mjs tests/workbench.test.mjs tests/inspection.test.mjs tests/tab-layout.test.mjs tests/edit-history.test.mjs tests/file-features.test.mjs tests/theme.test.mjs tests/comet.test.mjs tests/comet-layout.test.mjs tests/casl-language.test.mjs tests/shortcuts.test.mjs"
+    "test:core": "cargo test -p xcasl2-core",
+    "test:editor": "node --experimental-strip-types --test tests/highlight.test.mjs tests/workbench.test.mjs tests/inspection.test.mjs tests/tab-layout.test.mjs tests/edit-history.test.mjs tests/file-features.test.mjs tests/theme.test.mjs tests/comet.test.mjs tests/comet-layout.test.mjs tests/casl-language.test.mjs tests/shortcuts.test.mjs tests/indentation.test.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

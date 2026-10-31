@@ -23,6 +23,9 @@ pub struct Settings {
     pub theme: ThemePreference,
     pub editor_font_family: String,
     pub editor_font_size: u16,
+    pub editor_insert_spaces: bool,
+    pub editor_tab_size: u16,
+    pub editor_detect_indentation: bool,
     pub auto_switch_step_mode: bool,
     pub auto_comment_overwrite: bool,
     pub base: u16,
@@ -45,6 +48,9 @@ impl Default for Settings {
             theme: ThemePreference::Dark,
             editor_font_family: "\"Cascadia Code\", Consolas, \"BIZ UDGothic\", monospace".into(),
             editor_font_size: 14,
+            editor_insert_spaces: true,
+            editor_tab_size: 4,
+            editor_detect_indentation: true,
             auto_switch_step_mode: true,
             auto_comment_overwrite: false,
             base: 32,
@@ -83,6 +89,9 @@ impl Settings {
         }
         if !(8..=72).contains(&self.editor_font_size) {
             return Err("フォントサイズは8〜72の整数で指定してください。".into());
+        }
+        if !(1..=16).contains(&self.editor_tab_size) {
+            return Err("タブの表示サイズは1〜16の整数で指定してください。".into());
         }
         self.devices.validate()
     }

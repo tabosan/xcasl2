@@ -10,12 +10,12 @@ use std::{
 };
 use tauri::{Emitter, Manager, State};
 use tauri_plugin_dialog::DialogExt;
-use wcasl2_core::{
+use workspace::{BuildSource, Workspace};
+use xcasl2_core::{
     project::{Project, ProjectFile},
     settings::{atomic_write, Settings, ThemePreference},
     DeviceConfig, Diagnostic, Snapshot, StepMode,
 };
-use workspace::{BuildSource, Workspace};
 
 struct AppState(Mutex<Workspace>);
 
@@ -72,12 +72,12 @@ fn generate_comments(
     target: String,
     base: u16,
     overwrite: bool,
-) -> Vec<wcasl2_core::assembler::CommentEdit> {
+) -> Vec<xcasl2_core::assembler::CommentEdit> {
     let inputs: Vec<_> = sources
         .iter()
         .map(|s| (Some(s.file.as_str()), s.source.as_str()))
         .collect();
-    wcasl2_core::assembler::auto_comments(&inputs, Some(&target), base, overwrite)
+    xcasl2_core::assembler::auto_comments(&inputs, Some(&target), base, overwrite)
 }
 
 #[derive(Serialize)]
@@ -101,7 +101,7 @@ fn canonical_path(path: &Path) -> Result<PathBuf, String> {
 fn read_cas(path: &Path) -> Result<OpenedSource, String> {
     let bytes = std::fs::read(path).map_err(|e| format!("{}: {e}", path.display()))?;
     let source =
-        wcasl2_core::decode_source(&bytes).map_err(|e| format!("{}: {e}", path.display()))?;
+        xcasl2_core::decode_source(&bytes).map_err(|e| format!("{}: {e}", path.display()))?;
     let path = canonical_path(path)?;
     Ok(OpenedSource {
         path: path.to_string_lossy().into(),
@@ -172,7 +172,7 @@ async fn save_source(
     state: State<'_, AppState>,
 ) -> Result<Option<String>, String> {
     let normalized = source.replace("\r\n", "\n").replace('\n', "\r\n");
-    let bytes = wcasl2_core::encode_cp932(&normalized)?;
+    let bytes = xcasl2_core::encode_cp932(&normalized)?;
     let previous = previous_path.as_deref().map(Path::new);
     let path = if let Some(path) = previous.filter(|_| !save_as) {
         path.to_owned()
@@ -394,7 +394,7 @@ async fn save_project(
         .iter()
         .chain(std::iter::once(&data.settings_path))
         .chain(data.project_paths.iter().filter(|other| {
-            !previous.is_some_and(|previous| wcasl2_core::devices::same_path(previous, other))
+            !previous.is_some_and(|previous| xcasl2_core::devices::same_path(previous, other))
         }))
         .chain(data.simulations.values().flat_map(|sim| {
             [
@@ -413,14 +413,14 @@ async fn save_project(
             .flatten(),
         );
     for other in protected {
-        if wcasl2_core::devices::same_path(other, &path) {
+        if xcasl2_core::devices::same_path(other, &path) {
             return Err(
                 "ソース・設定・他のcmk・装置ファイルへcmkを保存することはできません。".into(),
             );
         }
     }
     for file in &files {
-        if wcasl2_core::devices::same_path(Path::new(&file.path), &path) {
+        if xcasl2_core::devices::same_path(Path::new(&file.path), &path) {
             return Err("CASLソースへcmkを保存することはできません。".into());
         }
     }

@@ -1,4 +1,4 @@
-use wcasl2_core::{assemble, assembler::auto_comments};
+use xcasl2_core::{assemble, assembler::auto_comments};
 
 fn comment_for(statement: &str) -> String {
     let source = format!("MAIN START\n {statement}\n RET\nDATA DC 1234\nARR DC 1,2,3\nBUF DS 10\nLOOP NOP\nMUL RET\n END\n");

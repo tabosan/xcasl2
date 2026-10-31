@@ -40,6 +40,6 @@ Windows実画面で狭い分割タブの同時表示、2進への切替、STEP�
 
 Rustの`Image`・`Snapshot`へ表示用の`symbols`を追加した。名前解決用の既存ラベルマップは維持し、表示用にはファイル、公開名、定義行、番地、語数を保持する。CPU命令・メモリ配置・スタック規則の変更はない。
 
-`crates/wcasl2-core/tests/inspection.rs`は配列・リテラル・同名ラベルと、ST・PUSH・POP・リロードのメモリ値を検証する。`tests/inspection.test.mjs`は符号変換、全語展開、ソース行対応、SP追従・固定番地・物理境界を検証する。
+`crates/xcasl2-core/tests/inspection.rs`は配列・リテラル・同名ラベルと、ST・PUSH・POP・リロードのメモリ値を検証する。`tests/inspection.test.mjs`は符号変換、全語展開、ソース行対応、SP追従・固定番地・物理境界を検証する。
 
 Rustワークスペース45本、フロントエンド16本、TypeScript/Vite、Clippy、fmt、Tauri埋込みEXEビルドを通過。Windows実画面で配列全要素、ST後のBUFのFFFF/−1、PUSH後のSP=00B0とFFFF、POP後のSP=00B1と残留値、符号なし65535、CASL/COMET切替後の保持を確認した。検証には専用の設定フォルダーを使い、普段の設定は変更していない。記録は`analysis/results/casl-inspection/gui-verification.json`。

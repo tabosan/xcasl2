@@ -4,8 +4,8 @@ use std::{
     path::{Path, PathBuf},
     sync::atomic::{AtomicU64, Ordering},
 };
-use wcasl2_core::devices::FileDevices;
-use wcasl2_core::{assemble, DeviceConfig, Machine, Session, Status, StepMode};
+use xcasl2_core::devices::FileDevices;
+use xcasl2_core::{assemble, DeviceConfig, Machine, Session, Status, StepMode};
 
 struct Temp(PathBuf);
 impl Temp {
@@ -269,7 +269,7 @@ fn japanese_256_byte_file_input_and_output_work_in_all_step_modes() {
         let temp = Temp::new();
         let input = temp.path("入力.txt");
         let output = temp.path("出力.txt");
-        let bytes = wcasl2_core::encode_cp932(&"あ".repeat(128)).unwrap();
+        let bytes = xcasl2_core::encode_cp932(&"あ".repeat(128)).unwrap();
         let mut file = bytes.clone();
         file.extend_from_slice(b"  \r\n");
         fs::write(&input, file).unwrap();

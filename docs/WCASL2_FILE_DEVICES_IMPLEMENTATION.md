@@ -16,7 +16,7 @@
 
 | 場所 | 役割 |
 |---|---|
-| `crates/wcasl2-core/src/devices.rs` | レコード変換、遅延Open、ファイル位置、バッファ、Close、同一ファイル検査 |
+| `crates/xcasl2-core/src/devices.rs` | レコード変換、遅延Open、ファイル位置、バッファ、Close、同一ファイル検査 |
 | `machine.rs` | INの入力要求とメモリ書込、OUTの下位8bit取得・ファイル向け出力要求 |
 | `session.rs` | 各STEPのI/O要求を処理し、終了・再実行・リロードでストリームを閉じる |
 | `src-tauri/src/main.rs` | 装置設定の保持、パス選択、編集中ソースへの出力禁止、終了前Close |
