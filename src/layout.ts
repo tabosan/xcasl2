@@ -1,3 +1,4 @@
+import { version } from '../package.json';
 import { devicesMarkup } from './devices';
 import { preferencesMarkup } from './preferences';
 import { deleteConfirmationMarkup } from './delete-confirmation';
@@ -21,6 +22,6 @@ export function layout() {
   </main>
   <footer class="status-bar"><button id="status-sidebar" data-tooltip="エクスプローラー切替" aria-label="エクスプローラー切替">${menuIcon}</button><span id="message" role="status">ファイルを開いて編集を始められます。</span><span id="cursor-position"></span><button id="status-indentation" aria-label="インデント設定" aria-haspopup="menu" data-tooltip="現在のファイルのインデント設定" hidden>スペース: 4</button><span>CP932</span><span>CRLF</span><span>CASL II</span><span id="connection">Rust + Tauri</span></footer>
   <dialog id="confirm-dialog"><h2 id="confirm-title"></h2><p id="confirm-message"></p><form method="dialog"><button value="cancel">キャンセル</button><button value="discard">保存しない</button><button value="save" class="primary">保存する</button></form></dialog>
-  <dialog id="about-dialog"><h2>xCASL2</h2><p>Rust + TauriによるCASL IIワークベンチです。</p><p>ファイルごとの編集タブとシミュレーター、シンタックスハイライト、命令／フェーズ／最小STEP、COMET、再実行による戻り、CP932の入出力、cmk、設定の保存に対応しています。</p><p>シミュレーターはアセンブル時のソースを使います。編集・配置設定の変更後は再アセンブルしてください。cmkに含まれるソースでは、選択ファイルを先頭にして登録ファイルをリンクします。</p><p>開いているタブと実行状態の再起動後の復元、印刷は未実装です。</p><form method="dialog"><button class="primary">閉じる</button></form></dialog>
+  <dialog id="about-dialog"><h2>xCASL2</h2><p id="about-version">バージョン ${version}</p><p>Rust + TauriによるCASL IIワークベンチです。</p><p>ファイルごとの編集タブとシミュレーター、シンタックスハイライト、命令／フェーズ／最小STEP、COMET、再実行による戻り、CP932の入出力、cmk、設定の保存に対応しています。</p><p>シミュレーターはアセンブル時のソースを使います。編集・配置設定の変更後は再アセンブルしてください。cmkに含まれるソースでは、選択ファイルを先頭にして登録ファイルをリンクします。</p><p>開いているタブと実行状態の再起動後の復元、印刷は未実装です。</p><form method="dialog"><button class="primary">閉じる</button></form></dialog>
   ${deleteConfirmationMarkup}${devicesMarkup()}${preferencesMarkup()}`;
 }

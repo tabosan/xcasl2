@@ -24,6 +24,8 @@ npm run tauri -- build --debug --no-bundle
 
 ## 文書
 
+- [GitHub Releasesの設定・バージョン更新・公開手順](docs/RELEASING.md)
+
 - [ソースの左右表示とタブのドラッグ移動](docs/SPLIT_TABS.md)
 - [CASLモードのラベル・スタック表示](docs/CASL_INSPECTION.md)
 

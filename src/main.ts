@@ -1,6 +1,7 @@
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { getCurrentWindow } from '@tauri-apps/api/window';
+import { getVersion } from '@tauri-apps/api/app';
 import './theme.css';
 import './style.css';
 import './comet-diagram.css';
@@ -615,7 +616,9 @@ async function action(name: string) {
     case 'project-save': await withIo(() => saveProject()); break;
     case 'project-save-as': await withIo(() => saveProject(true)); break;
     case 'project-build': if (wb.project?.fileIds[0]) { selectSource(wb.project.fileIds[0]); await buildPreview(wb.project.fileIds[0]); } break;
-    case 'about': $<HTMLDialogElement>('about-dialog').showModal(); break;
+    case 'about':
+      if (desktop) $('about-version').textContent = `バージョン ${await getVersion()}`;
+      $<HTMLDialogElement>('about-dialog').showModal(); break;
     default: if (name.startsWith('sample-') && examples[name.slice(7)]) newDocument(formatSampleIndentation(examples[name.slice(7)], settings), `${name.slice(7)}.cas`);
   }
 }

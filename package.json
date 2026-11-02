@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "version:check": "node scripts/version.mjs --check",
+    "version:set": "node scripts/version.mjs --set",
     "dev": "vite --host 127.0.0.1 --port 1420 --strictPort",
     "build": "tsc --noEmit && vite build",
     "build:layout-editor": "node scripts/build-layout-editor.mjs",
